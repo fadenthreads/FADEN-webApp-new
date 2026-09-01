@@ -13,6 +13,7 @@
   "dependencies": {
     "@faden/auth": "*",
     "@faden/env": "*",
+    "@faden/integrations": "*",
     "@faden/supabase": "*",
     "@faden/ui": "*",
     "next": "15.5.24",

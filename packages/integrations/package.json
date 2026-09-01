@@ -1,0 +1,23 @@
+{
+  "name": "@faden/integrations",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./src/index.mjs",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.mjs"
+    }
+  },
+  "scripts": {
+    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test ../../scripts/test-daily-core.mjs",
+    "build": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "20.17.10",
+    "typescript": "5.7.2"
+  }
+}

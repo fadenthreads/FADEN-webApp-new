@@ -78,8 +78,9 @@ export function AppointmentPanel({
       </header>
       <p className="design-notice">
         {demo ? "Fictional preview. " : "Staging reservations. "}Not a live
-        appointment service. Video rooms, email/SMS reminders and home visits
-        are not connected. No measurements are shared or changed by booking.
+        appointment service. Private video-room support is prepared but not
+        enabled. Email/SMS reminders and home visits are not connected. No
+        measurements are shared or changed by booking.
       </p>
       {!boutiques && active && Date.parse(active.starts_at) <= Date.now() && (
         <p className="design-notice" role="status">
@@ -195,8 +196,8 @@ export function AppointmentPanel({
                 </p>
                 <p>
                   {s.kind === "video"
-                    ? "Meeting link not configured. No call is started by reserving."
-                    : s.location}
+                    ? "Private room pending activation. Recording remains off."
+                    : `${s.location} · Confirm the venue with the boutique before travelling.`}
                 </p>
                 {boutiques ? (
                   <button
@@ -301,8 +302,8 @@ export function AppointmentPanel({
               <p>{appointmentTime(a.starts_at)}</p>
               <p>
                 {a.kind === "video"
-                  ? "Video provider pending — a meeting link is not available yet."
-                  : a.location}
+                  ? "Private video provider prepared, but joining is not enabled yet. Recording is off."
+                  : `${a.location} · This saved venue is private to the appointment participants.`}
               </p>
               <small>Order {a.order_id.slice(0, 8)}</small>
               {a.follow_up_of && (

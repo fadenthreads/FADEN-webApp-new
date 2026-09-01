@@ -24,7 +24,7 @@ Follow-ups are linked automatically to the latest completed/no-show session on t
 
 Every reservation is `mode=preview` in the database. Application mutation routes and public sample pages are disabled in `NEXT_PUBLIC_APP_ENV=production`. Direct RPCs still only create labelled preview reservations, not live meeting/service bookings. No money is collected, no video room is created, no email/SMS is sent, and no measurements are shared or modified. Outbox records are identifiers only, not proof that a reminder was delivered.
 
-Video booking type is available, but joining calls requires a chosen/configured provider. In-person reservations are at the boutique only. Home visits, consented staff measurement updates and provider integration remain later work.
+Video booking type is available and the Daily private-room adapter is prepared, but joining calls remains disabled until protected provisioning/join routes and credentials are activated. In-person reservations are at the boutique only; server-only structured venue storage is prepared in migration 020. Home visits and consented staff measurement updates remain later work. See [measurement session integrations](measurement-session-integrations.md).
 
 ## Privacy and concurrency
 
