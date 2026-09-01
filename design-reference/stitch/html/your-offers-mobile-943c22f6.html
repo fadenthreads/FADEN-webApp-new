@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Your Offers - FADEN</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-container": "#b75760",
+                      "inverse-on-surface": "#f3f0ef",
+                      "surface-tint": "#974730",
+                      "on-tertiary": "#ffffff",
+                      "inverse-primary": "#ffb5a0",
+                      "secondary": "#775a19",
+                      "on-error-container": "#93000a",
+                      "surface-container-low": "#f6f3f2",
+                      "on-primary-container": "#fffdff",
+                      "on-error": "#ffffff",
+                      "surface-container-highest": "#e5e2e1",
+                      "secondary-fixed": "#ffdea5",
+                      "on-secondary": "#ffffff",
+                      "surface-container": "#f0eded",
+                      "primary": "#94452e",
+                      "background": "#fcf9f8",
+                      "tertiary": "#983f49",
+                      "on-secondary-fixed": "#261900",
+                      "surface-bright": "#fcf9f8",
+                      "surface": "#fcf9f8",
+                      "error-container": "#ffdad6",
+                      "on-surface": "#1c1b1b",
+                      "surface-dim": "#dcd9d9",
+                      "inverse-surface": "#313030",
+                      "on-surface-variant": "#55433e",
+                      "on-secondary-fixed-variant": "#5d4201",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-fixed-variant": "#78301b",
+                      "tertiary-fixed-dim": "#ffb2b6",
+                      "on-secondary-container": "#785a1a",
+                      "primary-fixed-dim": "#ffb5a0",
+                      "error": "#ba1a1a",
+                      "on-background": "#1c1b1b",
+                      "outline": "#88726d",
+                      "tertiary-fixed": "#ffdadb",
+                      "on-primary-fixed": "#3b0900",
+                      "on-tertiary-fixed": "#40000d",
+                      "on-tertiary-fixed-variant": "#7c2a34",
+                      "outline-variant": "#dbc1ba",
+                      "on-tertiary-container": "#fffcff",
+                      "primary-container": "#b35d44",
+                      "secondary-container": "#fed488",
+                      "surface-variant": "#e5e2e1",
+                      "on-primary": "#ffffff",
+                      "surface-container-high": "#eae7e7",
+                      "primary-fixed": "#ffdbd1",
+                      "secondary-fixed-dim": "#e9c176"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "64px",
+                      "section-gap": "120px",
+                      "margin-mobile": "20px",
+                      "gutter": "24px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "display-lg": [
+                              "Syne"
+                      ],
+                      "body-md": [
+                              "Karla"
+                      ],
+                      "body-lg": [
+                              "Karla"
+                      ],
+                      "headline-lg-mobile": [
+                              "Syne"
+                      ],
+                      "headline-md": [
+                              "Syne"
+                      ],
+                      "display-xl": [
+                              "Syne"
+                      ],
+                      "label-sm": [
+                              "Karla"
+                      ],
+                      "headline-lg": [
+                              "Syne"
+                      ]
+              },
+              "fontSize": {
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-xl": [
+                              "64px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&amp;family=Karla:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+            font-family: 'Karla', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3, h4, h5, h6, .font-display {
+            font-family: 'Syne', sans-serif;
+        }
+        .ghost-border {
+            border: 1px solid theme('colors.surface-variant');
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="pb-24">
+<!-- TopAppBar -->
+<header class="bg-background w-full top-0 left-0 border-b border-outline-variant flex justify-between items-center px-margin-mobile h-20 w-full fixed z-50 bg-background/80 backdrop-blur-md">
+<button aria-label="Menu" class="scale-95 active:opacity-80 transition-all text-on-surface-variant hover:text-tertiary transition-colors">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-display-lg text-display-lg-mobile uppercase tracking-widest text-primary text-center flex-grow">FADEN</h1>
+<button aria-label="Shopping Bag" class="scale-95 active:opacity-80 transition-all text-on-surface-variant hover:text-tertiary transition-colors">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="pt-28 px-margin-mobile max-w-[1440px] mx-auto md:px-margin-desktop">
+<!-- Header Section -->
+<section class="mb-8">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-background mb-2">Your Offers</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Bespoke proposals for your Evening Silk Gown request.</p>
+</section>
+<!-- Offers Grid -->
+<div class="grid grid-cols-1 gap-6 pb-section-gap">
+<!-- Offer Card 1: New -->
+<article class="bg-surface-container-lowest ghost-border p-6 relative">
+<div class="absolute top-4 right-4 border border-secondary text-secondary font-label-sm text-label-sm px-2 py-1 uppercase tracking-widest">
+                    New
+                </div>
+<div class="flex items-start gap-4 mb-6">
+<div class="w-16 h-16 rounded-full overflow-hidden bg-surface-variant flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A striking portrait of a high-end fashion designer in a minimalist atelier, lit by soft, bright natural light. The setting features warm ivory tones and terracotta accents. The designer exudes sophistication and craftsmanship, embodying the experimental luxury aesthetic of the platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfWVHeXW30yCC_FaeXiRAA18HxpnShzp5wNyaVRFRNAz4CRHVh5bsh9aypNf0ECmqhv3Mf-NNvGdIARasEzd3PpJ1XawGredLVPEe-ATL3Ag0UdnIoZ78hjRUWLRiMB4CABNSVxsag-UN2GK2WgaoK32y3e_eJnvbQz_OBfVBI7jt27LG1SeTgrnwLmWToUHweek6F1hJOFX3BCa6C_H75hPqSIyh6432epmt51WleuUOd87T2JPHs"/>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md mb-1">Maison Elara</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span> Paris, France
+                        </p>
+<div class="mt-2 flex gap-1">
+<span class="material-symbols-outlined text-secondary text-[16px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-[16px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-[16px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-[16px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-[16px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star_half</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6 border-t border-b border-surface-variant py-4">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Total Investment</span>
+<span class="font-headline-md text-headline-md">$1,250</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Advance Required</span>
+<span class="font-body-md text-body-md">$625 (50%)</span>
+</div>
+<div class="col-span-2">
+<span class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Estimated Delivery</span>
+<span class="font-body-md text-body-md flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span> Oct 24 - Nov 02
+                        </span>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="flex-1 border border-on-background bg-on-background text-background font-label-sm text-label-sm py-3 uppercase tracking-widest hover:bg-surface-tint hover:border-surface-tint transition-colors">
+                        Review Offer
+                    </button>
+<button class="w-12 h-12 flex items-center justify-center border border-surface-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">chat</span>
+</button>
+</div>
+</article>
+<!-- Offer Card 2: Updated -->
+<article class="bg-surface-container-lowest ghost-border p-6 relative">
+<div class="absolute top-4 right-4 border border-tertiary text-tertiary font-label-sm text-label-sm px-2 py-1 uppercase tracking-widest">
+                    Updated
+                </div>
+<div class="flex items-start gap-4 mb-6">
+<div class="w-16 h-16 rounded-full overflow-hidden bg-surface-variant flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A close-up shot of a skilled tailor's hands working on a piece of luxurious dark silk fabric. The workspace is a bright, modern atelier with soft white lighting and subtle terracotta tools in the background. The mood is focused and artisanal, reflecting high-end craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIoJgNQNRVvHw-qwDSrO3zkjSAHdh3ixZ6tahTF7A5L89RugzOBRqnBqLxBBgUbUW-aK-DFHBFnh2oDAu2CRmGg-UK-oIgcUNxHwIKY3-2kp7ii3b604FIspe3BC82p8wJfieLVwRU914-3v7kqv6enGdqh1IlTF3n-dqPlyWkIecFsBdpFF41YmkOI9CyVsm8-BPJ2w3St4O-vuGari2x5rvgf1f-ErZ7I-YZOG6VAhbc7s07z9Av"/>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md mb-1">Atelier V</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span> Milan, Italy
+                        </p>
+<div class="mt-2 flex gap-1">
+<span class="material-symbols-outlined text-secondary text-[16px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-[16px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-[16px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-[16px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-[16px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6 border-t border-b border-surface-variant py-4">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Total Investment</span>
+<span class="font-headline-md text-headline-md">$1,400</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Advance Required</span>
+<span class="font-body-md text-body-md">$420 (30%)</span>
+</div>
+<div class="col-span-2">
+<span class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Estimated Delivery</span>
+<span class="font-body-md text-body-md flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span> Oct 15 - Oct 20
+                        </span>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="flex-1 border border-on-background bg-transparent text-on-background font-label-sm text-label-sm py-3 uppercase tracking-widest hover:bg-surface-variant transition-colors">
+                        Review Offer
+                    </button>
+<button class="w-12 h-12 flex items-center justify-center border border-surface-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">chat</span>
+</button>
+</div>
+</article>
+<!-- Offer Card 3: Expiring Soon -->
+<article class="bg-surface-container-lowest ghost-border p-6 relative opacity-80">
+<div class="absolute top-4 right-4 border border-error text-error font-label-sm text-label-sm px-2 py-1 uppercase tracking-widest">
+                    Expiring Soon
+                </div>
+<div class="flex items-start gap-4 mb-6">
+<div class="w-16 h-16 rounded-full overflow-hidden bg-surface-variant flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="An abstract, modern fashion flat-lay featuring sketches, a measuring tape, and swatches of silk on a clean ivory surface. Soft, high-key lighting casts minimal shadows. The composition includes subtle hints of terracotta, creating a sophisticated and experimental aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcf0keoz0MnAN3FqTViWWSY-XKJqp7fHY0YIS_YcCVLQj_Mgswjgx5yfqIWc2ZcJs0UinVrqluxMZucWj1xIFxco39sSEeyYXDF99RZfbFlefJH7jJ2Uf8IUGd1uS7z7Imm9m_BOs5v_qeirwYAkw5bX98iO41iYEULSmwyiK6MFbOK4t9ji5MCj5o_ZYrwKXGk6DWMo8fc6l8R8mLXoKxGpfnHtA6YhlpcZOzJU4n52oOsMh-eLzV"/>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md mb-1">Studio R</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span> London, UK
+                        </p>
+<div class="mt-2 flex gap-1">
+<span class="material-symbols-outlined text-secondary text-[16px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-[16px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-[16px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-[16px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-surface-variant text-[16px]">star</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6 border-t border-b border-surface-variant py-4">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Total Investment</span>
+<span class="font-headline-md text-headline-md">$980</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Advance Required</span>
+<span class="font-body-md text-body-md">$490 (50%)</span>
+</div>
+<div class="col-span-2">
+<span class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Estimated Delivery</span>
+<span class="font-body-md text-body-md flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span> Nov 05 - Nov 15
+                        </span>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="flex-1 border border-on-background bg-transparent text-on-background font-label-sm text-label-sm py-3 uppercase tracking-widest hover:bg-surface-variant transition-colors">
+                        Review Offer
+                    </button>
+<button class="w-12 h-12 flex items-center justify-center border border-surface-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">chat</span>
+</button>
+</div>
+</article>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 border-t border-outline-variant fixed bottom-0 w-full h-16 flex justify-around items-center px-4 bg-background dark:bg-background md:hidden">
+<!-- Tab 1 -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant opacity-60 hover:opacity-100 transition-opacity active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined mb-1">auto_awesome</span>
+<span class="font-label-sm text-label-sm uppercase tracking-tighter">Atelier</span>
+</a>
+<!-- Tab 2 -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant opacity-60 hover:opacity-100 transition-opacity active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined mb-1">architecture</span>
+<span class="font-label-sm text-label-sm uppercase tracking-tighter">Custom</span>
+</a>
+<!-- Tab 3: Active -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed-dim font-bold hover:opacity-100 transition-opacity active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined mb-1" data-weight="fill" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+<span class="font-label-sm text-label-sm uppercase tracking-tighter">Orders</span>
+</a>
+<!-- Tab 4 -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant opacity-60 hover:opacity-100 transition-opacity active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-label-sm text-label-sm uppercase tracking-tighter">Profile</span>
+</a>
+</nav>
+</body></html>

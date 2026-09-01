@@ -1,0 +1,215 @@
+.completion-page {
+  background: #fcf9f8;
+  color: #1c1b1b;
+  font-family: var(--font-karla), sans-serif;
+  min-height: 100vh;
+}
+.completion-page main {
+  max-width: 1440px;
+  margin: auto;
+  padding: 100px 64px 120px;
+  box-sizing: border-box;
+}
+.completion-page header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.completion-spark {
+  color: #94452e;
+  font-size: 64px;
+  line-height: 1;
+  margin-bottom: 24px;
+}
+.completion-page h1 {
+  font:
+    800 clamp(36px, 5vw, 64px) / 1.1 var(--font-syne),
+    sans-serif;
+  letter-spacing: -0.02em;
+  margin: 0 0 16px;
+}
+.completion-page header p {
+  max-width: 670px;
+  margin: auto;
+  color: #55433e;
+  font-size: 18px;
+  line-height: 1.6;
+}
+.completion-notice {
+  max-width: 896px;
+  margin: 0 auto 48px;
+  padding: 16px;
+  box-sizing: border-box;
+  background: #f6f3f2;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #55433e;
+  text-align: center;
+}
+.completion-grid {
+  max-width: 896px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: 24px;
+  align-items: center;
+}
+.completion-image {
+  height: 600px;
+  position: relative;
+  isolation: isolate;
+}
+.completion-image:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid #dbc1ba55;
+  background: white;
+  transform: translate(16px, 16px);
+  z-index: -1;
+}
+.completion-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.completion-no-photo {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  background: #f0eded;
+  padding: 24px;
+  box-sizing: border-box;
+}
+.completion-actions {
+  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+.completion-actions button {
+  padding: 16px 20px;
+  font:
+    500 22px/1.3 var(--font-syne),
+    sans-serif;
+  border: 1px solid #1a1a1a;
+  border-radius: 4px;
+  background: #1a1a1a;
+  color: #fff;
+  width: 100%;
+}
+.completion-actions button:disabled {
+  cursor: not-allowed;
+}
+.completion-actions .outline {
+  background: transparent;
+  color: #94452e;
+  border-color: #94452e;
+}
+.completion-help {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #55433e;
+  margin: 0;
+}
+.completion-divider {
+  height: 1px;
+  background: #dbc1ba55;
+  margin: 8px 0;
+}
+.completion-actions a,
+.completion-actions .text {
+  font:
+    700 12px/1.6 var(--font-karla),
+    sans-serif;
+  letter-spacing: 0.08em;
+  color: #55433e;
+  text-align: left;
+}
+.completion-actions .text {
+  padding: 0;
+  background: none;
+  border: 0;
+  opacity: 0.65;
+}
+.completion-actions .completion-action {
+  display: block;
+  padding: 16px 20px;
+  font:
+    500 22px/1.3 var(--font-syne),
+    sans-serif;
+  letter-spacing: normal;
+  text-align: center;
+  text-decoration: none;
+  background: #1a1a1a;
+  color: #fff;
+  border: 1px solid #1a1a1a;
+  border-radius: 4px;
+}
+.completion-actions .completion-action.outline {
+  background: transparent;
+  color: #94452e;
+  border-color: #94452e;
+}
+.completion-page a:focus-visible {
+  outline: 3px solid #94452e;
+  outline-offset: 5px;
+}
+.completion-page footer {
+  background: #1c1b1b;
+  color: #fcf9f8;
+  padding: 100px 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 24px;
+  text-align: center;
+}
+.completion-page footer > a {
+  font:
+    800 64px/1.1 var(--font-syne),
+    sans-serif;
+  color: inherit;
+  text-decoration: none;
+}
+.completion-footer-labels {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+.completion-page footer p {
+  font-size: 12px;
+  color: #dbc1ba;
+  margin: 0;
+}
+.completion-page footer small {
+  font-size: 12px;
+}
+@media (max-width: 760px) {
+  .completion-page main {
+    padding: 60px 20px 80px;
+  }
+  .completion-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .completion-image {
+    height: 500px;
+    margin-right: 16px;
+  }
+  .completion-actions {
+    padding: 0;
+  }
+  .completion-page footer {
+    padding: 64px 20px;
+  }
+  .completion-page header p {
+    font-size: 16px;
+  }
+}

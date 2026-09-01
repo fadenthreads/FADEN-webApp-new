@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dispute Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&amp;family=Syne:wght@400..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#b75760",
+                        "inverse-on-surface": "#f3f0ef",
+                        "surface-tint": "#974730",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#ffb5a0",
+                        "secondary": "#775a19",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f6f3f2",
+                        "on-primary-container": "#fffdff",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e5e2e1",
+                        "secondary-fixed": "#ffdea5",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#f0eded",
+                        "primary": "#94452e",
+                        "background": "#fcf9f8",
+                        "tertiary": "#983f49",
+                        "on-secondary-fixed": "#261900",
+                        "surface-bright": "#fcf9f8",
+                        "surface": "#fcf9f8",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#1c1b1b",
+                        "surface-dim": "#dcd9d9",
+                        "inverse-surface": "#313030",
+                        "on-surface-variant": "#55433e",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#78301b",
+                        "tertiary-fixed-dim": "#ffb2b6",
+                        "on-secondary-container": "#785a1a",
+                        "primary-fixed-dim": "#ffb5a0",
+                        "error": "#ba1a1a",
+                        "on-background": "#1c1b1b",
+                        "outline": "#88726d",
+                        "tertiary-fixed": "#ffdadb",
+                        "on-primary-fixed": "#3b0900",
+                        "on-tertiary-fixed": "#40000d",
+                        "on-tertiary-fixed-variant": "#7c2a34",
+                        "outline-variant": "#dbc1ba",
+                        "on-tertiary-container": "#fffcff",
+                        "primary-container": "#b35d44",
+                        "secondary-container": "#fed488",
+                        "surface-variant": "#e5e2e1",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#eae7e7",
+                        "primary-fixed": "#ffdbd1",
+                        "secondary-fixed-dim": "#e9c176"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "section-gap": "120px",
+                        "margin-mobile": "20px",
+                        "gutter": "24px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Syne"],
+                        "body-md": ["Karla"],
+                        "body-lg": ["Karla"],
+                        "headline-lg-mobile": ["Syne"],
+                        "headline-md": ["Syne"],
+                        "display-xl": ["Syne"],
+                        "label-sm": ["Karla"],
+                        "headline-lg": ["Syne"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "display-xl": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #fcf9f8; color: #1c1b1b; }
+        .ghost-border { border: 1px solid #dbc1ba; }
+        .whisper-shadow { box-shadow: 0px 4px 20px rgba(26, 26, 26, 0.04); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased min-h-screen pb-32">
+<!-- Top App Bar (Task-focused, linear, no nav shell since it's a detail screen) -->
+<header class="w-full top-0 left-0 border-b border-outline-variant bg-background/80 backdrop-blur-md flex justify-between items-center px-margin-mobile h-20 fixed z-50">
+<button aria-label="Go back" class="text-on-surface-variant p-2 -ml-2 rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+</button>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-primary tracking-widest uppercase">Dispute</span>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</header>
+<main class="pt-24 px-margin-mobile max-w-lg mx-auto">
+<!-- Case Header -->
+<section class="mb-10">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-1">Case #892-A</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Opened: Oct 12, 2023</p>
+</div>
+<span class="inline-flex items-center px-3 py-1 rounded-full text-label-sm font-label-sm bg-error-container text-on-error-container border border-error-container">
+                    Action Required
+                </span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl ghost-border whisper-shadow">
+<h3 class="font-label-sm text-label-sm text-outline uppercase mb-2">Subject</h3>
+<p class="font-headline-md text-headline-md mb-6">Bespoke Silk Gown - Fit Issue</p>
+<div class="grid grid-cols-2 gap-4 border-t border-outline-variant pt-4">
+<div>
+<span class="block font-label-sm text-label-sm text-outline uppercase mb-1">Customer</span>
+<span class="font-body-md text-body-md font-medium">Elena R.</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-outline uppercase mb-1">Boutique</span>
+<span class="font-body-md text-body-md font-medium">Maison Silk</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-outline uppercase mb-1">Order Value</span>
+<span class="font-body-md text-body-md font-medium">$2,450.00</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-outline uppercase mb-1">Disputed Amt</span>
+<span class="font-body-md text-body-md font-medium text-error">$2,450.00</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Customer Claim -->
+<section class="mb-10">
+<h2 class="font-headline-md text-headline-md mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-outline">person</span>
+                Customer Claim
+            </h2>
+<div class="bg-surface-container-low p-6 rounded-xl border-l-4 border-primary">
+<p class="font-body-md text-body-md mb-4">
+                    "The gown arrived beautifully packaged, but the bodice measurements are completely off by at least 2 inches. I cannot zip it up. I provided exact measurements as requested. The boutique is refusing a return stating it's custom work, but the error is on their end."
+                </p>
+<h4 class="font-label-sm text-label-sm text-outline uppercase mb-3">Evidence Provided</h4>
+<div class="grid grid-cols-2 gap-3">
+<img class="rounded-lg object-cover w-full h-32 ghost-border" data-alt="A close up photograph of a luxurious silk gown on a dress form, focusing on the back zipper which is stuck halfway up due to the fabric being too tight. A measuring tape is held against the fabric showing the discrepancy. High fashion editorial style lighting, warm terracotta and ivory tones in the background, sharp focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpgSn2mAvY7NR6KMHJVMJO_VD8EZjZeY0i0es8u7jMstFIzJUmDee-388hzWlT1ivYAZEAwF20WX0MHO40z49w3ik7PpbArJ98zs9m3xPLuu94I_L1pVwIF6VZb_3PbjFDetoNWKKWf2-I3yj9RxYVz3OzjXDjG0_TyMDiFfeT-ihaosh_SeVF87qtTXkz7ohOhz03v82Ax0yeSrt3qsqYRVB4WSsCAc4Dpe4vPfgzTczp7sDlrgTp"/>
+<img class="rounded-lg object-cover w-full h-32 ghost-border" data-alt="A screenshot of a measurement submission form displayed on a sleek mobile device, showing numerical inputs for bust, waist, and hips. The device rests on a minimalist marble surface. Soft, warm directional lighting highlighting the screen. Modern, clean aesthetic consistent with high-end luxury platforms." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUv83B8ylvFf-DLYHR4n0qpA4ijHEM1GTUxKi-oN90TFfZ_kMLcqMPNm-ceq4o4q43oBvTnb-aXoNJYslVucmcS1jyY5Gz24XwLTHZ4eheoaV3TwNzYPnXIraQ1CD63YKnNVklv-OK8Ci32Q3jn69yH68wHMLnyvrZ92LuntNMShGMmazlaO4LyXbmcNHMB923oLPoVC5p6E2XK1wZ9BYDuAmGcmHTcdC8no9L_i8BBQYd33z5IIqD"/>
+</div>
+</div>
+</section>
+<!-- Boutique Response -->
+<section class="mb-12">
+<h2 class="font-headline-md text-headline-md mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-outline">storefront</span>
+                Boutique Response
+            </h2>
+<div class="bg-surface-container p-6 rounded-xl border-l-4 border-secondary">
+<p class="font-body-md text-body-md mb-4 text-on-surface-variant">
+                    "We crafted the garment exactly to the measurements provided in the initial order form (34" bust). We suspect the customer may have measured incorrectly or provided measurements from a different garment. As per our terms, custom pieces are final sale unless there is a verifiable manufacturing defect."
+                </p>
+<div class="bg-surface-container-lowest p-3 rounded-lg flex items-center gap-3 ghost-border cursor-pointer hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-outline">description</span>
+<span class="font-body-md text-body-md flex-1">Original Order Spec.pdf</span>
+<span class="material-symbols-outlined text-primary">download</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Fixed Action Bar -->
+<div class="fixed bottom-0 w-full bg-background border-t border-outline-variant p-4 z-50 pb-8">
+<div class="max-w-lg mx-auto flex flex-col gap-3">
+<button class="w-full bg-on-surface text-on-primary py-4 rounded-lg font-display-lg text-body-lg font-medium tracking-wide hover:bg-inverse-surface transition-colors">
+                Issue Full Refund
+            </button>
+<div class="flex gap-3">
+<button class="flex-1 bg-transparent border border-outline text-on-surface py-3 rounded-lg font-display-lg text-body-md font-medium tracking-wide hover:bg-surface-variant transition-colors">
+                    Reject Claim
+                </button>
+<button class="flex-1 bg-transparent border border-tertiary-container text-tertiary py-3 rounded-lg font-display-lg text-body-md font-medium tracking-wide hover:bg-error-container transition-colors">
+                    Escalate to Legal
+                </button>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,42 @@
+services:
+  marketplace:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    command: npm run dev:marketplace -- --hostname 0.0.0.0
+    env_file:
+      - .env.local
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - faden_node_modules:/app/node_modules
+
+  studio:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    command: npm run dev:studio -- --hostname 0.0.0.0
+    env_file:
+      - .env.local
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/app
+      - faden_node_modules:/app/node_modules
+
+  admin:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    command: npm run dev:admin -- --hostname 0.0.0.0
+    env_file:
+      - .env.local
+    ports:
+      - "3002:3002"
+    volumes:
+      - .:/app
+      - faden_node_modules:/app/node_modules
+
+volumes:
+  faden_node_modules:

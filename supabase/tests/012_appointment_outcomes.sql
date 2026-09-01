@@ -1,0 +1,10 @@
+begin;
+select plan(6);
+select has_column('public','measurement_appointments','follow_up_of','follow-up history link exists');
+select has_column('public','measurement_appointments','outcome_at','outcome timestamp exists');
+select ok(not has_function_privilege('anon','public.record_appointment_outcome(uuid,text,boolean)','EXECUTE'),'anonymous outcomes denied');
+select ok(has_function_privilege('authenticated','public.record_appointment_outcome(uuid,text,boolean)','EXECUTE'),'authenticated role can enter owner-checked RPC');
+select ok(not has_function_privilege('authenticated','public.link_appointment_follow_up()','EXECUTE'),'history-link trigger is private');
+select ok(not has_table_privilege('authenticated','public.measurement_appointments','UPDATE'),'direct outcome changes denied');
+select * from finish();
+rollback;

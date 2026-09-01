@@ -1,0 +1,28 @@
+name: Preview-ready build
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  preview-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: build-only-placeholder
+          NEXT_PUBLIC_GOOGLE_AUTH_ENABLED: "false"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: faden-preview-${{ github.event.pull_request.number }}
+          path: apps/*/.next
+          include-hidden-files: true

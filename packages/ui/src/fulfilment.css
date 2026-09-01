@@ -1,0 +1,108 @@
+.fulfilment-panel h1 {
+  font:
+    600 clamp(32px, 4vw, 48px) / 1.15 var(--font-syne),
+    sans-serif;
+  margin: 20px 0;
+}
+.fulfilment-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 32px;
+  margin-top: 40px;
+  align-items: start;
+}
+.fulfilment-grid > section {
+  min-width: 0;
+}
+.aftercare #review,
+.aftercare #alterations {
+  scroll-margin-top: 120px;
+}
+.fulfilment-panel h2,
+.fulfilment-panel h3 {
+  font-family: var(--font-syne), sans-serif;
+}
+.fulfilment-panel p {
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.fulfilment-panel address {
+  font-style: normal;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.fulfilment-panel fieldset {
+  border: 0;
+  padding: 0;
+  min-width: 0;
+}
+.fulfilment-panel label {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0;
+}
+.fulfilment-panel input:not([type="checkbox"]),
+.fulfilment-panel select,
+.fulfilment-panel textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #dbc1ba;
+  background: #fff;
+  font: inherit;
+  box-sizing: border-box;
+}
+.fulfilment-panel textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+.fulfilment-panel .fulfilment-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  line-height: 1.5;
+}
+.fulfilment-consent input {
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+.shipment-history {
+  list-style: none;
+  margin: 24px 0;
+  padding: 0 0 0 24px;
+  border-left: 1px solid #dbc1ba;
+}
+.courier-readiness {
+  display: grid;
+  gap: 5px;
+  margin: 18px 0 24px;
+  padding: 14px 16px;
+  border: 1px solid #dbc1ba;
+  background: #fffaf7;
+}
+.courier-readiness strong {
+  font-family: var(--font-syne), sans-serif;
+}
+.courier-readiness span {
+  color: #6b514a;
+  line-height: 1.5;
+}
+.shipment-history li {
+  margin-bottom: 28px;
+}
+.fulfilment-panel button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.fulfilment-panel :focus-visible {
+  outline: 3px solid #94452e;
+  outline-offset: 4px;
+}
+@media (max-width: 760px) {
+  .fulfilment-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .fulfilment-panel .offer-panel {
+    padding: 20px;
+  }
+}

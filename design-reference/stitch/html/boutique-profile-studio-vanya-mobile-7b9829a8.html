@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Studio Vanya - Mobile Boutique Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;700&amp;family=Syne:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error-container": "#93000a",
+                      "outline-variant": "#dbc1ba",
+                      "error-container": "#ffdad6",
+                      "primary-container": "#b35d44",
+                      "on-tertiary-container": "#fffcff",
+                      "secondary-fixed-dim": "#e9c176",
+                      "on-primary-fixed": "#3b0900",
+                      "on-surface": "#1c1b1b",
+                      "surface-dim": "#dcd9d9",
+                      "on-tertiary": "#ffffff",
+                      "tertiary-container": "#b75760",
+                      "inverse-primary": "#ffb5a0",
+                      "on-error": "#ffffff",
+                      "surface-container": "#f0eded",
+                      "surface-bright": "#fcf9f8",
+                      "secondary-container": "#fed488",
+                      "on-secondary-fixed-variant": "#5d4201",
+                      "secondary": "#775a19",
+                      "error": "#ba1a1a",
+                      "on-secondary-fixed": "#261900",
+                      "secondary-fixed": "#ffdea5",
+                      "on-primary-fixed-variant": "#78301b",
+                      "surface-variant": "#e5e2e1",
+                      "primary": "#94452e",
+                      "surface-container-low": "#f6f3f2",
+                      "on-surface-variant": "#55433e",
+                      "inverse-on-surface": "#f3f0ef",
+                      "on-secondary-container": "#785a1a",
+                      "surface-container-highest": "#e5e2e1",
+                      "on-primary-container": "#fffdff",
+                      "background": "#fcf9f8",
+                      "primary-fixed": "#ffdbd1",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary": "#983f49",
+                      "on-tertiary-fixed-variant": "#7c2a34",
+                      "on-primary": "#ffffff",
+                      "surface-tint": "#974730",
+                      "outline": "#88726d",
+                      "tertiary-fixed-dim": "#ffb2b6",
+                      "on-secondary": "#ffffff",
+                      "on-background": "#1c1b1b",
+                      "tertiary-fixed": "#ffdadb",
+                      "surface": "#fcf9f8",
+                      "on-tertiary-fixed": "#40000d",
+                      "inverse-surface": "#313030",
+                      "primary-fixed-dim": "#ffb5a0",
+                      "surface-container-high": "#eae7e7"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "section-gap": "120px",
+                      "margin-desktop": "64px",
+                      "margin-mobile": "20px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": ["Syne"],
+                      "headline-md": ["Syne"],
+                      "label-sm": ["Karla"],
+                      "headline-lg": ["Syne"],
+                      "body-md": ["Karla"],
+                      "display-lg": ["Syne"],
+                      "display-xl": ["Syne"],
+                      "body-lg": ["Karla"]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                      "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "display-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        /* Hide scrollbar for horizontal scrolling areas */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Subtle Ghost Border for avant-garde aesthetic */
+        .ghost-border {
+            border: 1px solid var(--tw-colors-outline-variant);
+        }
+        
+        /* Whisper shadow */
+        .whisper-shadow {
+            box-shadow: 0px 4px 20px rgba(26, 26, 26, 0.04);
+        }
+
+        /* Material Symbols Outlined standard class */
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased flex flex-col min-h-screen selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation (Mobile Focus, No Shell Navigation as per rules for focused journey) -->
+<header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-outline-variant/30 flex justify-between items-center px-margin-mobile py-4">
+<button aria-label="Go back" class="flex items-center justify-center p-2 rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface">arrow_back</span>
+</button>
+<div class="flex space-x-4">
+<button aria-label="Share" class="flex items-center justify-center p-2 rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface">share</span>
+</button>
+<button aria-label="Save" class="flex items-center justify-center p-2 rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface">favorite_border</span>
+</button>
+</div>
+</header>
+<main class="flex-grow pt-16 pb-[100px]"> <!-- Padding bottom for sticky CTA -->
+<!-- Editorial Cover Image Section -->
+<section class="relative w-full h-[60vh] min-h-[400px]">
+<img class="absolute inset-0 w-full h-full object-cover" data-alt="A highly detailed, avant-garde editorial fashion photograph showcasing a custom-made, flowing terracotta silk garment draped organically over a mannequin. The setting is a minimalist atelier with high-key, warm natural lighting emphasizing texture and movement. Warm ivory background, sophisticated luxury aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDG1pF3Gdq1AM4UdLV-qTIW7e7N5eHuUnZn52s2jxbPpQ5R4AR71rxjbUFDslDGbeahpJ31Nq5Yz_sF0NszAlHmuFM7_4rtvXlsYQ9J_XoOVhKOrqvaaDtV9Vdo3n3lJF4zR3GwFJAZjH6iQFXUhKvgfpK1X6TEgLlQZ3Vqko84P4f7eFqn445mFpr8QeJDnYn_WjoMvdfXtKBlwZzPzg4GXYeDc-wAJydrJz73hI3dn5U8oVmaClKb"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 w-full p-margin-mobile flex flex-col items-start z-10">
+<div class="w-24 h-24 mb-4 rounded-full overflow-hidden border-2 border-background shadow-lg">
+<img alt="Studio Vanya Logo" class="w-full h-full object-cover bg-surface-container-lowest" src="https://lh3.googleusercontent.com/aida/AEtjO1UyL5ZqXwPmsGAbVe8vkD6pHIRzqzClHpSfSwKro1lskj5Wuh9PoU9-IQ-oTrFlCZDxvA_EpsC9rKnggcn2WNnCryNL6AnAYrYTRk0sCTn8NIwM2_kKudS8HUwtfwUICSNGWq-ECBx-hxJmmZvwcp4S34UIAL4AdwDU2cH-_1N-sszR4RB1CiY321XFuH1wYnHNC2R_FMzTFXTPIBxxPMbaDtRcoFyt7PnzVpcUd6p8nKw_BWR5gNgUvdw"/>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-2">Studio Vanya</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-sm">Avant-garde silhouettes crafted from sustainably sourced natural fibers. Redefining modern bespoke luxury.</p>
+<div class="mt-4 flex flex-wrap gap-2">
+<span class="px-3 py-1 border border-outline-variant rounded-full font-label-sm text-label-sm text-secondary-container bg-surface-container-lowest shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">verified</span> Hand-crafted
+                    </span>
+<span class="px-3 py-1 border border-outline-variant rounded-full font-label-sm text-label-sm text-on-surface bg-surface-container-lowest shadow-sm">
+                        Paris, FR
+                    </span>
+</div>
+</div>
+</section>
+<!-- The Atelier Story -->
+<section class="px-margin-mobile py-12 bg-surface-container-lowest ghost-border border-x-0 mt-4 mx-margin-mobile rounded-lg">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-6">The Atelier Story</h2>
+<div class="grid grid-cols-1 gap-6">
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                    Studio Vanya operates at the intersection of traditional couture techniques and radical architectural design. Every piece is a meditation on form, utilizing negative space and organic draping to challenge conventional fashion narratives.
+                </p>
+<div class="w-full h-48 bg-surface-container rounded-md overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="A close-up, high-fashion editorial shot of hands meticulously sewing intricate geometric patterns onto a piece of rich, deep terracotta fabric. The scene is brightly lit with natural sunlight streaming into a minimalist, white-walled atelier. Tools of the trade like fine scissors and measuring tapes rest on an ivory table." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2zOY82Q0Pwv4k9BUhSuqt_OXxmOweOrFvU_aholUpqgZQcAYkPLjRLZ45mqXjUiPTzMVpOHiwmq1DbhBk3wHdt2zfmn7cnXau-9BIUbNGzqmCatuvK6JnVFwG5D4Er8H2FS9HgcG1s2hnmSu8fxPdspYRtP-t9tEjYtpT6PbOtd6ZrQBPsFTRl9L9HEkM0TK3nWtHfqgORWwEnIMXOqJRlfGSgjn3oy0l0R3sgXHuOeINnQg0pEL4"/>
+</div>
+</div>
+</section>
+<!-- Signature Silhouettes (Horizontal Carousel) -->
+<section class="py-12">
+<div class="px-margin-mobile flex justify-between items-end mb-6">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Signature Forms</h2>
+<a class="font-label-sm text-label-sm text-primary hover:text-on-primary-container underline decoration-1 underline-offset-4 transition-colors" href="#">VIEW ALL</a>
+</div>
+<div class="flex overflow-x-auto no-scrollbar gap-4 px-margin-mobile snap-x snap-mandatory pb-4">
+<!-- Card 1 -->
+<div class="flex-none w-[80%] md:w-[60%] snap-center">
+<div class="bg-surface-container-lowest rounded-md overflow-hidden ghost-border h-full flex flex-col group">
+<div class="relative w-full aspect-[4/5] bg-surface-container">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A striking avant-garde fashion look featuring a structured ivory linen bodice paired with flowing, asymmetrical terracotta trousers. Photographed against a plain white background in a high-end studio setting. The lighting is crisp, highlighting the fabric's organic texture and architectural cut." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_pGe3DJCl3RqpARjKryAqeyh1I_BIFfI_YSn_SjrqtGxYYp5-Y-veUckTYy6g02wrdKoqZOsLiKlI18JXJfcg0Nrq8NSrDrSp9qnkVC_bkEyKB8bPEhOeAORxCxFl2kx5Ef7DCbKAsGywefSd173phg1dITKRdGukSVyuCSAmMvquJz_I9NXPwgPKuW0zeqSjqfyx0E1a0TyoAf6k1oT4owW6WsAwmIU63uYlFnBgsxA0iFZJK2WI"/>
+<button class="absolute top-4 right-4 p-2 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined">favorite_border</span>
+</button>
+</div>
+<div class="p-4 flex flex-col flex-grow justify-between">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1">The Arcus Gown</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2 mb-3">Structured bodice with an organic, fluid skirt crafted from raw silk.</p>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-widest">FROM €1,200</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="flex-none w-[80%] md:w-[60%] snap-center">
+<div class="bg-surface-container-lowest rounded-md overflow-hidden ghost-border h-full flex flex-col group">
+<div class="relative w-full aspect-[4/5] bg-surface-container">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="An experimental menswear ensemble showcasing an oversized, deconstructed blazer in deep charcoal gray, worn over a minimalist off-white turtleneck. The styling is highly editorial and avant-garde, shot in a bright, modern studio with sharp, architectural shadows emphasizing the garment's unique structure." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDo7EyvszEdOca5eSWLlEWtUE5tX4-b2syYNBATREcAcYDWBvFgSUCU0woDPJqRuBrSSOQboepvfAxpWS-1Uq8jQRg3RSG07ECZs-ZSIdcxk1ApkmSzkprKBDoWI28feHMYu-9KY6YB669u8mR5waBVHoHtD5Ew_U9UiISfNAlq3Jw9sZzYwAlr0-zmPNWfiHSaJwmdATIZC8Ag45q8MzHLU6KZJuCEaKokL7h_f2NsYpB7IcctOoJ1"/>
+<button class="absolute top-4 right-4 p-2 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined">favorite_border</span>
+</button>
+</div>
+<div class="p-4 flex flex-col flex-grow justify-between">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1">Linear Blazer</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2 mb-3">Deconstructed tailoring emphasizing negative space and sharp angles.</p>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-widest">FROM €850</span>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="flex-none w-[80%] md:w-[60%] snap-center">
+<div class="bg-surface-container-lowest rounded-md overflow-hidden ghost-border h-full flex flex-col group flex items-center justify-center p-8 text-center bg-surface-variant/30 cursor-pointer hover:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined text-[48px] text-on-surface-variant mb-4">arrow_forward</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Explore Full Archive</h3>
+</div>
+</div>
+</div>
+</section>
+<!-- Materials Focus (Asymmetric List) -->
+<section class="px-margin-mobile py-12 bg-on-surface text-surface-bright">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile mb-8">Provenance &amp; Process</h2>
+<div class="space-y-12">
+<div class="grid grid-cols-[1fr_2fr] gap-6 items-center">
+<div class="w-full aspect-square rounded-full overflow-hidden border border-surface-variant/30">
+<img class="w-full h-full object-cover" data-alt="A highly detailed close-up shot of raw, unspun organic cotton and linen fibers arranged artfully on a dark, matte surface. The lighting is dramatic and warm, highlighting the natural textures and creamy white tones of the materials against the deep background, conveying a sense of premium, sustainable sourcing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3aanKvx8103TMBpE_NMAf_oLW-vx7ytW2gnqI5-14WHMVgS36WbLIi6uxSRkUpuShy6u_xdjA9saFa65t-b0tTc6KrYDIEecxMgfk5UarQI-lYvvv4ttynOrq1nm4ARs1VBv-VQmZZZ3N-7OEry2r8rQTlNVLxzFFJ0e0vR_qX7sBDEBsTR9yqYniD0U_vDQ_2anrKZ_Ik5dOeeLfiFfyZ_q09WahiEmTGC_IcR2OeXcoVqrXn9oN"/>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md mb-2">Raw Organics</h4>
+<p class="font-body-md text-body-md text-surface-variant/80">Sourced directly from ethical cooperatives, our linens and silks remain untreated to preserve natural character.</p>
+</div>
+</div>
+<div class="grid grid-cols-[2fr_1fr] gap-6 items-center text-right">
+<div>
+<h4 class="font-headline-md text-headline-md mb-2">Zero-Waste Cutting</h4>
+<p class="font-body-md text-body-md text-surface-variant/80">Patterns are engineered mathematically to ensure minimal fabric waste during the construction process.</p>
+</div>
+<div class="w-full aspect-square rounded-full overflow-hidden border border-surface-variant/30">
+<img class="w-full h-full object-cover" data-alt="An abstract, top-down view of fashion pattern pieces laid out on a large cutting table. The pieces interlock perfectly like a puzzle on a piece of terracotta-colored fabric, demonstrating a zero-waste cutting technique. The aesthetic is clean, precise, and well-lit with a bright, minimalist atelier vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBp5gjRnFB9WM4ez7At43rzWhjKnK13cDKgfKR2dnd-w_xwQS7xdYuLxZxdHDi1rDNUeZzo8_BH5p_YigfKEzCZnF2a_tKvKjyxB4_eHV9_waikS5B5pAx_L4UB1mGr06E0YHbcBCIFYmRU5YGrJpEyNMK02TAv9zrxHQKDQrNo_kX9j9OLvBwgZPVUZ178ehJi6_R9p6QzwDlM_FcbSBrZ9lUy3DK7UDV9c4L_oPJWF2eeHswHZg1e"/>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Sticky Bottom CTA -->
+<div class="fixed bottom-0 left-0 w-full p-4 bg-background/90 backdrop-blur-xl border-t ghost-border z-40 pb-safe pb-8 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+<button class="w-full bg-[#1A1A1A] hover:bg-tertiary-container text-white font-headline-md text-headline-md py-4 rounded-md transition-colors duration-300 flex items-center justify-center gap-2">
+            Create an Outfit
+            <span class="material-symbols-outlined">edit_square</span>
+</button>
+</div>
+<script>
+        // Simple script to handle safe area padding for modern mobile browsers if needed, 
+        // though Tailwind handles most layout needs.
+    </script>
+</body></html>

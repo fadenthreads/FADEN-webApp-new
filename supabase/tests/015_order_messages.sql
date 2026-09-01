@@ -1,0 +1,11 @@
+begin;
+select plan(8);
+select ok((select relrowsecurity from pg_class where oid='public.order_messages'::regclass),'messages RLS');
+select ok((select relrowsecurity from pg_class where oid='public.order_message_reads'::regclass),'read cursors RLS');
+select ok(not has_table_privilege('anon','public.order_messages','SELECT'),'anonymous history denied');
+select ok(not has_table_privilege('authenticated','public.order_messages','INSERT'),'direct send denied');
+select ok(not has_table_privilege('authenticated','public.order_messages','DELETE'),'history immutable');
+select ok(not has_table_privilege('authenticated','public.order_message_reads','UPDATE'),'direct read cursor writes denied');
+select ok(not has_function_privilege('anon','public.send_order_message(uuid,text,uuid)','EXECUTE'),'anonymous sends denied');
+select ok(not has_function_privilege('anon','public.mark_order_messages_read(uuid,integer)','EXECUTE'),'anonymous read marking denied');
+select * from finish();rollback;

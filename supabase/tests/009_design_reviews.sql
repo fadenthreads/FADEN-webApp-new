@@ -1,0 +1,13 @@
+begin;
+select plan(9);
+select ok((select relrowsecurity from pg_class where oid='public.order_design_reviews'::regclass),'design reviews have RLS');
+select ok(not has_table_privilege('anon','public.order_design_reviews','SELECT'),'anonymous reviews denied');
+select ok(has_table_privilege('authenticated','public.order_design_reviews','SELECT'),'signed-in reads granted with RLS');
+select ok(not has_table_privilege('authenticated','public.order_design_reviews','INSERT'),'direct review insertion denied');
+select ok(not has_table_privilege('authenticated','public.order_design_reviews','UPDATE'),'direct review alteration denied');
+select ok(not has_table_privilege('authenticated','public.order_design_reviews','DELETE'),'history deletion denied');
+select ok(not has_function_privilege('anon','public.publish_order_design(uuid,integer,jsonb)','EXECUTE'),'anonymous publishing denied');
+select ok(not has_function_privilege('anon','public.decide_order_design(uuid,text,text,boolean)','EXECUTE'),'anonymous decisions denied');
+select ok((select not public and file_size_limit=8388608 from storage.buckets where id='order-designs'),'sketch bucket private and size-limited');
+select * from finish();
+rollback;

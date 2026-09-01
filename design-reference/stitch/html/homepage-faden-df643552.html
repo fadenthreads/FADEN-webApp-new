@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FADEN - Experimental Luxury</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&amp;family=Syne:wght@400..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#1c1b1b",
+                        "on-primary-container": "#fffdff",
+                        "surface-dim": "#dcd9d9",
+                        "tertiary-container": "#b75760",
+                        "surface-bright": "#fcf9f8",
+                        "on-tertiary-container": "#fffcff",
+                        "tertiary-fixed-dim": "#ffb2b6",
+                        "on-secondary-fixed": "#261900",
+                        "outline": "#88726d",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#f0eded",
+                        "surface-container-low": "#f6f3f2",
+                        "primary": "#94452e",
+                        "secondary-fixed-dim": "#e9c176",
+                        "tertiary": "#983f49",
+                        "surface-variant": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#7c2a34",
+                        "primary-fixed-dim": "#ffb5a0",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e5e2e1",
+                        "primary-fixed": "#ffdbd1",
+                        "secondary-fixed": "#ffdea5",
+                        "tertiary-fixed": "#ffdadb",
+                        "inverse-on-surface": "#f3f0ef",
+                        "secondary-container": "#fed488",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#eae7e7",
+                        "surface-tint": "#974730",
+                        "on-primary-fixed-variant": "#78301b",
+                        "secondary": "#775a19",
+                        "inverse-primary": "#ffb5a0",
+                        "outline-variant": "#dbc1ba",
+                        "on-surface-variant": "#55433e",
+                        "on-primary-fixed": "#3b0900",
+                        "background": "#fcf9f8",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#b35d44",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#40000d",
+                        "on-secondary-container": "#785a1a",
+                        "inverse-surface": "#313030",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1c1b1b",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "surface": "#fcf9f8",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "gutter": "24px",
+                        "section-gap": "120px",
+                        "margin-desktop": "64px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Karla"],
+                        "headline-lg": ["Syne"],
+                        "display-lg": ["Syne"],
+                        "display-xl": ["Syne"],
+                        "headline-lg-mobile": ["Syne"],
+                        "body-lg": ["Karla"],
+                        "body-md": ["Karla"],
+                        "headline-md": ["Syne"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "display-xl": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+        
+        /* Experimental Luxury Ghost Border */
+        .ghost-border {
+            border: 0.5px solid theme('colors.outline-variant');
+        }
+        
+        /* Experimental Luxury Whisper Shadow */
+        .whisper-shadow {
+            box-shadow: 0px 4px 20px rgba(26, 26, 26, 0.04);
+        }
+
+        /* Material Symbols Fill Configuration */
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: theme('colors.background');
+        }
+        ::-webkit-scrollbar-thumb {
+            background: theme('colors.surface-variant');
+            border-radius: theme('borderRadius.full');
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: theme('colors.outline');
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="bg-background dark:bg-on-background docked full-width top-0 border-b border-outline-variant/30 dark:border-outline/20 flat no shadows sticky z-50">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-6 max-w-[1440px] mx-auto transition-all duration-300 ease-in-out">
+<nav class="hidden md:flex gap-gutter items-center">
+<a class="text-on-surface-variant dark:text-surface-variant font-label-sm text-label-sm tracking-widest hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-300" href="#">Boutiques</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-sm text-label-sm tracking-widest hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-300" href="#">Designs</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-sm text-label-sm tracking-widest hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-300" href="#">Materials</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-sm text-label-sm tracking-widest hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-300" href="#">Atelier</a>
+</nav>
+<a class="flex items-center justify-center" href="#">
+<img alt="FADEN Logo" class="h-10 md:h-12 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuByu5xyYO_z0bRR_RudiamB_Ckd9VWrbJ5xOsmKCNMCW-cpb9PsbZhlgQpxr-5saax3lw0UM3i1i0Y87r4T1jYSEGI-293cpMkcp6OycdZWgsPt4R_eU16Ikt97HWmi11Jgsx0NJROXViw4aAqYMzmx6sE71YjO77rrcZRr7KignBo0sSecf0wT1nGcZhc1fBL6b32j9YBdcYIsEXUMjPy3iyXGlkBGdJwm6wxyuWbaeFnsbkWfkWD6"/>
+</a>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-6 items-center text-primary dark:text-primary-fixed-dim">
+<button aria-label="Shopping Bag" class="hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-300">
+<span class="material-symbols-outlined text-2xl">shopping_bag</span>
+</button>
+<button aria-label="Profile" class="hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-300">
+<span class="material-symbols-outlined text-2xl">person</span>
+</button>
+</div>
+<button class="md:hidden hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-300">
+<span class="material-symbols-outlined text-2xl">menu</span>
+</button>
+</div>
+</div>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative w-full min-h-[90vh] md:min-h-[85vh] flex items-end pb-section-gap pt-32 px-margin-mobile md:px-margin-desktop overflow-hidden">
+<!-- Background Image -->
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center bg-no-repeat" data-alt="A massive, full-width editorial fashion photograph featuring breathtaking Indian luxury ethnic wear, possibly a bridal lehenga, set against a sophisticated, avant-garde architectural backdrop. The lighting is warm and cinematic, emphasizing rich terracotta and ivory tones. High contrast, negative space, experimental luxury aesthetic, 1440px width focus." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB55iUZgdReiYQGUfAETiKsCdm3cK-68msxjnwKeFx_jQL96TE1QmZv3brZ7kj8MuKE_ljWo_xGkXPX8wrmyGULvzSdHvHdHQiQ8-hkG_Skl2sEkEBoR21RqCK7h893E3q45brEB0Fkf_Do10UABkEtRWmufROooDKZGTK6d5MH5q2IBa2x8q4iTuJFJ-4bauqtu2q1wsKiRIhMfW-Mw5S-ACB9nlD6-6PIJUW086-n5_AmGLa8I1k9')"></div>
+<!-- Subtle Gradient Overlay for Text Readability -->
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
+</div>
+<!-- Content -->
+<div class="relative z-10 max-w-[1440px] mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-gutter items-end">
+<div class="md:col-span-8 flex flex-col gap-8">
+<h1 class="text-display-lg md:text-display-xl font-display-xl text-on-background max-w-4xl text-balance">Made for you.<br/>Designed around you.</h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant max-w-2xl">
+                        Discover talented boutiques, create your perfect outfit and follow every detail from first idea to final fitting.
+                    </p>
+<div class="flex flex-wrap gap-4 mt-4">
+<button class="bg-on-background text-on-primary font-body-md text-body-md px-8 py-4 hover:bg-primary-container transition-colors duration-300 flex items-center gap-2">
+                            Create My Outfit
+                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+<button class="bg-transparent border border-outline font-body-md text-body-md px-8 py-4 hover:border-on-background hover:bg-surface-variant transition-colors duration-300">
+                            Explore Boutiques
+                        </button>
+</div>
+<!-- Search / Quick Actions -->
+<div class="mt-12 w-full max-w-3xl bg-surface/80 backdrop-blur-md p-6 ghost-border whisper-shadow">
+<div class="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
+<div class="flex-grow w-full border-b border-outline pb-2 flex items-center group">
+<span class="material-symbols-outlined text-outline mr-3">search</span>
+<input class="w-full bg-transparent border-none p-0 focus:ring-0 text-body-md font-body-md placeholder:text-outline-variant text-on-background" placeholder="Wedding lehenga, Custom suit, Sherwani..." type="text"/>
+</div>
+<div class="border-b border-outline pb-2 flex items-center min-w-[200px]">
+<span class="material-symbols-outlined text-outline mr-3">location_on</span>
+<span class="text-body-md font-body-md text-on-background">Near Hyderabad</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full bg-on-background pt-section-gap pb-margin-desktop px-margin-mobile md:px-margin-desktop text-surface-bright">
+<div class="max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-16 md:gap-8">
+<div class="flex flex-col">
+<h2 class="text-display-xl font-display-xl text-surface-bright mb-8">FADEN</h2>
+<p class="text-label-sm font-label-sm text-surface-variant/70 tracking-widest uppercase">© 2024 FADEN ATELIER. ALL RIGHTS RESERVED.</p>
+</div>
+<nav class="flex flex-wrap gap-x-12 gap-y-6">
+<a class="text-surface-variant/70 font-label-sm text-label-sm tracking-widest uppercase opacity-80 hover:opacity-100 hover:text-primary-fixed-dim transition-all duration-200" href="#">The Story</a>
+<a class="text-surface-variant/70 font-label-sm text-label-sm tracking-widest uppercase opacity-80 hover:opacity-100 hover:text-primary-fixed-dim transition-all duration-200" href="#">Sustainability</a>
+<a class="text-surface-variant/70 font-label-sm text-label-sm tracking-widest uppercase opacity-80 hover:opacity-100 hover:text-primary-fixed-dim transition-all duration-200" href="#">Boutique Portal</a>
+<a class="text-surface-variant/70 font-label-sm text-label-sm tracking-widest uppercase opacity-80 hover:opacity-100 hover:text-primary-fixed-dim transition-all duration-200" href="#">Terms of Service</a>
+<a class="text-surface-variant/70 font-label-sm text-label-sm tracking-widest uppercase opacity-80 hover:opacity-100 hover:text-primary-fixed-dim transition-all duration-200" href="#">Privacy Policy</a>
+</nav>
+</div>
+</footer>
+</body></html>

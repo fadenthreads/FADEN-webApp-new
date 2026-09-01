@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Secure Your Order - FADEN</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;700&amp;family=Syne:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary": "#94452e",
+                      "inverse-primary": "#ffb5a0",
+                      "error-container": "#ffdad6",
+                      "on-secondary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "background": "#fcf9f8",
+                      "surface": "#fcf9f8",
+                      "secondary-fixed-dim": "#e9c176",
+                      "surface-dim": "#dcd9d9",
+                      "on-error": "#ffffff",
+                      "secondary-container": "#fed488",
+                      "tertiary": "#983f49",
+                      "on-primary-fixed": "#3b0900",
+                      "inverse-surface": "#313030",
+                      "on-surface-variant": "#55433e",
+                      "on-primary": "#ffffff",
+                      "on-secondary-fixed": "#261900",
+                      "on-secondary-fixed-variant": "#5d4201",
+                      "surface-container-high": "#eae7e7",
+                      "outline": "#88726d",
+                      "secondary-fixed": "#ffdea5",
+                      "tertiary-fixed-dim": "#ffb2b6",
+                      "surface-container-highest": "#e5e2e1",
+                      "on-background": "#1c1b1b",
+                      "surface-bright": "#fcf9f8",
+                      "tertiary-container": "#b75760",
+                      "primary-container": "#b35d44",
+                      "outline-variant": "#dbc1ba",
+                      "on-tertiary-fixed-variant": "#7c2a34",
+                      "primary-fixed": "#ffdbd1",
+                      "tertiary-fixed": "#ffdadb",
+                      "primary-fixed-dim": "#ffb5a0",
+                      "on-tertiary-fixed": "#40000d",
+                      "surface-container-low": "#f6f3f2",
+                      "on-tertiary-container": "#fffcff",
+                      "on-primary-container": "#fffdff",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "surface-variant": "#e5e2e1",
+                      "secondary": "#775a19",
+                      "on-primary-fixed-variant": "#78301b",
+                      "on-error-container": "#93000a",
+                      "surface-tint": "#974730",
+                      "on-surface": "#1c1b1b",
+                      "on-secondary-container": "#785a1a",
+                      "inverse-on-surface": "#f3f0ef",
+                      "surface-container": "#f0eded"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "64px",
+                      "margin-mobile": "20px",
+                      "gutter": "24px",
+                      "section-gap": "120px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "headline-lg": [
+                              "Syne"
+                      ],
+                      "body-md": [
+                              "Karla"
+                      ],
+                      "headline-md": [
+                              "Syne"
+                      ],
+                      "headline-lg-mobile": [
+                              "Syne"
+                      ],
+                      "display-xl": [
+                              "Syne"
+                      ],
+                      "label-sm": [
+                              "Karla"
+                      ],
+                      "body-lg": [
+                              "Karla"
+                      ],
+                      "display-lg": [
+                              "Syne"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-xl": [
+                              "64px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation omitted for linear checkout flow -->
+<main class="flex-1 w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop py-12 md:py-24 flex items-center justify-center">
+<div class="w-full max-w-2xl">
+<header class="mb-12 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-outline-variant/30 pb-6">
+<div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background mb-2">Secure your order</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">
+                        Your boutique begins creating your outfit after the advance is confirmed.
+                    </p>
+</div>
+<a class="inline-flex items-center gap-2 text-primary hover:text-on-background transition-colors self-center md:self-end text-sm border-b border-transparent hover:border-on-background pb-0.5" href="#">
+<span class="material-symbols-outlined text-base">arrow_back</span>
+                    Return to Atelier
+                </a>
+</header>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-gutter">
+<!-- Order Summary Breakdown -->
+<div class="md:col-span-12 bg-surface-container-lowest border border-outline-variant/30 p-6 md:p-10 flex flex-col gap-8 shadow-sm">
+<div class="flex flex-col gap-4 border-b border-outline-variant/20 pb-8">
+<h2 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Payment Breakdown</h2>
+<div class="flex justify-between items-end">
+<span class="font-body-lg text-body-lg text-on-background">Order total</span>
+<span class="font-headline-md text-headline-md text-on-background">₹48,000</span>
+</div>
+</div>
+<div class="flex flex-col gap-6">
+<!-- Pay Today (Advance) - Highlighted -->
+<div class="flex justify-between items-start bg-primary-container/10 p-4 border-l-2 border-primary">
+<div>
+<span class="block font-headline-md text-headline-md text-on-background mb-1">Pay today</span>
+<span class="font-body-md text-body-md text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">verified</span>
+                                    Advance
+                                </span>
+</div>
+<span class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">₹15,000</span>
+</div>
+<!-- Pay Later (Balance) -->
+<div class="flex justify-between items-start p-4 opacity-70">
+<div>
+<span class="block font-body-lg text-body-lg text-on-background mb-1">Pay later</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Balance before delivery</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-background">₹33,000</span>
+</div>
+</div>
+</div>
+<!-- CTA and Trust -->
+<div class="md:col-span-12 flex flex-col gap-6 mt-4">
+<button class="w-full bg-[#1A1A1A] hover:bg-primary text-white font-headline-md text-headline-md py-5 px-8 flex items-center justify-center gap-3 transition-colors duration-300 shadow-sm group">
+<span class="material-symbols-outlined">lock</span>
+                        Pay ₹15,000 Securely
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<div class="flex flex-wrap items-center justify-center gap-6 md:gap-12 mt-4">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-lg text-primary">shield</span>
+<span class="font-label-sm text-label-sm">Secure payment</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-lg text-primary">security</span>
+<span class="font-label-sm text-label-sm">Powered by Razorpay</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-lg text-primary">receipt_long</span>
+<span class="font-label-sm text-label-sm">Receipt provided</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer omitted for linear checkout flow -->
+</body></html>

@@ -1,0 +1,162 @@
+.checkout-page {
+  min-height: 100vh;
+  background: #fcf9f8;
+  color: #1c1b1b;
+  font-family: var(--font-karla), sans-serif;
+  padding: 96px 64px;
+}
+.checkout-canvas {
+  max-width: 672px;
+  margin: auto;
+}
+.checkout-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #dbc1ba66;
+  margin-bottom: 48px;
+}
+.checkout-header h1 {
+  font:
+    600 32px/1.2 var(--font-syne),
+    sans-serif;
+  margin: 12px 0;
+}
+.checkout-header p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #55433e;
+  max-width: 420px;
+  margin: 0;
+}
+.checkout-header a {
+  color: #94452e;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.checkout-breakdown {
+  padding: 40px;
+  background: white;
+  border: 1px solid #dbc1ba66;
+  box-shadow: 0 4px 20px #1a1a1a05;
+}
+.checkout-breakdown h2 {
+  font:
+    500 20px/1.3 var(--font-syne),
+    sans-serif;
+  margin: 16px 0;
+  overflow-wrap: anywhere;
+}
+.checkout-breakdown dl {
+  margin: 0;
+}
+.checkout-breakdown dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 24px 0;
+}
+.checkout-breakdown dl > div:first-child {
+  border-bottom: 1px solid #dbc1ba55;
+  margin-bottom: 24px;
+}
+.checkout-breakdown dd {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  margin: 0;
+  text-align: right;
+  font:
+    500 24px/1.3 var(--font-syne),
+    sans-serif;
+}
+.checkout-breakdown dt {
+  min-width: 0;
+  font-size: 18px;
+  line-height: 1.5;
+}
+.checkout-breakdown dt span {
+  display: block;
+  font-size: 14px;
+  color: #55433e;
+  margin-top: 4px;
+}
+.checkout-breakdown .checkout-advance {
+  padding: 20px;
+  background: #b35d441a;
+  border-left: 2px solid #94452e;
+}
+.checkout-advance dd {
+  font-size: 32px;
+  color: #94452e;
+}
+.checkout-advance strong {
+  font:
+    500 24px/1.3 var(--font-syne),
+    sans-serif;
+}
+.checkout-payment {
+  margin-top: 40px;
+}
+.checkout-payment > button,
+.checkout-payment > div > button {
+  width: 100%;
+  padding: 20px;
+  font-size: 18px;
+}
+.checkout-payment > p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #55433e;
+}
+.order-milestones {
+  list-style: none;
+  padding: 0 0 0 24px;
+  border-left: 1px solid #dbc1ba;
+  display: grid;
+  gap: 32px;
+  margin: 32px 0;
+}
+.order-milestones span {
+  display: block;
+  margin-top: 8px;
+  color: #55433e;
+  font-size: 14px;
+}
+@media (max-width: 760px) {
+  .checkout-page {
+    padding: 48px 20px;
+  }
+  .checkout-header {
+    display: block;
+  }
+  .checkout-header h1 {
+    font-size: 28px;
+  }
+  .checkout-header a {
+    display: inline-block;
+    margin-top: 20px;
+  }
+  .checkout-breakdown {
+    padding: 24px;
+  }
+  .checkout-breakdown dd,
+  .checkout-advance dd {
+    font-size: 24px;
+  }
+  .checkout-breakdown dt {
+    font-size: 16px;
+  }
+  .checkout-advance strong {
+    font-size: 20px;
+  }
+  .checkout-breakdown dl > div {
+    gap: 12px;
+  }
+  .checkout-payment > button,
+  .checkout-payment > div > button {
+    font-size: 16px;
+  }
+}

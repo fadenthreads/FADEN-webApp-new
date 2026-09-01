@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aarya Studio - Overview Dashboard</title>
+<!-- Fonts: Syne and Karla -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&amp;family=Syne:wght@400..800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#785a1a",
+                        "primary-container": "#b35d44",
+                        "tertiary-fixed-dim": "#ffb2b6",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-tertiary-fixed-variant": "#7c2a34",
+                        "surface-container": "#f0eded",
+                        "outline-variant": "#dbc1ba",
+                        "on-secondary-fixed": "#261900",
+                        "surface": "#fcf9f8",
+                        "on-primary-container": "#fffdff",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#974730",
+                        "surface-variant": "#e5e2e1",
+                        "primary-fixed-dim": "#ffb5a0",
+                        "primary-fixed": "#ffdbd1",
+                        "secondary": "#775a19",
+                        "on-primary-fixed-variant": "#78301b",
+                        "on-primary-fixed": "#3b0900",
+                        "surface-bright": "#fcf9f8",
+                        "primary": "#94452e",
+                        "on-tertiary-fixed": "#40000d",
+                        "outline": "#88726d",
+                        "on-tertiary-container": "#fffcff",
+                        "secondary-fixed": "#ffdea5",
+                        "surface-container-highest": "#e5e2e1",
+                        "tertiary": "#983f49",
+                        "inverse-surface": "#313030",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f6f3f2",
+                        "secondary-fixed-dim": "#e9c176",
+                        "inverse-primary": "#ffb5a0",
+                        "on-background": "#1c1b1b",
+                        "surface-dim": "#dcd9d9",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "tertiary-fixed": "#ffdadb",
+                        "background": "#fcf9f8",
+                        "on-surface-variant": "#55433e",
+                        "tertiary-container": "#b75760",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#fed488",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1c1b1b",
+                        "surface-container-high": "#eae7e7",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "section-gap": "120px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Syne"],
+                        "display-xl": ["Syne"],
+                        "label-sm": ["Karla"],
+                        "body-lg": ["Karla"],
+                        "headline-lg": ["Syne"],
+                        "headline-md": ["Syne"],
+                        "display-lg": ["Syne"],
+                        "body-md": ["Karla"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-xl": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Thin ghost borders and subtle hover states for Experimental Luxury feel */
+        .ghost-border {
+            border: 0.5px solid theme('colors.outline-variant');
+        }
+        
+        /* Webkit scrollbar styling for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: theme('colors.outline-variant');
+            border-radius: theme('borderRadius.full');
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+<!-- TopAppBar (Shared Component) -->
+<!-- Applying style_component_shape, style_bg_color, style_separation_logic -->
+<header class="sticky top-0 w-full z-50 bg-background border-b border-outline-variant/30 transition-all duration-300 ease-in-out">
+<!-- Applying style_shell_layout -->
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-6 max-w-[1440px] mx-auto">
+<!-- Mobile Menu Toggle (Functional addition for layout completeness) -->
+<button class="md:hidden flex items-center text-on-surface-variant hover:text-primary transition-colors duration-300">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<!-- Brand Logo: Applying style_brand_logo -->
+<a class="text-display-lg font-display-lg text-on-background tracking-tighter" href="#">
+                FADEN
+            </a>
+<!-- Navigation Links: Applying style_nav_structure implicitly as a row -->
+<nav class="hidden md:flex items-center gap-8">
+<!-- Logic: Boutique Dashboard implies "Boutiques" is the active global context -->
+<!-- Active Nav Item: Boutiques -->
+<a class="text-primary border-b border-primary pb-1 text-label-sm font-label-sm uppercase tracking-widest hover:text-primary transition-colors duration-300" href="#">
+                    Boutiques
+                </a>
+<!-- Inactive Nav Items -->
+<a class="text-on-surface-variant font-label-sm tracking-widest uppercase hover:text-primary transition-colors duration-300" href="#">
+                    Designs
+                </a>
+<a class="text-on-surface-variant font-label-sm tracking-widest uppercase hover:text-primary transition-colors duration-300" href="#">
+                    Materials
+                </a>
+<a class="text-on-surface-variant font-label-sm tracking-widest uppercase hover:text-primary transition-colors duration-300" href="#">
+                    Atelier
+                </a>
+</nav>
+<!-- Trailing Icons -->
+<div class="flex items-center gap-4 text-on-surface-variant">
+<button class="hover:text-primary transition-colors duration-300 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+</button>
+<button class="hover:text-primary transition-colors duration-300 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Workspace Layout -->
+<main class="flex-1 w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop pt-12 pb-section-gap flex flex-col lg:flex-row gap-gutter">
+<!-- Local Navigation Sidebar (As requested: "Navigation sidebar active on 'Overview'") -->
+<!-- Placed inside the layout below the global TopAppBar to respect hierarchy rules -->
+<aside class="w-full lg:w-48 shrink-0 mb-8 lg:mb-0 hidden md:block">
+<div class="sticky top-[120px] flex flex-col gap-6">
+<div class="text-label-sm font-label-sm tracking-widest text-on-surface-variant uppercase mb-2">Aarya Studio</div>
+<nav class="flex flex-col gap-4 border-l-[0.5px] border-outline-variant pl-4">
+<a class="text-primary text-label-sm font-label-sm tracking-widest uppercase flex items-center gap-2 relative before:content-[''] before:absolute before:-left-[17px] before:top-1/2 before:-translate-y-1/2 before:w-[2px] before:h-4 before:bg-primary" href="#">
+                        Overview
+                    </a>
+<a class="text-on-surface-variant text-label-sm font-label-sm tracking-widest uppercase hover:text-primary transition-colors" href="#">
+                        Requests
+                    </a>
+<a class="text-on-surface-variant text-label-sm font-label-sm tracking-widest uppercase hover:text-primary transition-colors" href="#">
+                        Clients
+                    </a>
+<a class="text-on-surface-variant text-label-sm font-label-sm tracking-widest uppercase hover:text-primary transition-colors" href="#">
+                        Calendar
+                    </a>
+<a class="text-on-surface-variant text-label-sm font-label-sm tracking-widest uppercase hover:text-primary transition-colors" href="#">
+                        Finances
+                    </a>
+</nav>
+</div>
+</aside>
+<!-- Main Dashboard Canvas -->
+<div class="flex-1 flex flex-col gap-12">
+<!-- Contextual Top Bar & Welcome -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b-[0.5px] border-outline-variant pb-8">
+<div>
+<h1 class="text-headline-lg font-headline-lg text-on-background mb-2">Welcome, Priya.</h1>
+<p class="text-body-md font-body-md text-on-surface-variant">Here is the current state of Aarya Studio.</p>
+</div>
+<div class="flex flex-wrap items-center gap-4">
+<!-- Secondary/Ghost Button -->
+<button class="px-6 py-3 border border-on-background text-on-background text-label-sm font-label-sm uppercase tracking-widest hover:bg-surface-container-high transition-colors">
+                        View Public Boutique
+                    </button>
+<!-- Primary Button -->
+<button class="px-6 py-3 bg-on-background text-on-primary text-label-sm font-label-sm uppercase tracking-widest hover:bg-tertiary transition-colors">
+                        New Portfolio Design
+                    </button>
+</div>
+</div>
+<!-- KPI Cards - Bento Grid Layout -->
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+<!-- Primary KPI -->
+<div class="col-span-2 md:col-span-2 lg:col-span-1 p-6 bg-surface-container-lowest ghost-border flex flex-col justify-between aspect-[4/3] md:aspect-auto hover:border-primary transition-colors">
+<div class="flex justify-between items-start mb-4">
+<span class="text-label-sm font-label-sm uppercase tracking-widest text-on-surface-variant">Payments Due</span>
+<span class="material-symbols-outlined text-outline" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<div>
+<div class="text-headline-md font-headline-md text-on-background">₹82,000</div>
+<div class="text-label-sm font-label-sm text-outline mt-1">Pending Clearance</div>
+</div>
+</div>
+<!-- Standard KPIs -->
+<div class="p-6 bg-background ghost-border flex flex-col justify-between aspect-square hover:bg-surface-container-lowest transition-colors">
+<div class="flex justify-between items-start">
+<span class="text-label-sm font-label-sm uppercase tracking-widest text-on-surface-variant">New<br/>Requests</span>
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<div class="text-headline-lg font-headline-lg text-on-background">5</div>
+</div>
+<div class="p-6 bg-background ghost-border flex flex-col justify-between aspect-square hover:bg-surface-container-lowest transition-colors">
+<div class="flex justify-between items-start">
+<span class="text-label-sm font-label-sm uppercase tracking-widest text-on-surface-variant">Awaiting<br/>Response</span>
+</div>
+<div class="text-headline-lg font-headline-lg text-on-background">3</div>
+</div>
+<div class="p-6 bg-background ghost-border flex flex-col justify-between aspect-square hover:bg-surface-container-lowest transition-colors">
+<div class="flex justify-between items-start">
+<span class="text-label-sm font-label-sm uppercase tracking-widest text-on-surface-variant">Active<br/>Outfits</span>
+</div>
+<div class="text-headline-lg font-headline-lg text-on-background">12</div>
+</div>
+<div class="p-6 bg-background ghost-border flex flex-col justify-between aspect-square hover:bg-surface-container-lowest transition-colors">
+<div class="flex justify-between items-start">
+<span class="text-label-sm font-label-sm uppercase tracking-widest text-on-surface-variant">Upcoming<br/>Fittings</span>
+</div>
+<div class="text-headline-lg font-headline-lg text-on-background">4</div>
+</div>
+</div>
+<!-- Two Column Layout Area -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 mt-4">
+<!-- Left Column (Needs Attention & Recent Requests) -->
+<div class="lg:col-span-8 flex flex-col gap-12">
+<!-- Needs Your Attention Section -->
+<section>
+<h2 class="text-headline-md font-headline-md text-on-background mb-6 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="error">error</span>
+                            Needs Your Attention
+                        </h2>
+<div class="flex flex-col gap-4">
+<!-- List Item 1 -->
+<div class="p-5 ghost-border bg-surface-container-lowest flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 group hover:border-outline transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-label-sm font-label-sm text-on-surface-variant">AR</div>
+<div>
+<div class="text-body-lg font-body-lg text-on-background group-hover:text-primary transition-colors">Ananya Reddy</div>
+<div class="text-label-sm font-label-sm tracking-widest text-on-surface-variant uppercase mt-1">Design Approval Pending</div>
+</div>
+</div>
+<button class="text-label-sm font-label-sm text-on-background uppercase tracking-widest border-b border-on-background pb-0.5 hover:text-primary hover:border-primary transition-colors shrink-0">
+                                    Review
+                                </button>
+</div>
+<!-- List Item 2 -->
+<div class="p-5 ghost-border bg-surface-container-lowest flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 group hover:border-outline transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-label-sm font-label-sm text-on-surface-variant">AM</div>
+<div>
+<div class="text-body-lg font-body-lg text-on-background group-hover:text-primary transition-colors">Arjun Mehta</div>
+<div class="text-label-sm font-label-sm tracking-widest text-primary uppercase mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="warning">warning</span> Delivery at Risk
+                                        </div>
+</div>
+</div>
+<button class="text-label-sm font-label-sm text-on-background uppercase tracking-widest border-b border-on-background pb-0.5 hover:text-primary hover:border-primary transition-colors shrink-0">
+                                    Manage
+                                </button>
+</div>
+<!-- List Item 3 -->
+<div class="p-5 ghost-border bg-surface-container-lowest flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 group hover:border-outline transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-label-sm font-label-sm text-on-surface-variant">PS</div>
+<div>
+<div class="text-body-lg font-body-lg text-on-background group-hover:text-primary transition-colors">Priya Sharma</div>
+<div class="text-label-sm font-label-sm tracking-widest text-on-surface-variant uppercase mt-1">Balance Due (₹45,000)</div>
+</div>
+</div>
+<button class="text-label-sm font-label-sm text-on-background uppercase tracking-widest border-b border-on-background pb-0.5 hover:text-primary hover:border-primary transition-colors shrink-0">
+                                    Send Reminder
+                                </button>
+</div>
+</div>
+</section>
+<!-- Recent Requests Table (Minimalist style) -->
+<section>
+<h2 class="text-headline-md font-headline-md text-on-background mb-6 flex items-center justify-between">
+                            Recent Requests
+                            <a class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest hover:text-primary transition-colors border-b border-transparent hover:border-primary pb-1" href="#">View All</a>
+</h2>
+<div class="w-full overflow-x-auto">
+<table class="w-full text-left border-collapse min-w-[600px]">
+<thead>
+<tr class="border-b-[0.5px] border-outline-variant">
+<th class="py-4 px-2 text-label-sm font-label-sm uppercase tracking-widest text-on-surface-variant font-normal w-1/3">Client &amp; Event</th>
+<th class="py-4 px-2 text-label-sm font-label-sm uppercase tracking-widest text-on-surface-variant font-normal w-1/3">Garment Type</th>
+<th class="py-4 px-2 text-label-sm font-label-sm uppercase tracking-widest text-on-surface-variant font-normal w-1/6">Status</th>
+<th class="py-4 px-2 text-label-sm font-label-sm uppercase tracking-widest text-on-surface-variant font-normal w-1/6 text-right">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b-[0.5px] border-outline-variant/30 hover:bg-surface-container-lowest transition-colors group cursor-pointer">
+<td class="py-4 px-2">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 bg-surface-container rounded-none overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="A close up, highly detailed editorial photograph of a luxurious, heavily embroidered reception lehenga fabric. The fabric is a deep terracotta red with intricate gold zardozi and sequin work. The lighting is soft and dramatic, highlighting the texture and craftsmanship against a pristine, light ivory studio background. Warm, avant-garde luxury aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSEvEQl5MfaeCpn0tUyJheNUa3D3OHp9p2_g1UxWRCSvEFWdpy8BNHt2nbc2zYlYq-ytxezNlnWRo3yiutsJSldEtvqfo8ecNSEnO_IeAQsz0f0QJCrHx9VMMt5BDD78VywFDzlVtK2Ewmn_5tW6YJtU1m7WOIiDfYYO3ui_ZUAnGJ7QPm0rHrjdKeQ-Gzq8NNqPfaIiS0dajRWJZjetyv9GBjvk1cLewrjceqPo3oAYHX90VvsAUB"/>
+</div>
+<div>
+<div class="text-body-md font-body-md text-on-background">Ananya Reddy</div>
+<div class="text-label-sm font-label-sm text-outline mt-0.5">Reception • Dec 12</div>
+</div>
+</div>
+</td>
+<td class="py-4 px-2 text-body-md font-body-md text-on-background">Bespoke Lehenga</td>
+<td class="py-4 px-2">
+<span class="inline-flex px-2 py-1 ghost-border text-label-sm font-label-sm text-primary uppercase tracking-widest rounded-full">New</span>
+</td>
+<td class="py-4 px-2 text-right">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+<!-- Right Column (Today Timeline) -->
+<div class="lg:col-span-4">
+<section class="sticky top-[120px] bg-surface-container-lowest ghost-border p-6 md:p-8 flex flex-col h-full min-h-[500px]">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-headline-md font-headline-md text-on-background">Today</h2>
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-widest">Oct 24</span>
+</div>
+<!-- Timeline Structural Linework -->
+<div class="relative pl-6 border-l-[0.5px] border-outline-variant flex-1 flex flex-col gap-10 py-2">
+<!-- Timeline Event 1 -->
+<div class="relative group">
+<div class="absolute w-3 h-3 bg-background border border-primary rounded-full -left-[30px] top-1.5 group-hover:bg-primary transition-colors"></div>
+<div class="text-label-sm font-label-sm text-primary uppercase tracking-widest mb-1">10:00 AM</div>
+<div class="text-body-lg font-body-lg text-on-background mb-2">Video Consultation</div>
+<div class="text-body-md font-body-md text-on-surface-variant mb-3">Meera Kapoor • Initial Design Brief</div>
+<button class="text-label-sm font-label-sm text-on-background flex items-center gap-2 hover:text-primary transition-colors border-[0.5px] border-outline-variant w-fit px-3 py-1.5 rounded-full">
+<span class="material-symbols-outlined text-[16px]" data-icon="videocam">videocam</span> Join Call
+                                </button>
+</div>
+<!-- Timeline Event 2 -->
+<div class="relative group">
+<div class="absolute w-3 h-3 bg-background border border-outline rounded-full -left-[30px] top-1.5 group-hover:border-primary transition-colors"></div>
+<div class="text-label-sm font-label-sm text-outline uppercase tracking-widest mb-1">11:30 AM</div>
+<div class="text-body-lg font-body-lg text-on-background mb-2">In-store Fitting</div>
+<div class="text-body-md font-body-md text-on-surface-variant">Karan Singh • Sherwani Toile</div>
+</div>
+<!-- Visual cue for later events -->
+<div class="relative mt-auto pt-8">
+<div class="absolute w-2 h-2 bg-outline-variant rounded-full -left-[27.5px] top-9"></div>
+<div class="text-label-sm font-label-sm text-outline uppercase tracking-widest">No further appointments</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer (Shared Component) -->
+<!-- Applying style_shell_layout, style_bg_color, style_primary_color -->
+<footer class="w-full bg-on-background pt-section-gap pb-margin-desktop px-margin-mobile md:px-margin-desktop text-surface-bright mt-auto">
+<div class="max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-12">
+<div class="flex flex-col">
+<!-- Applying style_brand_logo -->
+<div class="text-display-xl font-display-xl text-surface-bright mb-8">
+                    FADEN
+                </div>
+<!-- Applying copyright_text from JSON -->
+<p class="text-label-sm font-label-sm text-surface-variant/70 uppercase tracking-widest">
+                    © 2024 FADEN ATELIER. ALL RIGHTS RESERVED.
+                </p>
+</div>
+<!-- Applying navigation_links array from JSON -->
+<nav class="flex flex-col md:flex-row gap-6 md:gap-12">
+<a class="text-surface-variant/70 font-label-sm tracking-widest uppercase hover:text-primary-fixed-dim transition-colors duration-200" href="#">
+                    The Story
+                </a>
+<a class="text-surface-variant/70 font-label-sm tracking-widest uppercase hover:text-primary-fixed-dim transition-colors duration-200" href="#">
+                    Sustainability
+                </a>
+<a class="text-surface-variant/70 font-label-sm tracking-widest uppercase hover:text-primary-fixed-dim transition-colors duration-200" href="#">
+                    Boutique Portal
+                </a>
+<a class="text-surface-variant/70 font-label-sm tracking-widest uppercase hover:text-primary-fixed-dim transition-colors duration-200" href="#">
+                    Terms of Service
+                </a>
+<a class="text-surface-variant/70 font-label-sm tracking-widest uppercase hover:text-primary-fixed-dim transition-colors duration-200" href="#">
+                    Privacy Policy
+                </a>
+</nav>
+</div>
+</footer>
+</body></html>

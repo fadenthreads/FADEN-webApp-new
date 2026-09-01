@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Create My Outfit - Measurements | FADEN</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;700&amp;family=Syne:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#93000a",
+                        "outline-variant": "#dbc1ba",
+                        "error-container": "#ffdad6",
+                        "primary-container": "#b35d44",
+                        "on-tertiary-container": "#fffcff",
+                        "secondary-fixed-dim": "#e9c176",
+                        "on-primary-fixed": "#3b0900",
+                        "on-surface": "#1c1b1b",
+                        "surface-dim": "#dcd9d9",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#b75760",
+                        "inverse-primary": "#ffb5a0",
+                        "on-error": "#ffffff",
+                        "surface-container": "#f0eded",
+                        "surface-bright": "#fcf9f8",
+                        "secondary-container": "#fed488",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "secondary": "#775a19",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#261900",
+                        "secondary-fixed": "#ffdea5",
+                        "on-primary-fixed-variant": "#78301b",
+                        "surface-variant": "#e5e2e1",
+                        "primary": "#94452e",
+                        "surface-container-low": "#f6f3f2",
+                        "on-surface-variant": "#55433e",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-secondary-container": "#785a1a",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-primary-container": "#fffdff",
+                        "background": "#fcf9f8",
+                        "primary-fixed": "#ffdbd1",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#983f49",
+                        "on-tertiary-fixed-variant": "#7c2a34",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#974730",
+                        "outline": "#88726d",
+                        "tertiary-fixed-dim": "#ffb2b6",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#1c1b1b",
+                        "tertiary-fixed": "#ffdadb",
+                        "surface": "#fcf9f8",
+                        "on-tertiary-fixed": "#40000d",
+                        "inverse-surface": "#313030",
+                        "primary-fixed-dim": "#ffb5a0",
+                        "surface-container-high": "#eae7e7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "section-gap": "120px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Syne"],
+                        "headline-md": ["Syne"],
+                        "label-sm": ["Karla"],
+                        "headline-lg": ["Syne"],
+                        "body-md": ["Karla"],
+                        "display-lg": ["Syne"],
+                        "display-xl": ["Syne"],
+                        "body-lg": ["Karla"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "display-xl": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+        .ghost-border {
+            border: 1px solid theme('colors.outline-variant');
+        }
+        .whisper-shadow {
+            box-shadow: 0px 4px 20px rgba(26, 26, 26, 0.04);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            border-color: theme('colors.primary-container');
+            background-color: theme('colors.surface-container-low');
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-body-md text-body-md antialiased">
+<!-- Top Navigation (Shared Component JSON logic applied for top-level app, though this is a flow, we keep standard header as anchor per instructions to render it, but for a transactional flow it should ideally be suppressed. The prompt didn't say "don't render nav", but Shared Component rules say: "Linear/Transactional: Login, Sign-up, Onboarding, Checkout, or "Success/Confirmation" splash screens. -> Automatic Suppression". Since this is "Step 5 of 6", it is transactional. SUPPRESSING NAV SHELL.) -->
+<!-- We will build a minimal transactional header instead -->
+<header class="w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop py-6 flex justify-between items-center bg-background">
+<div class="font-display-lg text-display-lg font-bold tracking-tighter text-on-surface">FADEN</div>
+<button class="text-on-surface-variant flex items-center gap-2 hover:text-primary transition-colors">
+<span class="font-label-sm text-label-sm uppercase">Save &amp; Exit</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">close</span>
+</button>
+</header>
+<main class="flex-grow flex flex-col items-center justify-center px-margin-mobile md:px-margin-desktop py-12 md:py-24">
+<!-- Progress Indicator -->
+<div class="w-full max-w-4xl mx-auto mb-16 flex flex-col items-center">
+<span class="font-label-sm text-label-sm text-outline mb-4 tracking-widest uppercase">Step 5 of 6</span>
+<div class="flex gap-2 w-full max-w-md">
+<div class="h-1 flex-1 bg-primary rounded-full"></div>
+<div class="h-1 flex-1 bg-primary rounded-full"></div>
+<div class="h-1 flex-1 bg-primary rounded-full"></div>
+<div class="h-1 flex-1 bg-primary rounded-full"></div>
+<div class="h-1 flex-1 bg-primary rounded-full"></div>
+<div class="h-1 flex-1 bg-surface-variant rounded-full"></div>
+</div>
+</div>
+<div class="w-full max-w-5xl mx-auto">
+<!-- Header Section -->
+<div class="text-center mb-16">
+<h1 class="font-display-lg text-display-lg text-on-surface mb-6 md:hidden font-headline-lg-mobile text-headline-lg-mobile">
+                    How would you like to handle measurements?
+                </h1>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-6 hidden md:block">
+                    How would you like to handle measurements?
+                </h1>
+<div class="inline-flex items-center gap-3 bg-surface-container-low px-6 py-3 rounded-full ghost-border whisper-shadow mt-4">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">lock</span>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                        Your measurements stay private. Only boutiques you approve can access them.
+                    </p>
+</div>
+</div>
+<!-- Bento Grid Options -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 w-full">
+<!-- Digital Input -->
+<div class="md:col-span-6 grid grid-rows-2 gap-6">
+<button class="bg-surface-container-lowest ghost-border p-8 rounded-lg flex flex-col items-start text-left card-hover group w-full relative overflow-hidden">
+<div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-primary" style="font-variation-settings: 'FILL' 0;">straighten</span>
+</div>
+<span class="material-symbols-outlined text-primary mb-4" style="font-variation-settings: 'FILL' 0;">keyboard</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">I know my measurements</h3>
+<p class="font-body-md text-body-md text-outline">Enter them manually in the next step.</p>
+</button>
+<button class="bg-surface-container-lowest ghost-border p-8 rounded-lg flex flex-col items-start text-left card-hover group w-full relative overflow-hidden">
+<div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-primary" style="font-variation-settings: 'FILL' 0;">cloud_done</span>
+</div>
+<span class="material-symbols-outlined text-primary mb-4" style="font-variation-settings: 'FILL' 0;">cloud_sync</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Use my saved measurements</h3>
+<p class="font-body-md text-body-md text-outline">Load data from your FADEN profile.</p>
+</button>
+</div>
+<!-- Assisted Fitting -->
+<div class="md:col-span-6 grid grid-cols-2 gap-6">
+<button class="col-span-2 bg-surface-container-lowest ghost-border p-8 rounded-lg flex items-center justify-between text-left card-hover group w-full relative overflow-hidden">
+<div>
+<span class="material-symbols-outlined text-primary mb-4 block" style="font-variation-settings: 'FILL' 0;">storefront</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Visit the boutique</h3>
+<p class="font-body-md text-body-md text-outline max-w-sm">Schedule an in-person measurement session.</p>
+</div>
+<span class="material-symbols-outlined text-3xl text-outline-variant group-hover:text-primary transition-colors mr-4" style="font-variation-settings: 'FILL' 0;">arrow_forward</span>
+</button>
+<button class="col-span-1 bg-surface-container-lowest ghost-border p-6 rounded-lg flex flex-col items-start text-left card-hover group w-full">
+<span class="material-symbols-outlined text-primary mb-4" style="font-variation-settings: 'FILL' 0;">videocam</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2 text-xl">Video fitting</h3>
+<p class="font-label-sm text-label-sm text-outline mt-auto">Guided online</p>
+</button>
+<button class="col-span-1 bg-surface-container-lowest ghost-border p-6 rounded-lg flex flex-col items-start text-left card-hover group w-full">
+<span class="material-symbols-outlined text-primary mb-4" style="font-variation-settings: 'FILL' 0;">person_pin_circle</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2 text-xl">Have someone visit me</h3>
+<p class="font-label-sm text-label-sm text-outline mt-auto">Concierge service</p>
+</button>
+</div>
+<!-- Decide Later -->
+<div class="md:col-span-12 mt-4 flex justify-center">
+<button class="bg-transparent border-b border-on-surface pb-1 px-2 font-label-sm text-label-sm uppercase tracking-widest text-on-surface hover:text-primary hover:border-primary transition-colors flex items-center gap-2 group">
+                        I'll decide later
+                        <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity -ml-2 group-hover:ml-0" style="font-variation-settings: 'FILL' 0;">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Sticky Footer for Actions (Contextual to the flow) -->
+<div class="w-full max-w-5xl mx-auto mt-24 flex justify-between items-center border-t border-outline-variant pt-8">
+<button class="font-label-sm text-label-sm uppercase tracking-widest text-outline hover:text-on-surface flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+                Back to Details
+            </button>
+<button class="bg-on-surface text-on-primary px-10 py-4 font-headline-md text-headline-md hover:bg-tertiary-fixed-variant transition-colors flex items-center gap-3">
+                Continue
+                <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">arrow_forward</span>
+</button>
+</div>
+</main>
+</body></html>

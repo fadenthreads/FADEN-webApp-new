@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Create My Outfit - Inspiration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&amp;family=Syne:wght@400..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#b75760",
+                        "inverse-on-surface": "#f3f0ef",
+                        "surface-tint": "#974730",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#ffb5a0",
+                        "secondary": "#775a19",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f6f3f2",
+                        "on-primary-container": "#fffdff",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e5e2e1",
+                        "secondary-fixed": "#ffdea5",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#f0eded",
+                        "primary": "#94452e",
+                        "background": "#fcf9f8",
+                        "tertiary": "#983f49",
+                        "on-secondary-fixed": "#261900",
+                        "surface-bright": "#fcf9f8",
+                        "surface": "#fcf9f8",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#1c1b1b",
+                        "surface-dim": "#dcd9d9",
+                        "inverse-surface": "#313030",
+                        "on-surface-variant": "#55433e",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#78301b",
+                        "tertiary-fixed-dim": "#ffb2b6",
+                        "on-secondary-container": "#785a1a",
+                        "primary-fixed-dim": "#ffb5a0",
+                        "error": "#ba1a1a",
+                        "on-background": "#1c1b1b",
+                        "outline": "#88726d",
+                        "tertiary-fixed": "#ffdadb",
+                        "on-primary-fixed": "#3b0900",
+                        "on-tertiary-fixed": "#40000d",
+                        "on-tertiary-fixed-variant": "#7c2a34",
+                        "outline-variant": "#dbc1ba",
+                        "on-tertiary-container": "#fffcff",
+                        "primary-container": "#b35d44",
+                        "secondary-container": "#fed488",
+                        "surface-variant": "#e5e2e1",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#eae7e7",
+                        "primary-fixed": "#ffdbd1",
+                        "secondary-fixed-dim": "#e9c176"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "section-gap": "120px",
+                        "margin-mobile": "20px",
+                        "gutter": "24px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Syne"],
+                        "body-md": ["Karla"],
+                        "body-lg": ["Karla"],
+                        "headline-lg-mobile": ["Syne"],
+                        "headline-md": ["Syne"],
+                        "display-xl": ["Syne"],
+                        "label-sm": ["Karla"],
+                        "headline-lg": ["Syne"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "display-xl": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .whisper-shadow { box-shadow: 0px 4px 20px rgba(26, 26, 26, 0.04); }
+        .ghost-border { border: 1px solid var(--tw-colors-outline-variant); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex flex-col pt-20 pb-32">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-margin-mobile h-20 w-full fixed z-50 bg-background/80 backdrop-blur-md border-b border-outline-variant dark:border-outline top-0 left-0">
+<button class="text-on-surface-variant dark:text-surface-variant hover:text-tertiary dark:hover:text-tertiary-fixed-dim transition-colors scale-95 active:opacity-80 transition-all flex items-center justify-center p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+<h1 class="font-display-lg text-display-lg-mobile uppercase tracking-widest text-primary dark:text-primary-fixed-dim m-0">FADEN</h1>
+<div class="w-10"></div> <!-- Spacer for balance -->
+</header>
+<!-- Main Canvas -->
+<main class="flex-grow px-margin-mobile flex flex-col">
+<!-- Header Text -->
+<div class="mt-8 mb-6">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">Build Your Moodboard</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Upload photos, sketches, or screenshots. Add notes to tell our atelier exactly what you love about them.</p>
+</div>
+<!-- Inspiration Canvas (Masonry/Bento loosely) -->
+<div class="grid grid-cols-2 gap-4 mb-8">
+<!-- Add Item Button -->
+<button class="col-span-1 aspect-[3/4] rounded-xl ghost-border border-dashed flex flex-col items-center justify-center bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container-low transition-colors group">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center mb-3 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-2xl" data-icon="add_photo_alternate">add_photo_alternate</span>
+</div>
+<span class="font-label-sm text-label-sm uppercase tracking-tighter">Add Inspiration</span>
+</button>
+<!-- Example Pin 1 -->
+<div class="col-span-1 aspect-[3/4] rounded-xl overflow-hidden relative group whisper-shadow bg-surface-container-lowest">
+<img class="w-full h-full object-cover" data-alt="A close-up, high-fashion editorial photograph of a textured terracotta fabric draped elegantly over a mannequin. The lighting is soft and warm, highlighting the intricate weave and rich color palette. Minimalist background in soft ivory to emphasize the material's premium quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAkEMEBsUr-LMHsSzo1HEhPi44_hp9uLxKHZl5AhNX0gzbd4jNPW39QVKPOY5JUk53Cn0Tdn9tjx0fCFy6WL682xMDGJbVuel5dculmYgBWaSnm77l1idTTP2uO7EQq92r5t8p-5CmA3XQjHxD3RNY6IP0yan5U94sWkjEg9SUgrINfjtmFLcWj4pKtpMyIhGn1uy0s1-ftvMSVx8DBLm0Wsc-wfsTnla1nMWA0layIQ_tGKvGcAop"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
+<button class="absolute top-3 right-3 bg-white/90 rounded-full w-8 h-8 flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+</button>
+<p class="font-label-sm text-label-sm text-white bg-black/40 backdrop-blur-sm p-2 rounded-lg inline-block w-fit">"Love this texture"</p>
+</div>
+</div>
+<!-- Example Pin 2 (Wide) -->
+<div class="col-span-2 aspect-[2/1] rounded-xl overflow-hidden relative group whisper-shadow bg-surface-container-lowest">
+<img class="w-full h-full object-cover" data-alt="A wide architectural shot of a modern, avant-garde fashion boutique interior. Natural sunlight streams through large geometric windows, casting stark shadows on minimalist ivory platforms holding bespoke garments. Warm terracotta accents dot the clean, experimental space, conveying an atmosphere of structural luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZHKTQ09atk9hLVSENd3JVTCNVXUGor4zUeoYUQglyU5fLg158DDBvBAxeSUYnxL6_93lyFla6ogswISxjFRF1yAAnqiBaPRVTIL1BLC-yS_UjR_7HoTwpFO19DN0ZMB8tRQQwkeQWfQodjpPp63hkzKdnjExeudB6RtG791eh8ufm8W6BGwVsSVXLAozQ9lc0CXcUEHB8C-3v0ci8xtKnUePHBYJzriuludFShmNZd-xzeB4CdKzg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+<button class="absolute top-4 right-4 bg-white/90 rounded-full w-8 h-8 flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+</button>
+<div class="bg-black/40 backdrop-blur-sm p-3 rounded-lg flex items-start gap-2">
+<span class="material-symbols-outlined text-white text-lg mt-0.5" data-icon="notes">notes</span>
+<p class="font-body-md text-body-md text-white text-sm">"The asymmetrical hemline here is perfect. Can we do something similar but with more drape?"</p>
+</div>
+</div>
+</div>
+<!-- Example Pin 3 -->
+<div class="col-span-1 aspect-square rounded-xl overflow-hidden relative group whisper-shadow bg-surface-container-lowest">
+<img class="w-full h-full object-cover" data-alt="A detailed macro shot of intricate embroidery on a deep charcoal garment. Thin threads of gold and subtle terracotta create geometric patterns that blend organic shapes with architectural linework. The image exudes high-end craftsmanship and tactile experimental luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADibL4LJzQ9Cr-c6S17A-hhwf9vV2ho6tVABzbF1PxARKJnGATM2UhKiMLYT1VVAEn5m7Q2ykKiMo9EkbILum_pzWDJbcJgyOUsc1XPn9hbWFykGh9qO7dQmZYY7iSjIpUU3PfpeVQ70sAyo8GuPLXDVHUh45rbwNn2-Ijo1X6Q0Wn7Duu0bUa6BofD_Bt8Y1jTGIH3BRFsrScwBe0qmuj3U_Pxy5lCbOG4KKkVYWyw4cufPLBEQTh"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
+<button class="absolute top-3 right-3 bg-white/90 rounded-full w-8 h-8 flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+</button>
+</div>
+</div>
+<!-- Note Pin -->
+<div class="col-span-1 aspect-square rounded-xl bg-surface-container p-4 relative group whisper-shadow flex flex-col justify-between">
+<div>
+<span class="material-symbols-outlined text-on-surface-variant mb-2 block" data-icon="sticky_note_2">sticky_note_2</span>
+<p class="font-body-md text-body-md text-on-surface text-sm italic">"I'm looking for a neckline similar to a vintage square cut, but modern."</p>
+</div>
+<button class="self-end bg-surface-container-lowest rounded-full w-8 h-8 flex items-center justify-center text-on-surface ghost-border">
+<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Sticky Bottom Action Area -->
+<div class="fixed bottom-0 left-0 w-full p-margin-mobile bg-gradient-to-t from-background via-background/95 to-transparent pb-8 pt-12 z-40">
+<button class="w-full bg-[#1A1A1A] text-white font-display-lg text-body-md h-14 rounded-xl flex items-center justify-center gap-2 hover:bg-[#2A2A2A] transition-colors active:scale-[0.98]">
+            Continue to Fabric Selection
+            <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<script>
+        // Simple script to toggle note visibility on mobile for the examples
+        document.querySelectorAll('.group').forEach(item => {
+            item.addEventListener('touchstart', function() {
+                // Remove hover class from all others
+                document.querySelectorAll('.group').forEach(otherItem => {
+                    if (otherItem !== item) {
+                        const overlay = otherItem.querySelector('.absolute.inset-0');
+                        if(overlay) overlay.classList.remove('opacity-100');
+                    }
+                });
+                
+                // Toggle current
+                const overlay = this.querySelector('.absolute.inset-0');
+                if(overlay) {
+                    overlay.classList.toggle('opacity-100');
+                }
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,13 @@
+begin;
+select plan(9);
+select ok((select relrowsecurity from pg_class where oid='public.order_delivery_details'::regclass),'delivery address RLS enabled');
+select ok((select relrowsecurity from pg_class where oid='public.order_shipment_events'::regclass),'shipment RLS enabled');
+select ok((select relrowsecurity from pg_class where oid='public.order_delivery_confirmations'::regclass),'confirmation RLS enabled');
+select ok(not has_table_privilege('anon','public.order_delivery_details','SELECT'),'anonymous addresses denied');
+select ok(not has_table_privilege('authenticated','public.order_delivery_details','UPDATE'),'direct address writes denied');
+select ok(not has_table_privilege('authenticated','public.order_shipment_events','INSERT'),'forged shipments denied');
+select ok(not has_table_privilege('authenticated','public.order_delivery_confirmations','INSERT'),'forged confirmations denied');
+select ok(not has_function_privilege('anon','public.record_shipment_rehearsal(uuid,integer,integer,text,uuid,boolean)','EXECUTE'),'anonymous shipment RPC denied');
+select ok(not has_function_privilege('anon','public.confirm_delivery_rehearsal(uuid,uuid,boolean)','EXECUTE'),'anonymous confirmation RPC denied');
+select * from finish();
+rollback;

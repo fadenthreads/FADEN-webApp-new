@@ -1,0 +1,12 @@
+begin;
+select plan(8);
+select ok((select relrowsecurity from pg_class where oid='public.measurement_appointments'::regclass),'appointments have RLS');
+select ok((select relrowsecurity from pg_class where oid='public.appointment_slots'::regclass),'availability has RLS');
+select ok(not has_table_privilege('anon','public.measurement_appointments','SELECT'),'anonymous bookings denied');
+select ok(not has_table_privilege('authenticated','public.measurement_appointments','INSERT'),'direct booking denied');
+select ok(not has_table_privilege('authenticated','public.measurement_appointments','UPDATE'),'direct changes denied');
+select ok(not has_table_privilege('authenticated','public.appointment_slots','UPDATE'),'direct time edits denied');
+select ok(not has_function_privilege('anon','public.reserve_measurement_appointment(uuid,uuid,uuid,uuid,boolean)','EXECUTE'),'anonymous reservations denied');
+select ok(not has_function_privilege('authenticated','public.cancel_order_appointments()','EXECUTE'),'trigger function is private');
+select * from finish();
+rollback;

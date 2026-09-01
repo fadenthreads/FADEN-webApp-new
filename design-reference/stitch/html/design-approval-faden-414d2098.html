@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Design Approval - FADEN</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&amp;family=Syne:wght@400..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#94452e",
+                        "inverse-primary": "#ffb5a0",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "background": "#fcf9f8",
+                        "surface": "#fcf9f8",
+                        "secondary-fixed-dim": "#e9c176",
+                        "surface-dim": "#dcd9d9",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#fed488",
+                        "tertiary": "#983f49",
+                        "on-primary-fixed": "#3b0900",
+                        "inverse-surface": "#313030",
+                        "on-surface-variant": "#55433e",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#261900",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "surface-container-high": "#eae7e7",
+                        "outline": "#88726d",
+                        "secondary-fixed": "#ffdea5",
+                        "tertiary-fixed-dim": "#ffb2b6",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-background": "#1c1b1b",
+                        "surface-bright": "#fcf9f8",
+                        "tertiary-container": "#b75760",
+                        "primary-container": "#b35d44",
+                        "outline-variant": "#dbc1ba",
+                        "on-tertiary-fixed-variant": "#7c2a34",
+                        "primary-fixed": "#ffdbd1",
+                        "tertiary-fixed": "#ffdadb",
+                        "primary-fixed-dim": "#ffb5a0",
+                        "on-tertiary-fixed": "#40000d",
+                        "surface-container-low": "#f6f3f2",
+                        "on-tertiary-container": "#fffcff",
+                        "on-primary-container": "#fffdff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#e5e2e1",
+                        "secondary": "#775a19",
+                        "on-primary-fixed-variant": "#78301b",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#974730",
+                        "on-surface": "#1c1b1b",
+                        "on-secondary-container": "#785a1a",
+                        "inverse-on-surface": "#f3f0ef",
+                        "surface-container": "#f0eded"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px",
+                        "gutter": "24px",
+                        "section-gap": "120px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Syne"],
+                        "body-md": ["Karla"],
+                        "headline-md": ["Syne"],
+                        "headline-lg-mobile": ["Syne"],
+                        "display-xl": ["Syne"],
+                        "label-sm": ["Karla"],
+                        "body-lg": ["Karla"],
+                        "display-lg": ["Syne"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-xl": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        };
+    </script>
+<style>
+        body { font-family: 'Karla', sans-serif; }
+        h1, h2, h3, h4, h5, h6, .font-syne { font-family: 'Syne', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased min-h-screen flex flex-col">
+<!-- Top Navigation (Suppressed - Transactional Page) -->
+<!-- Content Canvas -->
+<main class="flex-grow w-full px-margin-mobile md:px-margin-desktop py-8 md:py-16 max-w-[1440px] mx-auto">
+<!-- Header -->
+<header class="mb-12 text-center">
+<h1 class="font-display-lg text-display-lg md:font-display-xl md:text-display-xl text-primary mb-4">Your boutique has something to show you</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">Review the latest design iteration for your bespoke evening gown.</p>
+</header>
+<!-- Main Content Layout: Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: The Design (The Hero) -->
+<div class="lg:col-span-7 flex flex-col gap-8">
+<!-- Main Sketch -->
+<div class="relative w-full aspect-[3/4] bg-surface-container-lowest border border-outline-variant/30 rounded-DEFAULT overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A high-fashion fashion illustration sketch of an elegant, avant-garde evening gown. The sketch is rendered in charcoal and soft watercolor washes of terracotta and ivory on textured paper. It highlights a modified, sophisticated neckline and intricate detailing on the bodice. The style is highly editorial, experimental, and luxurious, fitting a bespoke couture atelier aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh9V2GE12o8Eg2I3HA273fDe94DqOMW3MGYz3ikQ_R5HCYgzfeT5HjD0F2rNtUiwsGtOHZ6AhbgbrDJSA1B3yvHGCpQjzLgQaSEufSydG6Bbte_C2N0sb6jSWZA3srkmoutn0decvIaLTR88dlU64vA1Zm9QNHfQMw1pztw5xf7uSy4X_rA5m-2Dpi-tIF9fWlxK-marLWjOZQVWcU_OtdsjCPmtgmhqSC4SQ-7iQmC1cOpBOO7Pf-"/>
+<div class="absolute inset-0 shadow-[inset_0px_0px_20px_rgba(0,0,0,0.05)] pointer-events-none"></div>
+<div class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur px-3 py-2 border border-outline-variant/50 rounded-DEFAULT">
+<span class="font-label-sm text-label-sm text-primary uppercase">Version 3 - Final Draft</span>
+</div>
+</div>
+<!-- Swatches & Details Row -->
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+<!-- Fabric -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-DEFAULT p-4 flex flex-col gap-2">
+<div class="w-full aspect-square bg-surface-variant rounded-sm overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A close-up, highly detailed photograph of a luxurious, flowing silk fabric in a warm, muted ivory tone. The texture is soft, with a subtle sheen catching the light, evoking a sense of premium quality and warmth. The composition is tight, focusing entirely on the weave and drape of the material in a high-end editorial style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOWZLdzoMsv3mJyIj6uXf_E3BwEYCKGo3pNmEThibCmH8C3uu94t_D_QeH_BAozfuCqct3W-secqBJMsi21Wqo9p06tMNErlypLqvC4CunyBJTldgaywOnh3CVRYXr2b1f-MK1YKy0FswW3-H6aln_fcMRtpcXVwOfkgWe_JBXn_mMWiJ4zZlFIr-34tKM-sfUOrA7uZ87v4lRPhuVGJ7WBpnNMfSZ88QcOtNqWftsT2uWo95zazVK"/>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Primary Fabric: Heavy Silk Crepe (Ivory)</span>
+</div>
+<!-- Embroidery -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-DEFAULT p-4 flex flex-col gap-2">
+<div class="w-full aspect-square bg-surface-variant rounded-sm overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A macro shot of intricate, handcrafted embroidery thread. The thread is a soft, muted gold tone, laid out neatly. The lighting is warm and directional, emphasizing the delicate, tactile nature of the material against a clean, off-white background. The image conveys craftsmanship and bespoke quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUnozswPX01WGe4qiDG49faQIs_lS_wM9PvyVVHW4RE20l4P-4HipwDveOuok2gwY7RsEgc49kgJxzAG-i2dH5V1YY3dIzD6ZimhOMtGGCwLXQT1VUEbMB55SUzd3dj7XO8tPJ5xJlYB5Jh9x54i1dN1RQFO1LcAceBL_GVhQ7cLF5lHrV5A3WxBBqz0MOQHfeOb_bhmaiLyEhZRAoAgJZgnsvA_FF8Kpp96YwhZEbY_a_mAzEJ-g5"/>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Detailing: Soft Gold Thread</span>
+</div>
+<!-- Inspiration Ref -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-DEFAULT p-4 flex flex-col gap-2 hidden md:flex">
+<div class="w-full aspect-square bg-surface-variant rounded-sm overflow-hidden opacity-70">
+<img class="w-full h-full object-cover grayscale" data-alt="A vintage, high-contrast black and white architectural photograph of a sweeping staircase in a Parisian building. The image serves as structural inspiration, highlighting organic curves and sharp, avant-garde geometry. It is subtle and evocative, reinforcing the experimental luxury aesthetic of the design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXnXX2TrmW7pASoE312fa8jwU-Tz2C-zGTkl2YwVFJ1EzCVCsFtDSDm0q_Qm5kwqqIQ0JBgziYuidwvoag12sDa16hfFwyXLu7nTzOo-8WHOlOh5gMsGICARbThspJUpjQszxIhzRdSjCqj3dzw5aKN1eo17Spd1i_Q4EMiP4ZAwPVyyiGZpanUaJR_9aps3Uq5NCr4aQm9BvsfU4Tq2WzXNpNDxcqfQ_R3_52T1TgR1gtPSDrhkdH"/>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Inspiration: Architectural Curves</span>
+</div>
+</div>
+</div>
+<!-- Right Column: Concierge & Actions -->
+<div class="lg:col-span-5 flex flex-col gap-8">
+<!-- Concierge Note -->
+<div class="bg-surface-container-lowest border-l-2 border-primary p-8 rounded-r-DEFAULT shadow-sm">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-surface-variant overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A sophisticated black and white portrait of a master tailor or designer in a chic, softly lit atelier setting. They look professional, warm, and attentive. The style is high-editorial, conveying trust, artisanal skill, and personal concierge service." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7s9X4ITJmx6K_TyU0dDo1Lb3r_ASo0OZw0AvJRj1gAhCRIcXbfbHX5z8rCui-sn83kJNdw5FRr4AVLbWzmi0ndtDufvvzI5GzjIbHZLFA7NKSBjzlY7g7mR9x4t8NXX5Q0keDM4TZNrO53jEdSxoEhDELT3XaeIu75egaNzx4qPe03igqhHWpZD4pBP9Bfl5Tr-V0Yn5XnY7HrMhxkwkdp19vbAWoAsz_8ur1q2JXqYOJWYfxrfh1"/>
+</div>
+<div>
+<p class="font-headline-md text-headline-md text-on-background">Atelier Maison</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Lead Designer</p>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface italic mb-4 leading-relaxed">
+                        "We've adjusted the neckline based on your reference, opting for a softer drape that mirrors the structural inspiration. Additionally, we've selected a softer gold embroidery thread for the bodice to ensure it perfectly complements the warmth of the ivory silk without overpowering the organic shape."
+                    </p>
+<a class="font-label-sm text-label-sm text-primary uppercase tracking-widest border-b border-primary/30 hover:border-primary transition-colors pb-1 inline-flex items-center gap-2" href="#">
+                        View prior versions
+                        <span class="material-symbols-outlined text-[16px]">history</span>
+</a>
+</div>
+<!-- Approval Actions Panel -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 p-8 rounded-DEFAULT flex flex-col gap-6">
+<h2 class="font-headline-md text-headline-md text-on-background border-b border-outline-variant/30 pb-4">Decision</h2>
+<div class="flex flex-col gap-4">
+<button class="w-full bg-[#1A1A1A] hover:bg-tertiary text-on-primary font-headline-lg text-[18px] py-5 rounded-DEFAULT transition-colors duration-300 flex justify-center items-center gap-2">
+<span class="material-symbols-outlined">check_circle</span>
+                            I Love It — Approve Design
+                        </button>
+<div class="border border-outline-variant/30 rounded-DEFAULT p-6 flex flex-col gap-4">
+<button class="w-full border border-primary text-primary hover:bg-primary/5 font-label-sm text-label-sm uppercase tracking-widest py-4 rounded-DEFAULT transition-colors duration-300">
+                                Request Changes
+                            </button>
+<div class="bg-surface-container-low p-4 rounded-sm flex items-start gap-3">
+<span class="material-symbols-outlined text-outline mt-0.5">info</span>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1 uppercase tracking-wider">Impact of Changes</p>
+<p class="font-body-md text-body-md text-on-surface text-[14px]">
+                                        Additional revisions may extend the delivery timeline by 1-2 weeks and incur a standard revision fee depending on scope.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation (Suppressed - Transactional Page) -->
+</body></html>

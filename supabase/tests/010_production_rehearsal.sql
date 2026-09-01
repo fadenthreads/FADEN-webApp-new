@@ -1,0 +1,12 @@
+begin;
+select plan(8);
+select ok((select relrowsecurity from pg_class where oid='public.order_production_updates'::regclass),'production history has RLS');
+select ok(not has_table_privilege('anon','public.order_production_updates','SELECT'),'anonymous history denied');
+select ok(not has_table_privilege('authenticated','public.order_production_updates','INSERT'),'direct insertion denied');
+select ok(not has_table_privilege('authenticated','public.order_production_updates','UPDATE'),'direct edits denied');
+select ok(not has_table_privilege('authenticated','public.order_production_updates','DELETE'),'direct deletion denied');
+select ok(not has_table_privilege('anon','public.order_production_summary','SELECT'),'anonymous summary denied');
+select ok(not has_function_privilege('anon','public.record_production_update(uuid,integer,integer,text,text,uuid,boolean)','EXECUTE'),'anonymous update RPC denied');
+select ok((select not public and file_size_limit=8388608 from storage.buckets where id='order-progress'),'progress photos private and size limited');
+select * from finish();
+rollback;

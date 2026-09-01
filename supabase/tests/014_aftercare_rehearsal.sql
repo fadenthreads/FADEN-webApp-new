@@ -1,0 +1,10 @@
+begin;
+select plan(7);
+select ok((select relrowsecurity from pg_class where oid='public.order_aftercare_items'::regclass),'aftercare RLS');
+select ok((select relrowsecurity from pg_class where oid='public.order_aftercare_events'::regclass),'aftercare history RLS');
+select ok(not has_table_privilege('anon','public.order_aftercare_items','SELECT'),'private preview reviews');
+select ok(not has_table_privilege('authenticated','public.order_aftercare_items','INSERT'),'direct submissions denied');
+select ok(not has_table_privilege('authenticated','public.order_aftercare_events','UPDATE'),'history cannot be rewritten');
+select ok(not has_function_privilege('anon','public.submit_aftercare_rehearsal(uuid,text,integer,text,uuid,boolean)','EXECUTE'),'anonymous submission denied');
+select ok(not has_function_privilege('anon','public.update_aftercare_rehearsal(uuid,integer,text,text,uuid,boolean)','EXECUTE'),'anonymous responses denied');
+select * from finish();rollback;

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Atelier Admin - Order Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&amp;family=Karla:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-container": "#785a1a",
+                    "primary-container": "#b35d44",
+                    "tertiary-fixed-dim": "#ffb2b6",
+                    "inverse-on-surface": "#f3f0ef",
+                    "on-tertiary-fixed-variant": "#7c2a34",
+                    "surface-container": "#f0eded",
+                    "outline-variant": "#dbc1ba",
+                    "on-secondary-fixed": "#261900",
+                    "surface": "#fcf9f8",
+                    "on-primary-container": "#fffdff",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#974730",
+                    "surface-variant": "#e5e2e1",
+                    "primary-fixed-dim": "#ffb5a0",
+                    "primary-fixed": "#ffdbd1",
+                    "secondary": "#775a19",
+                    "on-primary-fixed-variant": "#78301b",
+                    "on-primary-fixed": "#3b0900",
+                    "surface-bright": "#fcf9f8",
+                    "primary": "#94452e",
+                    "on-tertiary-fixed": "#40000d",
+                    "outline": "#88726d",
+                    "on-tertiary-container": "#fffcff",
+                    "secondary-fixed": "#ffdea5",
+                    "surface-container-highest": "#e5e2e1",
+                    "tertiary": "#983f49",
+                    "inverse-surface": "#313030",
+                    "on-error-container": "#93000a",
+                    "surface-container-low": "#f6f3f2",
+                    "secondary-fixed-dim": "#e9c176",
+                    "inverse-primary": "#ffb5a0",
+                    "on-background": "#1c1b1b",
+                    "surface-dim": "#dcd9d9",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed-variant": "#5d4201",
+                    "tertiary-fixed": "#ffdadb",
+                    "background": "#fcf9f8",
+                    "on-surface-variant": "#55433e",
+                    "tertiary-container": "#b75760",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "secondary-container": "#fed488",
+                    "on-tertiary": "#ffffff",
+                    "on-surface": "#1c1b1b",
+                    "surface-container-high": "#eae7e7",
+                    "surface-container-lowest": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "section-gap": "120px",
+                    "margin-mobile": "20px",
+                    "margin-desktop": "64px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Syne"],
+                    "display-xl": ["Syne"],
+                    "label-sm": ["Karla"],
+                    "body-lg": ["Karla"],
+                    "headline-lg": ["Syne"],
+                    "headline-md": ["Syne"],
+                    "display-lg": ["Syne"],
+                    "body-md": ["Karla"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "display-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          }
+        },
+      }
+    </script>
+<style>
+        .whisper-shadow {
+            box-shadow: 0px 4px 20px rgba(26, 26, 26, 0.04);
+        }
+        .ghost-border {
+            border: 1px solid var(--tw-colors-surface-container-high);
+        }
+        /* Experimental typography/layout tweaks */
+        .avant-garde-title {
+            letter-spacing: -0.03em;
+            text-transform: lowercase;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar (Shared Component) -->
+<nav class="h-screen w-64 fixed left-0 top-0 overflow-y-auto bg-surface border-r border-outline-variant flex flex-col py-6 hidden md:flex z-50">
+<div class="px-6 mb-8 flex items-center gap-4">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-variant flex-shrink-0">
+<img alt="Boutique Logo" class="w-full h-full object-cover" data-alt="A sophisticated, minimalist abstract logo design for a premium high-end fashion atelier, featuring interlocking geometric shapes in deep charcoal against a warm ivory background. The style is avant-garde editorial luxury, sharp lines, high contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtJDdmTR20h_qo2wYGh9hCRFOKjHUtIKuUMmB-Yb5oNrlB8Axcp5YNviiYtssHB_Dz_2e-LQCM9B7hRV7DDXxZJSGmgUSQf_9kpKbO8IrUbFm1DVIvbWxosix2V4A9cadxtzgd7RRHTFiU9QL25ZxVHFv2HMiLbJjB0TaBObVSJF2IBP0ce1KSyAVLV4yPiWi114t0t74ixFd_327guuNNCEpo4bjkpxEumxnDso7MU0tl8Db6w9ly"/>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-on-surface tracking-widest uppercase text-sm">Atelier Admin</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Premium Management</p>
+</div>
+</div>
+<div class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-sm text-label-sm rounded-lg opacity-90 transition-opacity" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+                Overview
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-sm text-label-sm rounded-lg opacity-90 transition-opacity" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">pending_actions</span>
+                Requests
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-sm text-label-sm rounded-lg opacity-90 transition-opacity" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">local_offer</span>
+                Offers
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-primary font-bold border-r-2 border-primary bg-primary/5 rounded-lg opacity-90 transition-opacity font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shopping_bag</span>
+                Orders
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-sm text-label-sm rounded-lg opacity-90 transition-opacity" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">precision_manufacturing</span>
+                Production
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-sm text-label-sm rounded-lg opacity-90 transition-opacity" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">calendar_today</span>
+                Appointments
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-sm text-label-sm rounded-lg opacity-90 transition-opacity" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">groups</span>
+                CRM
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-sm text-label-sm rounded-lg opacity-90 transition-opacity" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">chat_bubble</span>
+                Messages
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-sm text-label-sm rounded-lg opacity-90 transition-opacity" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">auto_awesome_motion</span>
+                Portfolio
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-sm text-label-sm rounded-lg opacity-90 transition-opacity" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">analytics</span>
+                Analytics
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-sm text-label-sm rounded-lg opacity-90 transition-opacity" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+                Settings
+            </a>
+</div>
+<div class="px-6 mt-auto pt-6">
+<button class="w-full bg-[#1A1A1A] text-white hover:bg-primary transition-colors py-3 px-4 font-headline-md text-sm rounded flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">add</span>
+                New Portfolio Design
+            </button>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-64 min-h-screen flex flex-col">
+<!-- TopNavBar (Shared Component - simplified for detail view context, but keeping structure) -->
+<header class="bg-background border-b border-outline-variant flex justify-between items-center px-gutter py-4 w-full h-20 sticky top-0 z-40">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="font-headline-md text-headline-md text-primary hidden md:block avant-garde-title">Boutique Select</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Workspace Canvas -->
+<div class="p-gutter md:p-margin-desktop max-w-[1440px] mx-auto w-full">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">ORDER FAD-20318</span>
+<span class="px-2 py-1 rounded-full border border-secondary text-secondary-fixed-dim bg-secondary-fixed/10 font-label-sm text-[10px] flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
+                            Stitching
+                        </span>
+</div>
+<h2 class="font-display-lg text-display-lg text-on-background avant-garde-title">Ananya Reddy</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">event</span> Expected Delivery: 24 Oct, 2023
+                    </p>
+</div>
+<div class="flex flex-wrap items-center gap-3">
+<button class="border border-outline text-on-surface bg-transparent hover:bg-surface-container-high transition-colors px-6 py-3 font-headline-md text-sm rounded flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">warning</span>
+                        Report Delay
+                    </button>
+<button class="border border-outline text-on-surface bg-transparent hover:bg-surface-container-high transition-colors px-6 py-3 font-headline-md text-sm rounded flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">chat</span>
+                        Message
+                    </button>
+<button class="bg-[#1A1A1A] text-white hover:bg-primary transition-colors px-6 py-3 font-headline-md text-sm rounded flex items-center gap-2">
+                        Update Progress
+                        <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left Column: Primary Content (8 cols) -->
+<div class="lg:col-span-8 space-y-8">
+<!-- Summary Cards Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Payment Summary -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-lg whisper-shadow flex flex-col justify-between">
+<div class="flex justify-between items-start mb-6">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase">Financials</h3>
+<span class="material-symbols-outlined text-on-surface-variant opacity-50">payments</span>
+</div>
+<div>
+<div class="font-display-lg text-[32px] text-on-background mb-1">$2,450</div>
+<div class="w-full bg-surface-container-high h-1 mb-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[50%]"></div>
+</div>
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>$1,225 Paid</span>
+<span>Balance: $1,225</span>
+</div>
+</div>
+</div>
+<!-- Timeline Summary -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-lg whisper-shadow flex flex-col justify-between relative overflow-hidden">
+<div class="absolute -right-10 -bottom-10 opacity-5">
+<span class="material-symbols-outlined text-[120px]">hourglass_empty</span>
+</div>
+<div class="flex justify-between items-start mb-6 relative z-10">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase">Time to Delivery</h3>
+<span class="material-symbols-outlined text-on-surface-variant opacity-50">schedule</span>
+</div>
+<div class="relative z-10">
+<div class="font-display-lg text-[32px] text-on-background mb-1">12 Days</div>
+<p class="font-body-md text-body-md text-on-surface-variant">On schedule based on current 'Stitching' phase.</p>
+</div>
+</div>
+</div>
+<!-- Production Timeline Detailed -->
+<div class="bg-surface-container-lowest border border-outline-variant p-8 rounded-lg whisper-shadow">
+<h3 class="font-headline-md text-headline-md text-on-background mb-8 border-b border-outline-variant pb-4">Production Timeline</h3>
+<div class="relative pl-6 space-y-10 before:absolute before:inset-y-0 before:left-[11px] before:w-px before:bg-outline-variant before:z-0">
+<!-- Step 1: Done -->
+<div class="relative z-10 flex gap-6">
+<div class="w-6 h-6 rounded-full bg-on-background flex items-center justify-center flex-shrink-0 mt-1 shadow-[0_0_0_4px_var(--tw-colors-surface-container-lowest)]">
+<span class="material-symbols-outlined text-surface-container-lowest text-[14px]">check</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-headline-md text-[18px] text-on-background">Measurements &amp; Consultation</h4>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Oct 2</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Initial fitting completed at Studio A. All measurements recorded and synced.</p>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-surface-container rounded font-label-sm text-label-sm border border-outline-variant text-on-surface">View Profile</span>
+</div>
+</div>
+</div>
+<!-- Step 2: Done -->
+<div class="relative z-10 flex gap-6">
+<div class="w-6 h-6 rounded-full bg-on-background flex items-center justify-center flex-shrink-0 mt-1 shadow-[0_0_0_4px_var(--tw-colors-surface-container-lowest)]">
+<span class="material-symbols-outlined text-surface-container-lowest text-[14px]">check</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-headline-md text-[18px] text-on-background">Design Approval</h4>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Oct 5</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Sketches approved by client. Minor modifications to neckline noted.</p>
+</div>
+</div>
+<!-- Step 3: Done -->
+<div class="relative z-10 flex gap-6">
+<div class="w-6 h-6 rounded-full bg-on-background flex items-center justify-center flex-shrink-0 mt-1 shadow-[0_0_0_4px_var(--tw-colors-surface-container-lowest)]">
+<span class="material-symbols-outlined text-surface-container-lowest text-[14px]">check</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-headline-md text-[18px] text-on-background">Material Sourcing &amp; Cutting</h4>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Oct 8</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Silk crepe de chine sourced. Patterns drafted and fabric cut.</p>
+</div>
+</div>
+<!-- Step 4: Active -->
+<div class="relative z-10 flex gap-6">
+<div class="w-6 h-6 rounded-full border-2 border-primary bg-surface-container-lowest flex items-center justify-center flex-shrink-0 mt-1 shadow-[0_0_0_4px_var(--tw-colors-surface-container-lowest)]">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-headline-md text-[18px] text-primary">Stitching &amp; Assembly</h4>
+<span class="font-label-sm text-label-sm text-primary">Current</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Bodice construction underway. Hand-finishing on seams required.</p>
+<div class="bg-surface p-4 border border-outline-variant rounded-lg">
+<div class="flex justify-between mb-2 font-label-sm text-label-sm">
+<span>Progress</span>
+<span>60%</span>
+</div>
+<div class="w-full bg-surface-container-high h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[60%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Step 5: Pending -->
+<div class="relative z-10 flex gap-6 opacity-50">
+<div class="w-6 h-6 rounded-full border-2 border-outline bg-surface-container-lowest flex items-center justify-center flex-shrink-0 mt-1 shadow-[0_0_0_4px_var(--tw-colors-surface-container-lowest)]">
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-headline-md text-[18px] text-on-background">Final Fitting &amp; Delivery</h4>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Est. Oct 24</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Scheduled for Studio B.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Context/Requirements (4 cols) -->
+<div class="lg:col-span-4 space-y-8">
+<!-- Customer Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg whisper-shadow overflow-hidden">
+<div class="h-24 bg-surface-variant relative">
+<div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(var(--tw-colors-on-background) 1px, transparent 1px); background-size: 8px 8px;"></div>
+</div>
+<div class="p-6 relative">
+<div class="w-16 h-16 rounded-full bg-outline-variant absolute -top-8 border-4 border-surface-container-lowest overflow-hidden">
+<img alt="Customer Profile" class="w-full h-full object-cover" data-alt="A sophisticated editorial portrait of a young professional woman (Ananya Reddy), neutral warm lighting, high fashion photography style, minimalist background, wearing tailored minimalist clothing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALkxd4idxDnGgIdH35M52AqPPuwBfyUyX_FYIvqaxjsYVQH3rJZaJILFlkTjFrqLwOst-pOb6eCszyYUayAz_vyAqXB_YmHULg3fUPmvjM3C1mxc9EQhMZzG1ZdRLjtRkusax4pnLaI8HjdT3enBjtsUZfHNFOLykvVY_A5fMCMc9ZSrYKlRLgiPO3q2XVE7LV6oBCirqCGD6qUtnMj-nJmTkUVmjFuxLK2jeNQx0L9GEdebrDCwz8"/>
+</div>
+<div class="mt-8">
+<h3 class="font-headline-md text-headline-md text-on-background">Ananya Reddy</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">VIP Client · 3rd Custom Order</p>
+<div class="space-y-3 pt-4 border-t border-outline-variant">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Phone</span>
+<span class="text-on-background">+1 (555) 019-2834</span>
+</div>
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Email</span>
+<span class="text-on-background text-right">ananya.r@example.com</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Design Requirements -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg whisper-shadow p-6">
+<h3 class="font-headline-md text-headline-md text-on-background mb-4">Design Specs</h3>
+<div class="aspect-[4/5] bg-surface-variant mb-6 rounded border border-outline-variant overflow-hidden relative">
+<img alt="Approved Design Sketch" class="w-full h-full object-cover" data-alt="A detailed, high-fashion fashion illustration sketch of an elegant evening gown with architectural lines, drawn in charcoal on textured ivory paper, warm editorial aesthetic, minimalist notes scribbled in margins." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtJPs_-xj6itI1wwuGq-gM1YJzEjIkY7BwNp1_OnxGd87UMuTn4pzlHvEiVBiB7O-ZBy_dpObaldI4gXqyp0zYLD4zZI-tagB89l4GKEptdch2eKa4E3muZwryOZ_oft9wifjnz_rq-VeIQd_nzKXJ5lLnHXPJznrOXFZq_wuok1nk7dRZe35mTSHxet7ey4ZoQjhsXV0yY5UACSrcXkmKb-R_Pguql3pq1_fujXB9jK6qhEvK2nPd"/>
+<div class="absolute bottom-2 right-2 bg-surface-container-lowest/90 backdrop-blur px-2 py-1 text-[10px] font-label-sm uppercase rounded border border-outline-variant">Approved</div>
+</div>
+<div class="space-y-4">
+<div>
+<h4 class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Garment Type</h4>
+<p class="font-body-md text-body-md text-on-background">Evening Gown - Asymmetric Drape</p>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Fabric</h4>
+<p class="font-body-md text-body-md text-on-background">Heavyweight Silk Crepe, Terracotta</p>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Key Measurements</h4>
+<div class="grid grid-cols-2 gap-2 mt-2">
+<div class="bg-surface p-2 rounded border border-outline-variant">
+<div class="text-[10px] font-label-sm text-on-surface-variant mb-1">BUST</div>
+<div class="font-body-md">34"</div>
+</div>
+<div class="bg-surface p-2 rounded border border-outline-variant">
+<div class="text-[10px] font-label-sm text-on-surface-variant mb-1">WAIST</div>
+<div class="font-body-md">26"</div>
+</div>
+<div class="bg-surface p-2 rounded border border-outline-variant">
+<div class="text-[10px] font-label-sm text-on-surface-variant mb-1">HIPS</div>
+<div class="font-body-md">37"</div>
+</div>
+<div class="bg-surface p-2 rounded border border-outline-variant">
+<div class="text-[10px] font-label-sm text-on-surface-variant mb-1">LENGTH</div>
+<div class="font-body-md">58"</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Decorative structural line at bottom -->
+<div class="mt-section-gap border-t border-outline-variant pt-8 flex justify-between items-center text-on-surface-variant font-label-sm text-label-sm uppercase">
+<span>Atelier Core System</span>
+<span>Workspace: Operations</span>
+</div>
+</div>
+</main>
+</body></html>

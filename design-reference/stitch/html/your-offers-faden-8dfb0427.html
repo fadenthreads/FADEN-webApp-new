@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FADEN - Your Offers</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&amp;family=Syne:wght@400..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#94452e",
+                        "inverse-primary": "#ffb5a0",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "background": "#fcf9f8",
+                        "surface": "#fcf9f8",
+                        "secondary-fixed-dim": "#e9c176",
+                        "surface-dim": "#dcd9d9",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#fed488",
+                        "tertiary": "#983f49",
+                        "on-primary-fixed": "#3b0900",
+                        "inverse-surface": "#313030",
+                        "on-surface-variant": "#55433e",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#261900",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "surface-container-high": "#eae7e7",
+                        "outline": "#88726d",
+                        "secondary-fixed": "#ffdea5",
+                        "tertiary-fixed-dim": "#ffb2b6",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-background": "#1c1b1b",
+                        "surface-bright": "#fcf9f8",
+                        "tertiary-container": "#b75760",
+                        "primary-container": "#b35d44",
+                        "outline-variant": "#dbc1ba",
+                        "on-tertiary-fixed-variant": "#7c2a34",
+                        "primary-fixed": "#ffdbd1",
+                        "tertiary-fixed": "#ffdadb",
+                        "primary-fixed-dim": "#ffb5a0",
+                        "on-tertiary-fixed": "#40000d",
+                        "surface-container-low": "#f6f3f2",
+                        "on-tertiary-container": "#fffcff",
+                        "on-primary-container": "#fffdff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#e5e2e1",
+                        "secondary": "#775a19",
+                        "on-primary-fixed-variant": "#78301b",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#974730",
+                        "on-surface": "#1c1b1b",
+                        "on-secondary-container": "#785a1a",
+                        "inverse-on-surface": "#f3f0ef",
+                        "surface-container": "#f0eded"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px",
+                        "gutter": "24px",
+                        "section-gap": "120px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Syne"],
+                        "body-md": ["Karla"],
+                        "headline-md": ["Syne"],
+                        "headline-lg-mobile": ["Syne"],
+                        "display-xl": ["Syne"],
+                        "label-sm": ["Karla"],
+                        "body-lg": ["Karla"],
+                        "display-lg": ["Syne"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-xl": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .whisper-shadow { box-shadow: 0px 4px 20px rgba(26, 26, 26, 0.04); }
+        .ghost-border { border: 1px solid var(--color-outline-variant); }
+        .ghost-border-bottom { border-bottom: 1px solid var(--color-outline-variant); }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation -->
+<header class="bg-background hidden md:flex justify-between items-center w-full px-margin-desktop py-6 max-w-[1440px] mx-auto z-50 sticky top-0 border-b border-outline-variant/30">
+<div class="flex items-center gap-8">
+<nav class="flex gap-8">
+<a class="font-label-sm text-label-sm text-on-surface-variant tracking-widest uppercase hover:text-primary transition-colors duration-300" href="#">Atelier</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant tracking-widest uppercase hover:text-primary transition-colors duration-300" href="#">Journal</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant tracking-widest uppercase hover:text-primary transition-colors duration-300" href="#">Collections</a>
+</nav>
+</div>
+<div class="absolute left-1/2 -translate-x-1/2">
+<h1 class="font-display-lg text-display-lg tracking-tighter text-primary">FADEN</h1>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface hover:text-primary transition-colors" data-icon="shopping_bag">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">shopping_bag</span>
+</button>
+<button class="text-on-surface hover:text-primary transition-colors" data-icon="person">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">person</span>
+</button>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-grow w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop py-12 md:py-24">
+<!-- Header Section -->
+<section class="mb-16 md:mb-section-gap text-center md:text-left max-w-3xl">
+<p class="font-label-sm text-label-sm text-primary uppercase tracking-widest mb-4">Request #FDN-8924</p>
+<h2 class="font-display-xl text-display-xl text-on-background mb-6">Your boutiques have sent their ideas</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Review the proposals crafted specifically for your custom commission. Compare details, fabrics, and timelines to select the perfect artisan for your vision.</p>
+</section>
+<!-- Offers Grid (Asymmetric) -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-gutter pb-section-gap">
+<!-- Card 1: Featured / New -->
+<article class="col-span-1 md:col-span-7 flex flex-col md:flex-row bg-surface-container-lowest ghost-border whisper-shadow relative overflow-hidden group">
+<div class="absolute top-4 left-4 z-10">
+<span class="bg-primary text-on-primary font-label-sm text-label-sm px-3 py-1 uppercase tracking-widest shadow-sm">New</span>
+</div>
+<div class="w-full md:w-2/5 h-64 md:h-auto relative overflow-hidden">
+<img alt="Boutique Fabric Detail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="A highly detailed close-up shot of luxurious deep red silk fabric being meticulously hand-embroidered by an artisan. The lighting is warm and directional, emphasizing the texture of the silk and the glint of the needle in a moody, high-end atelier setting. The overall aesthetic is rich, sophisticated, and bespoke." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZsUZYLFy08XHxHZ9K-dm_z2FH6-lVSCOhFVW5ePekfOp5A9QUTRPa7fORUQ_ey8rQ_oCbI9yc1A43gdUfCQ4OprIZdyHCJQ-vuVihAHSRi7E0ZNO_ghPK-QRGixGz12ffg3jT0gRkNYIbqQ0VfK747haQ0-wMUIKe80m0fhlU-AB0eKjTLc5P4thR1yTYRFs7VpuEoQdMzlG3zoL9htuZOPrHRwGHX5c9RDsZijk0t3k2xJsRkBlh"/>
+</div>
+<div class="w-full md:w-3/5 p-6 md:p-8 flex flex-col justify-between bg-surface-container-lowest">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<h3 class="font-headline-md text-headline-md text-on-background">Atelier Maison Blanche</h3>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;" title="Verified Artisan">verified</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">"Includes premium Italian silk crepe and intricate hand-beaded embroidery inspired by your moodboard. We estimate 3 fittings."</p>
+<div class="grid grid-cols-2 gap-4 mb-8">
+<div>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest mb-1">Total Price</p>
+<p class="font-headline-lg-mobile text-headline-lg-mobile text-on-background">₹42,500</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest mb-1">Advance</p>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-1">₹15,000</p>
+</div>
+<div class="col-span-2 pt-4 border-t border-outline-variant/30">
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest mb-1">Estimated Completion</p>
+<p class="font-body-lg text-body-lg text-on-background flex items-center gap-2">
+<span class="material-symbols-outlined text-outline">calendar_today</span> Sept 18, 2024
+                                </p>
+</div>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row gap-4 mt-auto">
+<button class="bg-[#1A1A1A] text-white font-headline-md text-body-md px-6 py-3 hover:bg-[#333] transition-colors w-full sm:w-auto text-center">View Offer</button>
+<button class="border border-outline-variant text-on-background font-headline-md text-body-md px-6 py-3 hover:bg-surface-container-low transition-colors w-full sm:w-auto text-center flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 18px;">chat_bubble</span> Message
+                        </button>
+</div>
+</div>
+</article>
+<!-- Card 2: Stacked -->
+<article class="col-span-1 md:col-span-5 flex flex-col bg-surface-container-lowest ghost-border whisper-shadow relative group">
+<div class="absolute top-4 left-4 z-10">
+<span class="bg-secondary text-on-secondary font-label-sm text-label-sm px-3 py-1 uppercase tracking-widest shadow-sm">Updated</span>
+</div>
+<div class="w-full h-48 md:h-64 relative overflow-hidden">
+<img alt="Tailoring Tools" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="A sophisticated, softly lit photograph of tailor's shears, measuring tape, and swatches of ivory organic cotton laid out on a dark wooden table. The composition is editorial and minimalist, evoking a sense of quiet craftsmanship and premium bespoke tailoring. The palette leans heavily into natural whites and rich wood tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaPlv5cbNuxtRMLClOeh5T1HR7Z54otdvclCQrQflc6lFOdkRuX6PVOj83mA0Ss019goimsTkxiQpu_gDCYSH6A-2HwiVATapXCPW7sHVKCMvY8EKsQpDBS8HxXmwOAGhA8iTtWASOjRCex2PafogdnDv9hAmPTB7OdRTW-iAaEXfaV3rU-ACF_foE8ghLjvi8LN5IWC9SQ24gwxSicBldGVyu4Xc3WSEkn2hVnGRgY75qRcD5Bu6T"/>
+</div>
+<div class="p-6 flex flex-col flex-grow bg-surface-container-lowest">
+<div class="flex items-center gap-2 mb-2">
+<h3 class="font-headline-md text-headline-md text-on-background">Studio Sartorial</h3>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;" title="Verified Artisan">verified</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 line-clamp-2">"Revised to include organic cotton lining. Focus on structured tailoring with a fluid drape."</p>
+<div class="grid grid-cols-2 gap-4 mb-8 flex-grow">
+<div>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest mb-1">Total Price</p>
+<p class="font-headline-lg-mobile text-headline-lg-mobile text-on-background">₹38,000</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest mb-1">Ready By</p>
+<p class="font-body-lg text-body-lg text-on-background">Oct 02</p>
+</div>
+</div>
+<div class="flex flex-col gap-3 mt-auto">
+<button class="bg-[#1A1A1A] text-white font-headline-md text-body-md px-6 py-3 hover:bg-[#333] transition-colors w-full text-center">View Offer</button>
+<button class="border border-outline-variant text-on-background font-headline-md text-body-md px-6 py-3 hover:bg-surface-container-low transition-colors w-full text-center">Message</button>
+</div>
+</div>
+</article>
+<!-- Card 3: Expiring Soon (Spans full width on desktop for variation) -->
+<article class="col-span-1 md:col-span-12 flex flex-col md:flex-row-reverse bg-surface-container-lowest ghost-border whisper-shadow relative overflow-hidden group">
+<div class="absolute top-4 right-4 z-10">
+<span class="bg-error-container text-on-error-container font-label-sm text-label-sm px-3 py-1 uppercase tracking-widest border border-error/20">Expires Soon</span>
+</div>
+<div class="w-full md:w-1/3 h-56 md:h-auto relative overflow-hidden">
+<img alt="Avant-Garde Drape" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="An abstract, high-fashion editorial shot focusing on the drape of a heavy terracotta-colored fabric against a stark, off-white background. The lighting creates deep, dramatic shadows that emphasize the structural lines of the textile. The image conveys a modern, experimental approach to luxury fashion design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFt71CJ2kdlYvZbHTUbaKbWyOquEV-EY_OMQJNaLP78Y9evPd1p1tM6iGZBJd4GX1P-hMVkAhI7h1OlDMHb9ZC6zBr1z_3PoUGbJ-hkzHzyCPJYjLANM5ZeNMHHANzDZvNzvv4LkcyHzcJeDjDEWz4L5RAP6PXgbFATUBwDcS8C40qKI_REhtXAz1yk6oJMD7omd5e771R7O4G3Jw26zJew4Fat13zf5l7UalwigW4kxvuc6zhGuQM"/>
+</div>
+<div class="w-full md:w-2/3 p-6 md:p-10 flex flex-col justify-between bg-surface-container-lowest">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<h3 class="font-headline-md text-headline-md text-on-background">Vanguard Silhouettes</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 max-w-xl">"A bold interpretation utilizing our signature zero-waste cutting technique. The terracotta drape will provide dramatic movement while remaining incredibly lightweight."</p>
+<div class="flex flex-wrap gap-8 mb-8 border-b border-outline-variant/30 pb-6">
+<div>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest mb-1">Total Price</p>
+<p class="font-headline-lg-mobile text-headline-lg-mobile text-on-background">₹55,000</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest mb-1">Advance</p>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-1">₹25,000</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest mb-1">Ready By</p>
+<p class="font-body-lg text-body-lg text-on-background">Sept 30</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="bg-[#1A1A1A] text-white font-headline-md text-body-md px-8 py-3 hover:bg-[#333] transition-colors w-full sm:w-auto text-center">View Offer</button>
+<button class="border border-outline-variant text-on-background font-headline-md text-body-md px-8 py-3 hover:bg-surface-container-low transition-colors w-full sm:w-auto text-center">Message</button>
+</div>
+</div>
+</article>
+</div>
+</main>
+<!-- Bottom Navigation (Mobile) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 md:hidden bg-surface-container-lowest border-t border-outline-variant/20 shadow-sm">
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined mb-1">auto_awesome</span>
+<span class="font-label-sm text-label-sm tracking-widest">Discover</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined mb-1">architecture</span>
+<span class="font-label-sm text-label-sm tracking-widest">Atelier</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary scale-95 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">package_2</span>
+<span class="font-label-sm text-label-sm tracking-widest">Orders</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-label-sm text-label-sm tracking-widest">Profile</span>
+</a>
+</nav>
+<!-- Footer -->
+<footer class="w-full py-section-gap px-margin-desktop flex flex-col items-center gap-8 bg-on-background text-background mt-auto pb-24 md:pb-section-gap">
+<h2 class="font-display-xl text-display-xl text-background mb-4">FADEN</h2>
+<div class="flex flex-wrap justify-center gap-6 md:gap-12 mb-8">
+<a class="font-label-sm text-label-sm text-surface-variant/80 hover:text-secondary-fixed transition-colors" href="#">Provenance</a>
+<a class="font-label-sm text-label-sm text-surface-variant/80 hover:text-secondary-fixed transition-colors" href="#">Craftsmanship</a>
+<a class="font-label-sm text-label-sm text-surface-variant/80 hover:text-secondary-fixed transition-colors" href="#">Concierge</a>
+<a class="font-label-sm text-label-sm text-surface-variant/80 hover:text-secondary-fixed transition-colors" href="#">Legal</a>
+</div>
+<p class="font-body-md text-body-md text-surface-variant/60 text-center">© 2024 FADEN DIGITAL ATELIER. ALL RIGHTS RESERVED.</p>
+</footer>
+</body></html>

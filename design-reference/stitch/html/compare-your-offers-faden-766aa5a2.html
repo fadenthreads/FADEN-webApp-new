@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FADEN - Compare Offers</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#94452e",
+                        "inverse-primary": "#ffb5a0",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "background": "#fcf9f8",
+                        "surface": "#fcf9f8",
+                        "secondary-fixed-dim": "#e9c176",
+                        "surface-dim": "#dcd9d9",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#fed488",
+                        "tertiary": "#983f49",
+                        "on-primary-fixed": "#3b0900",
+                        "inverse-surface": "#313030",
+                        "on-surface-variant": "#55433e",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#261900",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "surface-container-high": "#eae7e7",
+                        "outline": "#88726d",
+                        "secondary-fixed": "#ffdea5",
+                        "tertiary-fixed-dim": "#ffb2b6",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-background": "#1c1b1b",
+                        "surface-bright": "#fcf9f8",
+                        "tertiary-container": "#b75760",
+                        "primary-container": "#b35d44",
+                        "outline-variant": "#dbc1ba",
+                        "on-tertiary-fixed-variant": "#7c2a34",
+                        "primary-fixed": "#ffdbd1",
+                        "tertiary-fixed": "#ffdadb",
+                        "primary-fixed-dim": "#ffb5a0",
+                        "on-tertiary-fixed": "#40000d",
+                        "surface-container-low": "#f6f3f2",
+                        "on-tertiary-container": "#fffcff",
+                        "on-primary-container": "#fffdff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#e5e2e1",
+                        "secondary": "#775a19",
+                        "on-primary-fixed-variant": "#78301b",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#974730",
+                        "on-surface": "#1c1b1b",
+                        "on-secondary-container": "#785a1a",
+                        "inverse-on-surface": "#f3f0ef",
+                        "surface-container": "#f0eded"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px",
+                        "gutter": "24px",
+                        "section-gap": "120px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Syne"],
+                        "body-md": ["Karla"],
+                        "headline-md": ["Syne"],
+                        "headline-lg-mobile": ["Syne"],
+                        "display-xl": ["Syne"],
+                        "label-sm": ["Karla"],
+                        "body-lg": ["Karla"],
+                        "display-lg": ["Syne"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-xl": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&amp;family=Syne:wght@400..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Karla', sans-serif; background-color: #fcf9f8; color: #1c1b1b; }
+        .font-syne { font-family: 'Syne', sans-serif; }
+    </style>
+</head>
+<body class="bg-background min-h-screen flex flex-col antialiased">
+<!-- TopNavBar -->
+<header class="bg-background border-b border-outline-variant/30 sticky top-0 z-50 w-full">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-6 max-w-[1440px] mx-auto hidden md:flex">
+<div class="flex gap-8 items-center">
+<a class="text-on-surface-variant tracking-widest uppercase font-label-sm text-label-sm hover:text-primary transition-colors duration-300" href="#">Atelier</a>
+<a class="text-on-surface-variant tracking-widest uppercase font-label-sm text-label-sm hover:text-primary transition-colors duration-300" href="#">Journal</a>
+<a class="text-on-surface-variant tracking-widest uppercase font-label-sm text-label-sm hover:text-primary transition-colors duration-300" href="#">Collections</a>
+</div>
+<a class="font-display-lg text-display-lg tracking-tighter text-primary" href="#">FADEN</a>
+<div class="flex gap-6 items-center">
+<button class="hover:text-primary transition-colors duration-300">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">shopping_bag</span>
+</button>
+<button class="hover:text-primary transition-colors duration-300">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">person</span>
+</button>
+</div>
+</div>
+<!-- Mobile Header (Simplified) -->
+<div class="flex justify-between items-center w-full px-margin-mobile py-4 md:hidden">
+<button class="text-on-surface"><span class="material-symbols-outlined">menu</span></button>
+<a class="font-display-lg text-headline-lg-mobile tracking-tighter text-primary" href="#">FADEN</a>
+<button class="text-on-surface"><span class="material-symbols-outlined">shopping_bag</span></button>
+</div>
+</header>
+<main class="flex-grow max-w-[1440px] mx-auto w-full px-margin-mobile md:px-margin-desktop py-12 md:py-24">
+<!-- Page Header -->
+<div class="mb-16 md:mb-24 text-center">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-4">Your Custom Order</p>
+<h1 class="font-display-xl text-headline-lg-mobile md:text-display-xl text-on-background mb-6 font-syne">Compare Offers</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">Review the bespoke proposals from our curated artisans. Select the atelier that best aligns with your vision and timeline.</p>
+</div>
+<!-- Comparison Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-gutter">
+<!-- Card 1: Best Match -->
+<div class="relative bg-surface-container-lowest border border-outline-variant/50 p-8 flex flex-col shadow-sm transition-transform duration-300 hover:-translate-y-2 group">
+<!-- Badge -->
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-on-background text-background font-label-sm text-label-sm px-4 py-1.5 uppercase tracking-widest border border-on-background z-10 whitespace-nowrap">
+                    Best Match
+                </div>
+<!-- Boutique Info -->
+<div class="text-center mb-10 mt-4 border-b border-outline-variant/30 pb-8">
+<div class="w-20 h-20 rounded-full mx-auto mb-4 overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="A macro shot of luxurious textured fabric, perhaps silk or fine wool, in warm terracotta and ivory tones. High contrast editorial style, experimental lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzrkxel_pZnlqqlWNFWc9rwcPuZ2Ug-DKZQ2FsEtob_mA4XR09DLZ7cunCRDUAk44izPdmkdpq3_0KE-XJYDkTj-W8w-RVoLIKgIF921pHIZNMJ4z9xL8lAucYBbo_rqiUN-NdY1nZew8U_r_aLdDVWajps6p6PM3kLmes3egZR__i5OQE1Lds9q4p_T9yErws9BfURXl5ahngSfdmg8kLs62y0xcqvA8JkFJKLmOCZE7rnwUTEqX3"/>
+</div>
+<h2 class="font-headline-md text-headline-md font-syne text-on-background mb-2">Maison Céleste</h2>
+<div class="flex items-center justify-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-sm text-label-sm">4.9</span>
+</div>
+</div>
+<!-- Specs -->
+<div class="flex flex-col gap-6 flex-grow mb-10">
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Total</span>
+<span class="font-headline-md text-headline-md font-syne text-primary">€1,450</span>
+</div>
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Delivery</span>
+<span class="font-body-md text-body-md">4 - 6 Weeks</span>
+</div>
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Fabric</span>
+<span class="font-body-md text-body-md">Italian Silk Crêpe, 100%</span>
+</div>
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Design Details</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Hand-draped bodice, hidden corsetry, pearl button closure.</span>
+</div>
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Advance Required</span>
+<span class="font-body-md text-body-md">50% (€725)</span>
+</div>
+</div>
+<!-- CTA -->
+<button class="w-full bg-on-background text-background font-label-sm text-label-sm uppercase tracking-widest py-4 hover:bg-tertiary transition-colors duration-300 mt-auto">
+                    Choose This Boutique
+                </button>
+</div>
+<!-- Card 2: Fastest Delivery -->
+<div class="relative bg-surface-container-lowest border border-outline-variant/30 p-8 flex flex-col shadow-sm transition-transform duration-300 hover:-translate-y-2 group">
+<!-- Badge -->
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-surface-container-low text-on-background font-label-sm text-label-sm px-4 py-1.5 uppercase tracking-widest border border-outline-variant/50 z-10 whitespace-nowrap">
+                    Fastest Delivery
+                </div>
+<!-- Boutique Info -->
+<div class="text-center mb-10 mt-4 border-b border-outline-variant/30 pb-8">
+<div class="w-20 h-20 rounded-full mx-auto mb-4 overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Minimalist abstract portrait of a fashion designer in a well lit studio. Warm ivory and charcoal tones, sharp architectural shadows, editorial composition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuASFEif5qumVFI9F80OD4v_sJSZLhwAmH7PEkqQQeq2jL0KnkH28UrFC7qOCKMSHcn-H6kTaPJYc5IjAcZybOAVghrViinPE1paqzV1ti8Jk78SfR_Eu9u5hUEnKaWAf-7HUqWcGgEypFJ34DkFjWbARcKFojs69qy-na85QpqwWQo7AHFzsViJvowko-ts4G4XS9pRK8qm1IhzLKPCrv-WOKOo6HtJfFxmD0BuvlkMU5DwPRarjK27"/>
+</div>
+<h2 class="font-headline-md text-headline-md font-syne text-on-background mb-2">Atelier Roux</h2>
+<div class="flex items-center justify-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-sm text-label-sm">4.7</span>
+</div>
+</div>
+<!-- Specs -->
+<div class="flex flex-col gap-6 flex-grow mb-10">
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Total</span>
+<span class="font-headline-md text-headline-md font-syne text-on-background">€1,800</span>
+</div>
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Delivery</span>
+<span class="font-body-md text-body-md text-primary font-bold">2 - 3 Weeks</span>
+</div>
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Fabric</span>
+<span class="font-body-md text-body-md">French Satin, Viscose Blend</span>
+</div>
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Design Details</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Structured tailoring, asymmetric hemline, standard lining.</span>
+</div>
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Advance Required</span>
+<span class="font-body-md text-body-md">100% (€1,800)</span>
+</div>
+</div>
+<!-- CTA -->
+<button class="w-full bg-transparent text-on-background border border-on-background font-label-sm text-label-sm uppercase tracking-widest py-4 hover:bg-surface-container-low transition-colors duration-300 mt-auto">
+                    Choose This Boutique
+                </button>
+</div>
+<!-- Card 3: Best Value -->
+<div class="relative bg-surface-container-lowest border border-outline-variant/30 p-8 flex flex-col shadow-sm transition-transform duration-300 hover:-translate-y-2 group md:hidden lg:flex">
+<!-- Badge -->
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-surface-container-low text-on-background font-label-sm text-label-sm px-4 py-1.5 uppercase tracking-widest border border-outline-variant/50 z-10 whitespace-nowrap">
+                    Best Value
+                </div>
+<!-- Boutique Info -->
+<div class="text-center mb-10 mt-4 border-b border-outline-variant/30 pb-8">
+<div class="w-20 h-20 rounded-full mx-auto mb-4 overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Close up of a vintage sewing machine in a softly lit, moody atelier setting. Terracotta brick walls in the background, warm golden hour light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJXio7GddDWe8BsbqTwQCOJ9dwT8cw1VTWupdbwGKE2KwJ-IOiEpg1giCP78j_FILciyVJJcB3abpGg2NngRkfbjnXCPRyESwQY1LuPi3YoqVOZFwGMSO80TG7e1OqBNOUgfVZiH61mTDGcvGGzQuINlrVIct9Kb-qV1m84TzCaelJh6S6Ht1mF2ZYZvCqvMBN66yp1Dtih4BvxdNYYO1n28HDmWMvXgoXBPcdTf-cqEmqZL_dKXcV"/>
+</div>
+<h2 class="font-headline-md text-headline-md font-syne text-on-background mb-2">Studio V</h2>
+<div class="flex items-center justify-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-sm text-label-sm">4.8</span>
+</div>
+</div>
+<!-- Specs -->
+<div class="flex flex-col gap-6 flex-grow mb-10">
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Total</span>
+<span class="font-headline-md text-headline-md font-syne text-on-background">€1,100</span>
+</div>
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Delivery</span>
+<span class="font-body-md text-body-md">5 - 7 Weeks</span>
+</div>
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Fabric</span>
+<span class="font-body-md text-body-md">Premium Cotton Silk Blend</span>
+</div>
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Design Details</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Classic silhouette, standard finishings, minimal hardware.</span>
+</div>
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Advance Required</span>
+<span class="font-body-md text-body-md">40% (€440)</span>
+</div>
+</div>
+<!-- CTA -->
+<button class="w-full bg-transparent text-on-background border border-on-background font-label-sm text-label-sm uppercase tracking-widest py-4 hover:bg-surface-container-low transition-colors duration-300 mt-auto">
+                    Choose This Boutique
+                </button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 md:hidden bg-surface-container-lowest border-t border-outline-variant/20 shadow-sm">
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary transition-all">
+<span class="material-symbols-outlined mb-1">auto_awesome</span>
+<span class="font-label-sm text-label-sm tracking-widest">Discover</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary transition-all">
+<span class="material-symbols-outlined mb-1">architecture</span>
+<span class="font-label-sm text-label-sm tracking-widest">Atelier</span>
+</button>
+<button class="flex flex-col items-center justify-center text-primary hover:text-primary transition-all scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">package_2</span>
+<span class="font-label-sm text-label-sm tracking-widest">Orders</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary transition-all">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-label-sm text-label-sm tracking-widest">Profile</span>
+</button>
+</nav>
+</body></html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FADEN Admin - Verification Workspace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;700&amp;family=Syne:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#ece7e7",
+                        "on-primary-container": "#fffdff",
+                        "inverse-primary": "#ffb5a0",
+                        "secondary": "#775a19",
+                        "warning-amber": "#c98e3d",
+                        "on-tertiary-fixed-variant": "#005048",
+                        "audit-log-gray": "#55433e",
+                        "outline-variant": "#dbc1ba",
+                        "surface-container-highest": "#e6e1e1",
+                        "on-secondary-container": "#785a19",
+                        "surface-bright": "#fdf8f8",
+                        "surface": "#fdf8f8",
+                        "tertiary-fixed-dim": "#74d7c9",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#ffdea3",
+                        "tertiary-container": "#008478",
+                        "on-surface": "#1c1b1b",
+                        "surface-tint": "#974730",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#b35d44",
+                        "on-surface-variant": "#55433e",
+                        "tertiary": "#00695f",
+                        "info-azure": "#4b738c",
+                        "primary": "#94452e",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#ba1a1a",
+                        "error-crimson": "#a63d40",
+                        "primary-fixed": "#ffdbd1",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#90f4e5",
+                        "on-tertiary": "#ffffff",
+                        "surface-ivory": "#fcf9f8",
+                        "surface-container-low": "#f7f2f2",
+                        "on-primary-fixed-variant": "#78301b",
+                        "outline": "#88726d",
+                        "surface-container": "#f1edec",
+                        "primary-fixed-dim": "#ffb5a0",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f4f0ef",
+                        "success-emerald": "#4a7c59",
+                        "on-background": "#1c1b1b",
+                        "on-tertiary-container": "#fafffd",
+                        "on-tertiary-fixed": "#00201c",
+                        "surface-dim": "#ddd9d8",
+                        "secondary-fixed-dim": "#e8c176",
+                        "background": "#fdf8f8",
+                        "on-secondary-fixed-variant": "#5c4200",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#313030",
+                        "on-primary-fixed": "#3b0900",
+                        "on-secondary-fixed": "#261900",
+                        "secondary-container": "#fdd587",
+                        "surface-variant": "#e6e1e1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "drawer-gap": "24px",
+                        "container-margin": "32px",
+                        "table-row-h": "12px",
+                        "sidebar-padding": "16px",
+                        "unit": "4px",
+                        "table-row-v": "8px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Karla"],
+                        "data-mono": ["Karla"],
+                        "body-sm": ["Karla"],
+                        "label-condensed": ["Karla"],
+                        "headline-lg": ["Syne"],
+                        "headline-md": ["Syne"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "data-mono": ["13px", { "lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+                        "body-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                        "label-condensed": ["11px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "1.3", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Karla', sans-serif; background-color: #fcf9f8; }
+        h1, h2, h3, h4, h5, h6, .font-syne { font-family: 'Syne', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface-ivory text-on-surface antialiased">
+<div class="flex h-screen overflow-hidden">
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-screen relative z-10 w-full overflow-hidden">
+<!-- TopNavBar -->
+<header class="bg-surface border-b border-outline-variant flex justify-between items-center px-container-margin w-full sticky top-0 z-40 h-16">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:bg-surface-container-low p-2 rounded-full transition-colors md:hidden">menu</span>
+<div class="font-headline-md text-headline-md text-primary font-bold">FADEN Admin</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 hidden md:flex">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:bg-surface-container-low p-2 rounded-full transition-colors">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:bg-surface-container-low p-2 rounded-full transition-colors">security</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label-condensed text-label-condensed text-on-surface-variant uppercase tracking-wider hidden sm:block">Production</span>
+<img alt="Admin Avatar" class="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="A professional headshot of an administrator in a corporate setting. The lighting is studio quality, soft and flattering. The background is a subtle, out-of-focus modern office environment. The style is hyper-realistic photography, suitable for an enterprise software avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfSRfKCoFAQ4oW7x6gMGdg-uaHTJ0S6TwtbOJX7lmBnowVSoElN9toYaaYSm9D8oZqb6Zrz2S_us85AbNcWB2O43QYSbrBFFS_rkMcSR2pha894GawhPvzGtMCJduPf8lCQGc4QhNdegrfK0HcsLGW2HUSUMaQVGl0tASdUbsMcgmU2RZBd19p5GMq8h_wbfqwzPptU-E07UdqPpEkqspZrHMN-kAfoyP9LGOBiZeWx8vicf3_m7ny"/>
+</div>
+</div>
+</header>
+<div class="flex-1 overflow-auto p-container-margin">
+<!-- Workspace Header -->
+<div class="mb-8 flex justify-between items-end">
+<div>
+<div class="flex items-center gap-2 mb-2 text-on-surface-variant">
+<span class="font-label-condensed text-label-condensed uppercase tracking-wider">Trust &amp; Support</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="font-label-condensed text-label-condensed uppercase tracking-wider">Verification</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Aarya Studio</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Application ID: #APP-2023-8910</p>
+</div>
+<div class="flex items-center gap-3">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-label-condensed font-label-condensed bg-surface-container-high text-on-surface border border-outline-variant uppercase">
+                             Pending Review
+                         </span>
+</div>
+</div>
+<!-- 3-Column Split View -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- Left: Business Profile -->
+<div class="lg:col-span-3 space-y-6">
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant p-6">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-6 border-b border-outline-variant pb-2">Business Profile</h2>
+<div class="space-y-4">
+<div>
+<span class="block font-label-condensed text-label-condensed text-on-surface-variant mb-1 uppercase tracking-wider">Legal Entity Name</span>
+<span class="font-body-md text-body-md text-on-surface font-medium">Aarya Artisanal Goods LLC</span>
+</div>
+<div>
+<span class="block font-label-condensed text-label-condensed text-on-surface-variant mb-1 uppercase tracking-wider">Owner / Representative</span>
+<span class="font-body-md text-body-md text-on-surface">Elena Rostova</span>
+</div>
+<div>
+<span class="block font-label-condensed text-label-condensed text-on-surface-variant mb-1 uppercase tracking-wider">Tax ID / EIN</span>
+<span class="font-data-mono text-data-mono text-on-surface">82-1928374</span>
+</div>
+<div>
+<span class="block font-label-condensed text-label-condensed text-on-surface-variant mb-1 uppercase tracking-wider">Registered Address</span>
+<span class="font-body-sm text-body-sm text-on-surface block">
+                                        144 Artisan Way, Suite 3B<br/>
+                                        Portland, OR 97209<br/>
+                                        United States
+                                    </span>
+</div>
+<div>
+<span class="block font-label-condensed text-label-condensed text-on-surface-variant mb-1 uppercase tracking-wider">Category</span>
+<span class="inline-block px-2 py-1 bg-surface-container-high rounded text-body-sm text-on-surface mt-1">Ceramics &amp; Textiles</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Center: Document Gallery -->
+<div class="lg:col-span-6 space-y-6">
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant p-6 h-full min-h-[600px] flex flex-col">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-6 border-b border-outline-variant pb-2 flex justify-between items-center">
+                                Document Evidence
+                                <span class="font-body-sm text-on-surface-variant font-normal">3 files uploaded</span>
+</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<!-- Doc 1 -->
+<div class="border border-outline-variant rounded p-3 hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">badge</span>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface font-medium group-hover:text-primary transition-colors">Owner Identity</p>
+<p class="font-label-condensed text-label-condensed text-on-surface-variant">passport_scan.pdf</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">visibility</span>
+</div>
+</div>
+<!-- Doc 2 -->
+<div class="border border-outline-variant rounded p-3 bg-surface-container-low ring-1 ring-primary transition-colors cursor-pointer">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">description</span>
+<div>
+<p class="font-body-sm text-body-sm text-primary font-medium">Business License</p>
+<p class="font-label-condensed text-label-condensed text-on-surface-variant">state_reg_2023.pdf</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+</div>
+</div>
+<!-- Doc 3 -->
+<div class="border border-outline-variant rounded p-3 hover:bg-surface-container-low transition-colors cursor-pointer group md:col-span-2">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">receipt_long</span>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface font-medium group-hover:text-primary transition-colors">Proof of Address (Utility)</p>
+<p class="font-label-condensed text-label-condensed text-on-surface-variant">water_bill_oct.jpg</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">visibility</span>
+</div>
+</div>
+</div>
+<!-- Viewer Area -->
+<div class="flex-1 bg-surface-container-high rounded border border-outline-variant overflow-hidden relative min-h-[300px]">
+<img alt="Document Viewer" class="w-full h-full object-cover opacity-80" data-alt="A high-resolution, top-down scan of an official state business registration document. The document features official seals, intricate border patterns, and formal typography on slightly textured, off-white paper. The lighting is even and flat, typical of a high-quality scanner. The aesthetic is formal, administrative, and highly detailed, emphasizing bureaucratic authenticity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAddBlSCz9PlJlmEPK2VW3N3q2KdeJXE4Jof-CiDhvzqzT_7nvQMSTIjnNjuzIP2o5H4YTEeea_bxXPH7cZ6pyOH597nGl_DZ-Kst4yviuAr2ntIGJpVBUiENS9rBUIJ7ta2aipFCes11pKwBMwrmutWdyF2uFa8Pu9wbrEqQt5Trq9nv-2089G1guK5uOUKWw0RgOnIpbjRmAI9GxW5ZIuCC4tscDJSk4PNrmsbBfIrazt9aychRW0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface/80 to-transparent flex items-end p-4">
+<div class="bg-surface-container-lowest p-3 rounded shadow-sm border border-outline-variant w-full flex justify-between items-center backdrop-blur-sm bg-opacity-90">
+<span class="font-body-sm text-body-sm font-medium">state_reg_2023.pdf</span>
+<div class="flex gap-2">
+<button class="p-1 hover:bg-surface-container-low rounded text-on-surface-variant"><span class="material-symbols-outlined text-[20px]">zoom_in</span></button>
+<button class="p-1 hover:bg-surface-container-low rounded text-on-surface-variant"><span class="material-symbols-outlined text-[20px]">zoom_out</span></button>
+<button class="p-1 hover:bg-surface-container-low rounded text-on-surface-variant"><span class="material-symbols-outlined text-[20px]">open_in_new</span></button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Checklist & Actions -->
+<div class="lg:col-span-3 space-y-6">
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant p-6 flex flex-col h-full">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-6 border-b border-outline-variant pb-2">Verification Checklist</h2>
+<div class="space-y-3 mb-8 flex-1">
+<label class="flex items-start gap-3 p-2 rounded hover:bg-surface-container-low cursor-pointer transition-colors">
+<input checked="" class="mt-1 w-4 h-4 text-primary bg-surface-container-lowest border-outline-variant rounded focus:ring-primary focus:ring-2" type="checkbox"/>
+<div>
+<span class="font-body-sm text-body-sm text-on-surface block font-medium">Identity Verified</span>
+<span class="font-label-condensed text-label-condensed text-on-surface-variant block mt-0.5">Matches application owner</span>
+</div>
+</label>
+<label class="flex items-start gap-3 p-2 rounded hover:bg-surface-container-low cursor-pointer transition-colors">
+<input class="mt-1 w-4 h-4 text-primary bg-surface-container-lowest border-outline-variant rounded focus:ring-primary focus:ring-2" type="checkbox"/>
+<div>
+<span class="font-body-sm text-body-sm text-on-surface block font-medium">Business Registration Valid</span>
+<span class="font-label-condensed text-label-condensed text-on-surface-variant block mt-0.5">Checked against state database</span>
+</div>
+</label>
+<label class="flex items-start gap-3 p-2 rounded hover:bg-surface-container-low cursor-pointer transition-colors">
+<input class="mt-1 w-4 h-4 text-primary bg-surface-container-lowest border-outline-variant rounded focus:ring-primary focus:ring-2" type="checkbox"/>
+<div>
+<span class="font-body-sm text-body-sm text-on-surface block font-medium">Address Confirmed</span>
+<span class="font-label-condensed text-label-condensed text-on-surface-variant block mt-0.5">Utility bill within 90 days</span>
+</div>
+</label>
+<label class="flex items-start gap-3 p-2 rounded hover:bg-surface-container-low cursor-pointer transition-colors">
+<input class="mt-1 w-4 h-4 text-primary bg-surface-container-lowest border-outline-variant rounded focus:ring-primary focus:ring-2" type="checkbox"/>
+<div>
+<span class="font-body-sm text-body-sm text-on-surface block font-medium">Tax ID Match</span>
+<span class="font-label-condensed text-label-condensed text-on-surface-variant block mt-0.5">EIN format verified</span>
+</div>
+</label>
+</div>
+<div class="border-t border-outline-variant pt-6 space-y-3">
+<button class="w-full bg-primary-container text-on-primary-container font-body-md text-body-md py-2.5 rounded shadow-sm hover:opacity-90 transition-opacity flex justify-center items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+                                    Approve Business
+                                </button>
+<button class="w-full bg-surface-container-lowest text-on-surface border border-outline font-body-md text-body-md py-2.5 rounded hover:bg-surface-container-low transition-colors flex justify-center items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+                                    Request Info
+                                </button>
+<button class="w-full bg-error-container text-on-error-container font-body-md text-body-md py-2.5 rounded hover:bg-opacity-90 transition-opacity flex justify-center items-center gap-2 mt-4">
+<span class="material-symbols-outlined text-[18px]">block</span>
+                                    Reject Application
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

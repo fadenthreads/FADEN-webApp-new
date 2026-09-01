@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Atelier Admin - Build Offer</title>
+<!-- Google Fonts: Syne & Karla -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;700&amp;family=Syne:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#785a1a",
+                        "primary-container": "#b35d44",
+                        "tertiary-fixed-dim": "#ffb2b6",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-tertiary-fixed-variant": "#7c2a34",
+                        "surface-container": "#f0eded",
+                        "outline-variant": "#dbc1ba",
+                        "on-secondary-fixed": "#261900",
+                        "surface": "#fcf9f8",
+                        "on-primary-container": "#fffdff",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#974730",
+                        "surface-variant": "#e5e2e1",
+                        "primary-fixed-dim": "#ffb5a0",
+                        "primary-fixed": "#ffdbd1",
+                        "secondary": "#775a19",
+                        "on-primary-fixed-variant": "#78301b",
+                        "on-primary-fixed": "#3b0900",
+                        "surface-bright": "#fcf9f8",
+                        "primary": "#94452e",
+                        "on-tertiary-fixed": "#40000d",
+                        "outline": "#88726d",
+                        "on-tertiary-container": "#fffcff",
+                        "secondary-fixed": "#ffdea5",
+                        "surface-container-highest": "#e5e2e1",
+                        "tertiary": "#983f49",
+                        "inverse-surface": "#313030",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f6f3f2",
+                        "secondary-fixed-dim": "#e9c176",
+                        "inverse-primary": "#ffb5a0",
+                        "on-background": "#1c1b1b",
+                        "surface-dim": "#dcd9d9",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "tertiary-fixed": "#ffdadb",
+                        "background": "#fcf9f8",
+                        "on-surface-variant": "#55433e",
+                        "tertiary-container": "#b75760",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#fed488",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1c1b1b",
+                        "surface-container-high": "#eae7e7",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "section-gap": "120px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Syne"],
+                        "display-xl": ["Syne"],
+                        "label-sm": ["Karla"],
+                        "body-lg": ["Karla"],
+                        "headline-lg": ["Syne"],
+                        "headline-md": ["Syne"],
+                        "display-lg": ["Syne"],
+                        "body-md": ["Karla"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-xl": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Custom Styles to enforce Experimental Luxury aesthetic */
+        .ghost-border { border: 1px solid var(--tw-colors-outline-variant); }
+        .whisper-shadow { box-shadow: 0px 4px 20px rgba(26, 26, 26, 0.04); }
+        
+        /* Experimental Input Underline styling */
+        .input-editorial {
+            border: none;
+            border-bottom: 1px solid var(--tw-colors-on-background);
+            background-color: transparent;
+            padding: 0.5rem 0;
+            border-radius: 0;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .input-editorial:focus {
+            border-bottom: 2px solid var(--tw-colors-primary-container);
+            box-shadow: none;
+        }
+        
+        /* Hidden scrollbar for sleekness */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--tw-colors-surface-variant); border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased selection:bg-primary-container selection:text-on-primary-container flex min-h-screen overflow-hidden">
+<!-- Shared Component: SideNavBar -->
+<nav class="bg-surface dark:bg-inverse-surface h-screen w-64 fixed left-0 top-0 overflow-y-auto border-r border-outline-variant dark:border-outline z-50 flex flex-col h-full py-6">
+<!-- Brand Logo Area -->
+<div class="px-6 mb-12">
+<h1 class="font-headline-md text-headline-md text-on-surface dark:text-inverse-on-surface tracking-widest uppercase">Atelier Admin</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-2">Premium Management</p>
+</div>
+<!-- Navigation Links -->
+<ul class="flex flex-col flex-1 gap-1">
+<!-- Overview -->
+<li>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+<span class="font-label-sm text-label-sm uppercase">Overview</span>
+</a>
+</li>
+<!-- Requests -->
+<li>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">pending_actions</span>
+<span class="font-label-sm text-label-sm uppercase">Requests</span>
+</a>
+</li>
+<!-- Offers (ACTIVE) -->
+<li>
+<a class="flex items-center gap-3 px-4 py-3 text-primary dark:text-primary-fixed font-bold border-r-2 border-primary bg-surface-container-low opacity-90 transition-opacity" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">local_offer</span>
+<span class="font-label-sm text-label-sm uppercase">Offers</span>
+</a>
+</li>
+<!-- Orders -->
+<li>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">shopping_bag</span>
+<span class="font-label-sm text-label-sm uppercase">Orders</span>
+</a>
+</li>
+<!-- Production -->
+<li>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">precision_manufacturing</span>
+<span class="font-label-sm text-label-sm uppercase">Production</span>
+</a>
+</li>
+<!-- Appointments -->
+<li>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">calendar_today</span>
+<span class="font-label-sm text-label-sm uppercase">Appointments</span>
+</a>
+</li>
+<!-- CRM -->
+<li>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">groups</span>
+<span class="font-label-sm text-label-sm uppercase">CRM</span>
+</a>
+</li>
+<!-- Messages -->
+<li>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">chat_bubble</span>
+<span class="font-label-sm text-label-sm uppercase">Messages</span>
+</a>
+</li>
+<!-- Portfolio -->
+<li>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">auto_awesome_motion</span>
+<span class="font-label-sm text-label-sm uppercase">Portfolio</span>
+</a>
+</li>
+<!-- Analytics -->
+<li>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">analytics</span>
+<span class="font-label-sm text-label-sm uppercase">Analytics</span>
+</a>
+</li>
+</ul>
+<!-- Settings (Bottom) -->
+<div class="mt-auto px-2">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+<span class="font-label-sm text-label-sm uppercase">Settings</span>
+</a>
+</div>
+<!-- CTA -->
+<div class="px-6 pt-6">
+<button class="w-full py-3 px-4 bg-on-background text-on-primary font-headline-md text-[14px] hover:bg-tertiary transition-colors">
+                New Portfolio Design
+            </button>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col ml-64 min-w-0 bg-background relative">
+<!-- Shared Component: TopNavBar -->
+<header class="bg-background dark:bg-background docked full-width top-0 sticky z-40 border-b border-outline-variant dark:border-outline flex justify-between items-center px-gutter py-4 w-full h-20 shadow-[0_4px_20px_rgba(26,26,26,0.02)]">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 0;">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md font-body-md placeholder:text-outline w-64" placeholder="Search offers, clients..." type="text"/>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="flex items-center gap-3 border-l border-outline-variant pl-6">
+<div class="text-right hidden md:block">
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-on-background">Ananya Reddy</p>
+<p class="font-label-sm text-[10px] text-on-surface-variant">Lead Designer</p>
+</div>
+<span class="material-symbols-outlined text-[32px] text-primary">account_circle</span>
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 overflow-y-auto p-margin-desktop bg-background pb-32">
+<div class="max-w-[1000px] mx-auto">
+<!-- Page Header -->
+<div class="mb-12 flex justify-between items-end">
+<div>
+<p class="font-label-sm text-label-sm text-primary-container uppercase tracking-widest mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">arrow_back</span>
+                            Back to Requests
+                        </p>
+<h2 class="font-display-lg text-display-lg text-on-background">Compose Offer</h2>
+</div>
+<div class="text-right">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Date</p>
+<p class="font-body-lg text-body-lg">Oct 24, 2023</p>
+</div>
+</div>
+<!-- Section: Request Summary (Context) -->
+<section class="bg-surface-container-lowest whisper-shadow ghost-border p-8 mb-12 relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary-container"></div>
+<div class="flex gap-8 items-start">
+<!-- Thumbnail -->
+<div class="w-32 h-32 flex-shrink-0 bg-surface-container ghost-border">
+<img class="w-full h-full object-cover mix-blend-multiply opacity-90" data-alt="A delicate, high-editorial sketch of a custom bridal lehenga on textured off-white paper. Soft ambient lighting highlights the intricate pencil details of handcrafted zardosi patterns. Minimalist composition with a sophisticated terra-cotta and ivory aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAV4z-J8GWwProV-QjX5mVOq8dYxLyynA4eUgXgH-JvYxVRpqHldCLcBgP6GgNkLVrg8dSrJG-Yq9-03TYTo8McgGobLLTxmAK5hS0NX9GoJMxof4vGdL1HYpms7pknnqvUdj_jK0uHh3fufUSkyD2-eVY3hNY3okjjKRi6j8q5Lf5JKWDKpOkDKs8HukWf4CruyqQN_oB1Bh3a-eAOyAuVxPyxri3oqUbUbgDlD_-KW2uOZUGAY-Ea"/>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-background mb-1">Bridal Lehenga Ensemble</h3>
+<p class="font-body-md text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">person</span> Client: Maya Sharma
+                                    </p>
+</div>
+<span class="px-3 py-1 ghost-border rounded-full font-label-sm text-label-sm text-secondary tracking-widest uppercase">Request #RQ-2938</span>
+</div>
+<p class="font-body-md text-on-background max-w-2xl leading-relaxed">
+                                Client requested a bespoke bridal lehenga in premium raw silk. Emphasis on heavy handcrafted zardosi embroidery for the skirt, with a lighter touch on the blouse. Requires completion within 8 weeks.
+                            </p>
+</div>
+</div>
+</section>
+<!-- Section: Offer Builder Form -->
+<section class="bg-surface-container-lowest whisper-shadow ghost-border p-10">
+<h4 class="font-headline-md text-headline-md text-on-background border-b border-outline-variant pb-6 mb-8 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container">format_list_bulleted</span>
+                        Itemized Quote
+                    </h4>
+<!-- Line Items Table Structure -->
+<div class="w-full mb-8">
+<!-- Headers -->
+<div class="grid grid-cols-12 gap-4 pb-4 border-b border-outline-variant mb-6 font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">
+<div class="col-span-4">Item &amp; Description</div>
+<div class="col-span-3">Details / Type</div>
+<div class="col-span-2 text-right">Qty</div>
+<div class="col-span-2 text-right">Price (₹)</div>
+<div class="col-span-1"></div>
+</div>
+<!-- Rows (Form Inputs) -->
+<div class="space-y-6" id="line-items-container">
+<!-- Row 1: Fabric -->
+<div class="grid grid-cols-12 gap-4 items-end group">
+<div class="col-span-4">
+<input class="w-full input-editorial font-body-lg text-on-background" placeholder="Item Name" type="text" value="Fabric"/>
+</div>
+<div class="col-span-3">
+<input class="w-full input-editorial font-body-md text-on-surface-variant" placeholder="Description" type="text" value="Premium Raw Silk"/>
+</div>
+<div class="col-span-2">
+<input class="w-full input-editorial font-body-md text-on-background text-right" placeholder="0" type="number" value="1"/>
+</div>
+<div class="col-span-2 relative">
+<input class="w-full input-editorial font-headline-md text-on-background text-right" placeholder="0.00" type="text" value="45,000"/>
+</div>
+<div class="col-span-1 flex justify-end pb-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-error hover:text-on-error-container"><span class="material-symbols-outlined">close</span></button>
+</div>
+</div>
+<!-- Row 2: Stitching -->
+<div class="grid grid-cols-12 gap-4 items-end group">
+<div class="col-span-4">
+<input class="w-full input-editorial font-body-lg text-on-background" placeholder="Item Name" type="text" value="Stitching &amp; Construction"/>
+</div>
+<div class="col-span-3">
+<input class="w-full input-editorial font-body-md text-on-surface-variant" placeholder="Description" type="text" value="Bespoke Tailoring"/>
+</div>
+<div class="col-span-2">
+<input class="w-full input-editorial font-body-md text-on-background text-right" placeholder="0" type="number" value="1"/>
+</div>
+<div class="col-span-2">
+<input class="w-full input-editorial font-headline-md text-on-background text-right" placeholder="0.00" type="text" value="25,000"/>
+</div>
+<div class="col-span-1 flex justify-end pb-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-error hover:text-on-error-container"><span class="material-symbols-outlined">close</span></button>
+</div>
+</div>
+<!-- Row 3: Embroidery -->
+<div class="grid grid-cols-12 gap-4 items-end group">
+<div class="col-span-4">
+<input class="w-full input-editorial font-body-lg text-on-background" placeholder="Item Name" type="text" value="Embroidery"/>
+</div>
+<div class="col-span-3">
+<input class="w-full input-editorial font-body-md text-on-surface-variant" placeholder="Description" type="text" value="Handcrafted Zardosi"/>
+</div>
+<div class="col-span-2">
+<input class="w-full input-editorial font-body-md text-on-background text-right" placeholder="0" type="number" value="1"/>
+</div>
+<div class="col-span-2">
+<input class="w-full input-editorial font-headline-md text-on-background text-right" placeholder="0.00" type="text" value="65,000"/>
+</div>
+<div class="col-span-1 flex justify-end pb-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-error hover:text-on-error-container"><span class="material-symbols-outlined">close</span></button>
+</div>
+</div>
+<!-- Row 4: Fittings -->
+<div class="grid grid-cols-12 gap-4 items-end group">
+<div class="col-span-4">
+<input class="w-full input-editorial font-body-lg text-on-background" placeholder="Item Name" type="text" value="Fittings &amp; Alterations"/>
+</div>
+<div class="col-span-3">
+<input class="w-full input-editorial font-body-md text-on-surface-variant" placeholder="Description" type="text" value="2 Studio Sessions"/>
+</div>
+<div class="col-span-2">
+<input class="w-full input-editorial font-body-md text-on-background text-right" placeholder="0" type="number" value="2"/>
+</div>
+<div class="col-span-2">
+<input class="w-full input-editorial font-headline-md text-on-background text-right" placeholder="0.00" type="text" value="5,000"/>
+</div>
+<div class="col-span-1 flex justify-end pb-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-error hover:text-on-error-container"><span class="material-symbols-outlined">close</span></button>
+</div>
+</div>
+</div>
+<!-- Add Item Button -->
+<div class="mt-8">
+<button class="flex items-center gap-2 font-label-sm text-label-sm uppercase tracking-widest text-primary-container hover:text-primary transition-colors py-2">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+                                Add Line Item
+                            </button>
+</div>
+</div>
+<!-- Lower Section: Logistics & Totals Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-16 mt-16 pt-16 border-t border-outline-variant">
+<!-- Left Col: Terms & Dates -->
+<div class="space-y-12">
+<!-- Financial Logistics -->
+<div class="grid grid-cols-2 gap-8">
+<div class="relative group">
+<label class="block font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-2 transition-colors group-focus-within:text-primary-container">Advance Required (₹)</label>
+<input class="w-full input-editorial font-headline-md text-on-background" type="text" value="15,000"/>
+</div>
+<div class="relative group">
+<label class="block font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-2 transition-colors group-focus-within:text-primary-container">Expected Completion</label>
+<input class="w-full input-editorial font-body-lg text-on-background" type="date" value="2023-12-20"/>
+</div>
+</div>
+<!-- Text Areas -->
+<div class="relative group">
+<label class="block font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-2 transition-colors group-focus-within:text-primary-container">Alteration Terms</label>
+<textarea class="w-full border-b border-on-background bg-transparent outline-none focus:border-b-2 focus:border-primary-container transition-all font-body-md resize-none py-2 text-on-background" rows="2">Includes 2 standard fitting sessions. Major design changes post-production start will incur additional 15% charge.</textarea>
+</div>
+<div class="relative group">
+<label class="block font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-2 transition-colors group-focus-within:text-primary-container">Internal Notes (Not shared with client)</label>
+<textarea class="w-full border-b border-on-background bg-transparent outline-none focus:border-b-2 focus:border-primary-container transition-all font-body-md resize-none py-2 text-on-surface-variant" rows="2">Ensure we source the raw silk from the secondary vendor due to current timeline constraints.</textarea>
+</div>
+</div>
+<!-- Right Col: Totals Calculator -->
+<div class="bg-surface p-8 ghost-border relative overflow-hidden">
+<!-- Decorative element -->
+<div class="absolute -right-12 -bottom-12 w-48 h-48 border border-outline-variant rounded-full opacity-20"></div>
+<div class="absolute -right-24 -bottom-24 w-64 h-64 border border-outline-variant rounded-full opacity-10"></div>
+<div class="space-y-6 relative z-10">
+<div class="flex justify-between items-end pb-4 border-b border-outline-variant border-opacity-50">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">Subtotal</span>
+<span class="font-body-lg text-body-lg text-on-background">₹ 1,40,000</span>
+</div>
+<div class="flex justify-between items-end pb-4 border-b border-outline-variant border-opacity-50">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">Tax (GST 12%)</span>
+<span class="font-body-lg text-body-lg text-on-background">₹ 16,800</span>
+</div>
+<div class="pt-8 flex justify-between items-end">
+<div>
+<span class="block font-label-sm text-label-sm uppercase tracking-widest text-primary-container mb-2">Total Amount</span>
+<span class="text-[12px] text-on-surface-variant">INR</span>
+</div>
+<span class="font-display-lg text-display-lg text-on-background tracking-tighter">₹ 1,56,800</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Floating Action Bar (Sticky Bottom) -->
+<div class="fixed bottom-0 left-64 right-0 bg-background/90 backdrop-blur-md border-t border-outline-variant px-margin-desktop py-6 flex justify-between items-center z-30">
+<button class="px-8 py-3 bg-transparent border border-on-background text-on-background font-label-sm text-label-sm uppercase tracking-widest hover:bg-surface-container-high transition-colors">
+                        Save as Draft
+                    </button>
+<button class="px-12 py-4 bg-on-background text-on-primary font-headline-md text-[16px] hover:bg-tertiary transition-colors flex items-center gap-3 group shadow-[0_10px_30px_rgba(26,26,26,0.15)]">
+                        Send Offer to Client
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</main>
+</div>
+</body></html>

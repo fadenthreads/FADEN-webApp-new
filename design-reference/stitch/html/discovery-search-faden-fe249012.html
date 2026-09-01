@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FADEN - Discovery</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&amp;family=Syne:wght@400..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#1c1b1b",
+                        "on-primary-container": "#fffdff",
+                        "surface-dim": "#dcd9d9",
+                        "tertiary-container": "#b75760",
+                        "surface-bright": "#fcf9f8",
+                        "on-tertiary-container": "#fffcff",
+                        "tertiary-fixed-dim": "#ffb2b6",
+                        "on-secondary-fixed": "#261900",
+                        "outline": "#88726d",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#f0eded",
+                        "surface-container-low": "#f6f3f2",
+                        "primary": "#94452e",
+                        "secondary-fixed-dim": "#e9c176",
+                        "tertiary": "#983f49",
+                        "surface-variant": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#7c2a34",
+                        "primary-fixed-dim": "#ffb5a0",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e5e2e1",
+                        "primary-fixed": "#ffdbd1",
+                        "secondary-fixed": "#ffdea5",
+                        "tertiary-fixed": "#ffdadb",
+                        "inverse-on-surface": "#f3f0ef",
+                        "secondary-container": "#fed488",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#eae7e7",
+                        "surface-tint": "#974730",
+                        "on-primary-fixed-variant": "#78301b",
+                        "secondary": "#775a19",
+                        "inverse-primary": "#ffb5a0",
+                        "outline-variant": "#dbc1ba",
+                        "on-surface-variant": "#55433e",
+                        "on-primary-fixed": "#3b0900",
+                        "background": "#fcf9f8",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#b35d44",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#40000d",
+                        "on-secondary-container": "#785a1a",
+                        "inverse-surface": "#313030",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1c1b1b",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "surface": "#fcf9f8",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "gutter": "24px",
+                        "section-gap": "120px",
+                        "margin-desktop": "64px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Karla"],
+                        "headline-lg": ["Syne"],
+                        "display-lg": ["Syne"],
+                        "display-xl": ["Syne"],
+                        "headline-lg-mobile": ["Syne"],
+                        "body-lg": ["Karla"],
+                        "body-md": ["Karla"],
+                        "headline-md": ["Syne"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "display-xl": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .ghost-border { border: 1px solid rgba(229, 226, 225, 0.5); }
+        .whisper-shadow { box-shadow: 0px 4px 20px rgba(26, 26, 26, 0.04); }
+        .input-underline { border-bottom: 1px solid #1c1b1b; transition: all 0.3s; }
+        .input-underline:focus-within { border-bottom: 2px solid #b35d44; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md antialiased overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="bg-background border-b border-outline-variant/30 sticky top-0 z-50 transition-all duration-300 ease-in-out w-full">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-6 max-w-[1440px] mx-auto">
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-on-surface-variant font-label-sm tracking-widest uppercase hover:text-primary transition-colors duration-300" href="#">Boutiques</a>
+<a class="text-primary border-b border-primary pb-1 font-label-sm tracking-widest uppercase transition-colors duration-300" href="#">Designs</a>
+<a class="text-on-surface-variant font-label-sm tracking-widest uppercase hover:text-primary transition-colors duration-300" href="#">Materials</a>
+<a class="text-on-surface-variant font-label-sm tracking-widest uppercase hover:text-primary transition-colors duration-300" href="#">Atelier</a>
+</nav>
+<div class="flex-shrink-0 flex items-center justify-center">
+<img alt="FADEN Logo" class="h-12 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuByu5xyYO_z0bRR_RudiamB_Ckd9VWrbJ5xOsmKCNMCW-cpb9PsbZhlgQpxr-5saax3lw0UM3i1i0Y87r4T1jYSEGI-293cpMkcp6OycdZWgsPt4R_eU16Ikt97HWmi11Jgsx0NJROXViw4aAqYMzmx6sE71YjO77rrcZRr7KignBo0sSecf0wT1nGcZhc1fBL6b32j9YBdcYIsEXUMjPy3iyXGlkBGdJwm6wxyuWbaeFnsbkWfkWD6"/>
+</div>
+<div class="flex gap-6 items-center">
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-300 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-300 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-300 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-grow w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop py-12">
+<!-- Search Area -->
+<section class="mb-section-gap">
+<div class="max-w-4xl mx-auto flex flex-col gap-8">
+<h1 class="font-display-lg text-display-lg text-center">Discover the Atelier</h1>
+<div class="flex flex-col md:flex-row gap-4 items-end">
+<div class="flex-grow input-underline flex flex-col gap-2 pb-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Search</label>
+<input class="bg-transparent border-none outline-none font-body-lg w-full text-on-background placeholder-outline-variant p-0 focus:ring-0" placeholder="Search across Boutiques, Designs, Materials" type="text"/>
+</div>
+<div class="md:w-64 input-underline flex flex-col gap-2 pb-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Location</label>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline" data-icon="location_on">location_on</span>
+<input class="bg-transparent border-none outline-none font-body-lg w-full text-on-background placeholder-outline-variant p-0 focus:ring-0" placeholder="Hyderabad" type="text"/>
+</div>
+</div>
+</div>
+<div class="flex justify-center gap-12 border-b border-outline-variant/30 pt-8">
+<button class="pb-4 font-label-sm text-label-sm uppercase tracking-widest text-primary border-b-2 border-primary">Boutiques</button>
+<button class="pb-4 font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">Designs</button>
+<button class="pb-4 font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">Materials</button>
+</div>
+</div>
+</section>
+<div class="flex flex-col md:flex-row gap-12">
+<!-- Sidebar Filters -->
+<aside class="w-full md:w-64 flex-shrink-0 hidden md:block border-r border-outline-variant/30 pr-8">
+<div class="flex items-center justify-between mb-8">
+<span class="font-headline-md text-headline-md">Filters</span>
+<button class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary">Reset</button>
+</div>
+<div class="flex flex-col gap-8">
+<!-- Filter Group -->
+<div>
+<h4 class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant mb-4">Occasion</h4>
+<div class="flex flex-col gap-3">
+<label class="flex items-center gap-3 cursor-pointer">
+<input checked="" class="form-checkbox text-on-background border-on-surface-variant rounded-none bg-transparent focus:ring-on-background focus:ring-offset-background" type="checkbox"/>
+<span class="font-body-md text-body-md">Bridal</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="form-checkbox text-on-background border-on-surface-variant rounded-none bg-transparent focus:ring-on-background focus:ring-offset-background" type="checkbox"/>
+<span class="font-body-md text-body-md">Festive</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="form-checkbox text-on-background border-on-surface-variant rounded-none bg-transparent focus:ring-on-background focus:ring-offset-background" type="checkbox"/>
+<span class="font-body-md text-body-md">Casual</span>
+</label>
+</div>
+</div>
+<div class="h-px bg-outline-variant/30 w-full"></div>
+<!-- Filter Group -->
+<div>
+<h4 class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant mb-4">Services</h4>
+<div class="flex flex-col gap-3">
+<label class="flex items-center gap-3 cursor-pointer">
+<input checked="" class="form-checkbox text-on-background border-on-surface-variant rounded-none bg-transparent focus:ring-on-background focus:ring-offset-background" type="checkbox"/>
+<span class="font-body-md text-body-md">Home Fitting</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="form-checkbox text-on-background border-on-surface-variant rounded-none bg-transparent focus:ring-on-background focus:ring-offset-background" type="checkbox"/>
+<span class="font-body-md text-body-md">Video Consultation</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="form-checkbox text-on-background border-on-surface-variant rounded-none bg-transparent focus:ring-on-background focus:ring-offset-background" type="checkbox"/>
+<span class="font-body-md text-body-md">Rush Orders</span>
+</label>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Results -->
+<section class="flex-grow">
+<div class="flex justify-between items-end mb-8">
+<span class="font-body-md text-body-md text-on-surface-variant">Showing 24 Boutiques</span>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 border-b border-on-background pb-1">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">Sort by:</span>
+<select class="bg-transparent border-none outline-none font-body-md text-on-background p-0 focus:ring-0 pr-4">
+<option>Recommended</option>
+<option>Highest Rated</option>
+<option>Nearest</option>
+</select>
+</div>
+<div class="hidden sm:flex gap-2">
+<button class="p-2 text-primary bg-surface-container rounded-DEFAULT transition-colors hover:bg-surface-container-high">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary rounded-DEFAULT transition-colors">
+<span class="material-symbols-outlined" data-icon="view_list">view_list</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary rounded-DEFAULT transition-colors">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-8 gap-y-16">
+<!-- Card 1 -->
+<article class="flex flex-col group cursor-pointer">
+<div class="relative w-full aspect-[4/5] bg-surface-container overflow-hidden mb-4">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A high-fashion editorial photograph of a luxurious boutique interior. Warm, inviting light mode aesthetic. Terracotta accents, natural stone textures, and meticulous architectural linework. High contrast, elegant negative space." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBFLUq_9slCaDmOCWMpKSt2uX08xlCfvKB9s4gqQsdpiRdGMWghQkznciE2io1wdkSawBCaFcm_UoIYIJAfqsCVBqM8cgUZl0-wTyb7k-BuwlwUMlP9JbSMJ2Ii8gF1ImqBzrcLhvmXLjuFaVjVr4aUUFCDGPdu5TJ6sfcMLfcliiDoyHk1BZb66c0S-w5ceQbBeX5ZDMjcNZdSaPzUk_4CXprz8_L9Oyoe97s01Jih8aU-gjYuRU56')"></div>
+<div class="absolute top-4 left-4 flex flex-col gap-2">
+<span class="bg-secondary text-on-secondary font-label-sm text-label-sm uppercase px-3 py-1 rounded-full border border-secondary/50 whisper-shadow backdrop-blur-sm bg-opacity-90 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="verified">verified</span> Verified
+                                </span>
+</div>
+<button class="absolute top-4 right-4 p-2 bg-surface-bright/80 backdrop-blur-sm text-on-background rounded-full hover:bg-surface-bright transition-colors">
+<span class="material-symbols-outlined" data-icon="bookmark_border">bookmark_border</span>
+</button>
+</div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md leading-tight group-hover:text-primary transition-colors">Studio Vanya</h3>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary" data-icon="star" data-weight="fill">star</span>
+<span class="font-body-md text-body-md font-medium">4.9</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Known for intricate zardosi and bespoke bridal trousseaus.</p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="border border-outline-variant/50 text-on-surface-variant font-label-sm text-label-sm uppercase px-2 py-1 rounded-sm">Home Fitting</span>
+<span class="border border-outline-variant/50 text-on-surface-variant font-label-sm text-label-sm uppercase px-2 py-1 rounded-sm">Video Consult</span>
+</div>
+<div class="flex items-center justify-between mt-auto pt-4 border-t border-outline-variant/30">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-medium">₹25,000 onwards</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-widest uppercase">3-5 weeks</span>
+</div>
+<button class="bg-on-background text-on-primary font-headline-lg font-medium text-[14px] px-6 py-3 hover:bg-primary-container transition-colors duration-300">
+                                View Atelier
+                            </button>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="flex flex-col group cursor-pointer">
+<div class="relative w-full aspect-[4/5] bg-surface-container overflow-hidden mb-4">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Close up editorial shot of bespoke tailoring materials. Luxurious fabrics in terracotta and deep reds draped over a minimalist white marble table. Soft natural light, high-end experimental luxury aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDGc7VaK19Hfg6AxagBoGQZa-rJ2szXTGH9SVZUylri_2zMWnDHqKKRGGHbPokpyjB0BpYREHuZocZYy-aO1dLKDl6x4mHWVHuaen6ZAqRqUuRTouLL2jFfcvgb1lfDeowrFiyHOe7lhGfTp0Rv19bhyryX2uRS3Eu5y3WVmSgeVN5WdVlvUClZdZgeLeBoSSPY4TRDRjkjCdTzL3PxtdbSPJdNJ9I12WrgsV0NU_bbApoNdfP1RZUF')"></div>
+<button class="absolute top-4 right-4 p-2 bg-surface-bright/80 backdrop-blur-sm text-on-background rounded-full hover:bg-surface-bright transition-colors">
+<span class="material-symbols-outlined" data-icon="bookmark_border">bookmark_border</span>
+</button>
+</div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md leading-tight group-hover:text-primary transition-colors">The Loom House</h3>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary" data-icon="star" data-weight="fill">star</span>
+<span class="font-body-md text-body-md font-medium">4.7</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Minimalist contemporary silhouttes crafted from organic linens.</p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="border border-outline-variant/50 text-on-surface-variant font-label-sm text-label-sm uppercase px-2 py-1 rounded-sm">Rush Orders</span>
+</div>
+<div class="flex items-center justify-between mt-auto pt-4 border-t border-outline-variant/30">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-medium">₹12,000 onwards</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-widest uppercase">1-2 weeks</span>
+</div>
+<button class="bg-on-background text-on-primary font-headline-lg font-medium text-[14px] px-6 py-3 hover:bg-primary-container transition-colors duration-300">
+                                View Atelier
+                            </button>
+</div>
+</article>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full bg-on-background pt-section-gap pb-margin-desktop px-margin-mobile md:px-margin-desktop text-surface-bright">
+<div class="max-w-[1440px] mx-auto flex flex-col items-center">
+<h2 class="text-display-xl font-display-xl text-surface-bright mb-8">FADEN</h2>
+<nav class="flex flex-wrap justify-center gap-8 mb-16">
+<a class="text-surface-variant/70 font-label-sm tracking-widest uppercase hover:text-primary-fixed-dim transition-colors duration-200" href="#">The Story</a>
+<a class="text-surface-variant/70 font-label-sm tracking-widest uppercase hover:text-primary-fixed-dim transition-colors duration-200" href="#">Sustainability</a>
+<a class="text-surface-variant/70 font-label-sm tracking-widest uppercase hover:text-primary-fixed-dim transition-colors duration-200" href="#">Boutique Portal</a>
+<a class="text-surface-variant/70 font-label-sm tracking-widest uppercase hover:text-primary-fixed-dim transition-colors duration-200" href="#">Terms of Service</a>
+<a class="text-surface-variant/70 font-label-sm tracking-widest uppercase hover:text-primary-fixed-dim transition-colors duration-200" href="#">Privacy Policy</a>
+</nav>
+<div class="text-surface-variant/50 font-label-sm text-label-sm tracking-widest uppercase">
+                © 2024 FADEN ATELIER. ALL RIGHTS RESERVED.
+            </div>
+</div>
+</footer>
+</body></html>

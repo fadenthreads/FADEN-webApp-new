@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Studio Vanya | FADEN Digital Atelier</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&amp;family=Syne:wght@400..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#93000a",
+                        "outline-variant": "#dbc1ba",
+                        "error-container": "#ffdad6",
+                        "primary-container": "#b35d44",
+                        "on-tertiary-container": "#fffcff",
+                        "secondary-fixed-dim": "#e9c176",
+                        "on-primary-fixed": "#3b0900",
+                        "on-surface": "#1c1b1b",
+                        "surface-dim": "#dcd9d9",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#b75760",
+                        "inverse-primary": "#ffb5a0",
+                        "on-error": "#ffffff",
+                        "surface-container": "#f0eded",
+                        "surface-bright": "#fcf9f8",
+                        "secondary-container": "#fed488",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "secondary": "#775a19",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#261900",
+                        "secondary-fixed": "#ffdea5",
+                        "on-primary-fixed-variant": "#78301b",
+                        "surface-variant": "#e5e2e1",
+                        "primary": "#94452e",
+                        "surface-container-low": "#f6f3f2",
+                        "on-surface-variant": "#55433e",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-secondary-container": "#785a1a",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-primary-container": "#fffdff",
+                        "background": "#fcf9f8",
+                        "primary-fixed": "#ffdbd1",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#983f49",
+                        "on-tertiary-fixed-variant": "#7c2a34",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#974730",
+                        "outline": "#88726d",
+                        "tertiary-fixed-dim": "#ffb2b6",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#1c1b1b",
+                        "tertiary-fixed": "#ffdadb",
+                        "surface": "#fcf9f8",
+                        "on-tertiary-fixed": "#40000d",
+                        "inverse-surface": "#313030",
+                        "primary-fixed-dim": "#ffb5a0",
+                        "surface-container-high": "#eae7e7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "section-gap": "120px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Syne"],
+                        "headline-md": ["Syne"],
+                        "label-sm": ["Karla"],
+                        "headline-lg": ["Syne"],
+                        "body-md": ["Karla"],
+                        "display-lg": ["Syne"],
+                        "display-xl": ["Syne"],
+                        "body-lg": ["Karla"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "display-xl": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="bg-background dark:bg-surface-container-lowest sticky top-0 w-full z-50 border-b border-outline-variant dark:border-on-surface-variant flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 mx-auto">
+<div class="flex items-center gap-6">
+<a class="font-display-lg text-display-lg font-bold tracking-tighter text-on-surface dark:text-surface-bright" href="#">FADEN</a>
+<div class="hidden md:flex gap-6 items-center">
+<a class="text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary pb-1 font-label-sm text-label-sm uppercase tracking-widest" href="#">Boutiques</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors duration-300 pb-1 font-label-sm text-label-sm uppercase tracking-widest" href="#">Designs</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors duration-300 pb-1 font-label-sm text-label-sm uppercase tracking-widest" href="#">Materials</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors duration-300 pb-1 font-label-sm text-label-sm uppercase tracking-widest" href="#">Atelier</a>
+</div>
+</div>
+<div class="flex gap-4 items-center">
+<button class="scale-95 active:opacity-80 transition-all text-on-surface"><span class="material-symbols-outlined">location_on</span></button>
+<button class="scale-95 active:opacity-80 transition-all text-on-surface"><span class="material-symbols-outlined">shopping_bag</span></button>
+<button class="scale-95 active:opacity-80 transition-all text-on-surface"><span class="material-symbols-outlined">person</span></button>
+</div>
+</nav>
+<main class="max-w-[1440px] mx-auto w-full pb-section-gap">
+<!-- Hero Section -->
+<section class="relative w-full h-[60vh] md:h-[80vh] flex items-end">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A sweeping, high-fashion editorial shot of a luxury bridal and occasion wear studio interior in Hyderabad, India. The space features warm terracotta accents against pristine ivory walls, with racks of intricately hand-embroidered zardosi garments catching soft, natural light. The mood is sophisticated, creative, and premium." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDZd0dgOacmsq7ItFu__GfGs4GdTW1F3d1C4k8kG4EddfHJ8G5oaIfJ-mKGX1ikcYw8Rk6TmsmW60-kc7YawrshTI433YQCHij3F2G44ofvJu1utdkIKN6GflGMULTWJSG8gD0HtzeZiX0FETXXRnodHAm8uJxKAdyn8JvymeSrRI5-f6Ka9yborzRwZv3bdQAVym2mQNpfRq00Ha0Y2IJRxnVV5hUxwZswJ91P_bCygO4DZwnCIKMF')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface/80 to-transparent"></div>
+<div class="relative z-10 p-margin-mobile md:p-margin-desktop w-full grid grid-cols-1 md:grid-cols-12 gap-gutter items-end">
+<div class="md:col-span-8 text-surface-bright flex flex-col gap-4">
+<div class="flex items-center gap-4 mb-4">
+<img alt="Studio Vanya Logo" class="w-20 h-20 rounded-md object-cover border border-surface-bright/20 shadow-lg" src="https://lh3.googleusercontent.com/aida/AEtjO1UyL5ZqXwPmsGAbVe8vkD6pHIRzqzClHpSfSwKro1lskj5Wuh9PoU9-IQ-oTrFlCZDxvA_EpsC9rKnggcn2WNnCryNL6AnAYrYTRk0sCTn8NIwM2_kKudS8HUwtfwUICSNGWq-ECBx-hxJmmZvwcp4S34UIAL4AdwDU2cH-_1N-sszR4RB1CiY321XFuH1wYnHNC2R_FMzTFXTPIBxxPMbaDtRcoFyt7PnzVpcUd6p8nKw_BWR5gNgUvdw"/>
+<div>
+<h1 class="font-display-xl text-display-xl tracking-tighter">Studio Vanya</h1>
+<div class="flex items-center gap-3 mt-2 text-surface-bright/90">
+<span class="flex items-center gap-1 font-label-sm text-label-sm"><span class="material-symbols-outlined text-[16px] text-secondary-fixed-dim" style="font-variation-settings: 'FILL' 1;">verified</span> Verified Boutique</span>
+<span>•</span>
+<span class="flex items-center gap-1 font-label-sm text-label-sm"><span class="material-symbols-outlined text-[16px] text-secondary-fixed-dim" style="font-variation-settings: 'FILL' 1;">star</span> 4.9 (128 Reviews)</span>
+<span>•</span>
+<span class="flex items-center gap-1 font-label-sm text-label-sm"><span class="material-symbols-outlined text-[16px]">location_on</span> Hyderabad</span>
+</div>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-3 py-1 border border-surface-bright/30 rounded-full font-label-sm text-label-sm uppercase tracking-widest text-surface-bright">Bridal</span>
+<span class="px-3 py-1 border border-surface-bright/30 rounded-full font-label-sm text-label-sm uppercase tracking-widest text-surface-bright">Occasion Wear</span>
+<span class="px-3 py-1 border border-surface-bright/30 rounded-full font-label-sm text-label-sm uppercase tracking-widest text-surface-bright">Custom Blouses</span>
+</div>
+</div>
+<div class="md:col-span-4 flex flex-col gap-3">
+<button class="w-full bg-on-surface text-on-primary py-4 px-6 font-headline-md text-headline-md hover:bg-surface-tint transition-colors duration-300 shadow-md">Create an Outfit With This Boutique</button>
+<div class="flex gap-3">
+<button class="flex-1 border border-surface-bright text-surface-bright py-3 px-4 font-label-sm text-label-sm uppercase tracking-widest hover:bg-surface-bright/10 transition-colors">Message</button>
+<button class="flex-1 border border-surface-bright text-surface-bright py-3 px-4 font-label-sm text-label-sm uppercase tracking-widest hover:bg-surface-bright/10 transition-colors">Book Fitting</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Stats Bar -->
+<section class="border-b border-outline-variant/30 bg-surface-container-lowest">
+<div class="px-margin-mobile md:px-margin-desktop py-6 grid grid-cols-1 md:grid-cols-3 gap-6 divide-y md:divide-y-0 md:divide-x divide-outline-variant/30">
+<div class="flex items-center gap-4 pt-4 md:pt-0">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">Response Time</p>
+<p class="font-body-md text-body-md text-on-surface font-medium">Responds within 2 hours</p>
+</div>
+</div>
+<div class="flex items-center gap-4 pt-4 md:pt-0 md:pl-6">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">event_available</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">Next Available</p>
+<p class="font-body-md text-body-md text-on-surface font-medium">Sept 5</p>
+</div>
+</div>
+<div class="flex items-center gap-4 pt-4 md:pt-0 md:pl-6">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">hourglass_top</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">Creation Time</p>
+<p class="font-body-md text-body-md text-on-surface font-medium">3-5 weeks average</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Boutique Story -->
+<section class="px-margin-mobile md:px-margin-desktop py-section-gap">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="md:col-span-5 md:pr-12">
+<h2 class="font-display-lg text-display-lg mb-8 tracking-tighter">The Atelier Story</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-6 leading-relaxed">
+                        Studio Vanya is a celebration of artisanal craftsmanship and modern silhouettes. For over 12 years, we have been crafting bespoke luxury wear that honors the rich heritage of Indian textiles while pushing the boundaries of contemporary design.
+                    </p>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8 leading-relaxed">
+                        Our philosophy centers on 'Experimental Luxury' — pieces that are intellectually curious, beautifully constructed, and deeply personal. Every garment is a dialogue between the artisan and the wearer.
+                    </p>
+<div class="space-y-6">
+<div>
+<h3 class="font-label-sm text-label-sm uppercase tracking-widest text-outline mb-2">Specialties</h3>
+<p class="font-headline-md text-headline-md">Hand-embroidery &amp; Zardosi</p>
+</div>
+<div>
+<h3 class="font-label-sm text-label-sm uppercase tracking-widest text-outline mb-2">Experience</h3>
+<p class="font-headline-md text-headline-md">12 Years of Craftsmanship</p>
+</div>
+</div>
+</div>
+<div class="md:col-span-7 relative h-[500px] md:h-auto mt-8 md:mt-0 group overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A close-up, high-fashion detail shot of hands working on intricate Zardosi embroidery on deep terracotta fabric. The lighting is dramatic and directional, highlighting the metallic threads and beads. The scene captures the essence of artisanal craftsmanship in a premium, warm-toned atelier setting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBCKUo2smDgJIOKy7rhwm5zv-USNgC9_bAA_Rg_HsWfaUQsTqTa-ta3FXBSTHVfFL84FVmeAZFtPKlOSdQonjm1xouIsPZepOK90NA__YFbtgRw0spkrAUwttmVbfp6cmhyhTD6wqUFpHNGKixfW4R7Hl_DDov3uYmvDDirr9V8XFbtPbiCZcBtJ_JZHWIi5BsYe42VzSe4kMt13eRfjoc_1dqld51u_O27tGfYBQZ7FACbdsufUWyF')"></div>
+<div class="absolute inset-0 border border-outline-variant/50 m-4 pointer-events-none"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-on-surface dark:bg-surface-container-lowest flex flex-col px-margin-mobile md:px-margin-desktop py-section-gap w-full">
+<h2 class="font-display-xl text-display-xl text-surface-bright dark:text-on-surface mb-8">FADEN</h2>
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 border-t border-surface-variant/20 pt-8">
+<div class="flex flex-wrap gap-6">
+<a class="text-surface-variant opacity-80 hover:text-primary-fixed transition-opacity font-label-sm text-label-sm uppercase tracking-widest" href="#">The Story</a>
+<a class="text-surface-variant opacity-80 hover:text-primary-fixed transition-opacity font-label-sm text-label-sm uppercase tracking-widest" href="#">Sustainability</a>
+<a class="text-surface-variant opacity-80 hover:text-primary-fixed transition-opacity font-label-sm text-label-sm uppercase tracking-widest" href="#">Boutique Portal</a>
+<a class="text-surface-variant opacity-80 hover:text-primary-fixed transition-opacity font-label-sm text-label-sm uppercase tracking-widest" href="#">Terms of Service</a>
+<a class="text-surface-variant opacity-80 hover:text-primary-fixed transition-opacity font-label-sm text-label-sm uppercase tracking-widest" href="#">Privacy Policy</a>
+</div>
+<p class="text-surface-variant opacity-60 font-body-md text-body-md">© 2024 FADEN Digital Atelier. All rights reserved.</p>
+</div>
+</footer>
+</body></html>

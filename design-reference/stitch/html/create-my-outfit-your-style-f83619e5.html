@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Create My Outfit - Step 2: Your Style | FADEN</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&amp;family=Karla:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#93000a",
+                        "outline-variant": "#dbc1ba",
+                        "error-container": "#ffdad6",
+                        "primary-container": "#b35d44",
+                        "on-tertiary-container": "#fffcff",
+                        "secondary-fixed-dim": "#e9c176",
+                        "on-primary-fixed": "#3b0900",
+                        "on-surface": "#1c1b1b",
+                        "surface-dim": "#dcd9d9",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#b75760",
+                        "inverse-primary": "#ffb5a0",
+                        "on-error": "#ffffff",
+                        "surface-container": "#f0eded",
+                        "surface-bright": "#fcf9f8",
+                        "secondary-container": "#fed488",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "secondary": "#775a19",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#261900",
+                        "secondary-fixed": "#ffdea5",
+                        "on-primary-fixed-variant": "#78301b",
+                        "surface-variant": "#e5e2e1",
+                        "primary": "#94452e",
+                        "surface-container-low": "#f6f3f2",
+                        "on-surface-variant": "#55433e",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-secondary-container": "#785a1a",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-primary-container": "#fffdff",
+                        "background": "#fcf9f8",
+                        "primary-fixed": "#ffdbd1",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#983f49",
+                        "on-tertiary-fixed-variant": "#7c2a34",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#974730",
+                        "outline": "#88726d",
+                        "tertiary-fixed-dim": "#ffb2b6",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#1c1b1b",
+                        "tertiary-fixed": "#ffdadb",
+                        "surface": "#fcf9f8",
+                        "on-tertiary-fixed": "#40000d",
+                        "inverse-surface": "#313030",
+                        "primary-fixed-dim": "#ffb5a0",
+                        "surface-container-high": "#eae7e7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "section-gap": "120px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Syne"],
+                        "headline-md": ["Syne"],
+                        "label-sm": ["Karla"],
+                        "headline-lg": ["Syne"],
+                        "body-md": ["Karla"],
+                        "display-lg": ["Syne"],
+                        "display-xl": ["Syne"],
+                        "body-lg": ["Karla"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "display-xl": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .whisper-shadow { box-shadow: 0px 4px 20px rgba(26, 26, 26, 0.04); }
+        .ghost-border { border: 1px solid theme('colors.outline-variant'); }
+        .selection-card { transition: all 0.3s ease; cursor: pointer; }
+        .selection-card.selected { border-color: theme('colors.primary'); background-color: theme('colors.surface-container-low'); }
+        .selection-card:hover:not(.selected) { border-color: theme('colors.outline'); }
+        
+        .color-swatch { width: 48px; height: 48px; border-radius: 50%; cursor: pointer; transition: transform 0.2s; border: 1px solid theme('colors.outline-variant'); }
+        .color-swatch:hover { transform: scale(1.1); }
+        .color-swatch.selected { border: 2px solid theme('colors.on-surface'); padding: 2px; }
+        
+        /* Custom radio styling to hide default input */
+        .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased flex flex-col min-h-screen">
+<!-- Top Navigation (Suppressed - Transactional Page per Semantic Shell Mandate) -->
+<!-- Minimal Header for Transactional Flow -->
+<header class="w-full flex justify-between items-center px-margin-mobile md:px-margin-desktop py-6 border-b ghost-border bg-surface-container-lowest sticky top-0 z-50">
+<div class="font-display-lg text-display-lg font-bold tracking-tighter text-on-surface">FADEN</div>
+<div class="flex items-center gap-4">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Step 2 of 6</span>
+<button class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest hover:text-primary transition-colors duration-300">Save &amp; Exit</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop py-section-gap flex flex-col gap-16">
+<!-- Header Section -->
+<section class="max-w-3xl">
+<h1 class="font-display-xl text-display-xl text-on-surface mb-6">What do you have in mind?</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Define the aesthetic foundation of your bespoke piece. Select your preferences below, or let our expert atelier guide the design based on your initial vision.</p>
+</section>
+<!-- Form Content -->
+<form class="flex flex-col gap-24">
+<!-- Expert Option Hero -->
+<div class="w-full bg-surface-container-low p-8 md:p-12 ghost-border flex flex-col md:flex-row items-center justify-between gap-8 group cursor-pointer hover:bg-surface-container transition-colors duration-300">
+<div class="flex items-start gap-6">
+<span class="material-symbols-outlined text-4xl text-primary" data-weight="fill" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Expert Curation</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">I'm not sure — let my boutique suggest the best silhouette, fabrics, and details for my vision.</p>
+</div>
+</div>
+<div class="relative">
+<input class="visually-hidden peer" id="expert-mode" type="checkbox"/>
+<label class="w-16 h-8 bg-surface-variant rounded-full flex items-center p-1 cursor-pointer peer-checked:bg-primary transition-colors duration-300" for="expert-mode">
+<div class="w-6 h-6 bg-surface-container-lowest rounded-full shadow-sm transform peer-checked:translate-x-8 transition-transform duration-300"></div>
+</label>
+</div>
+</div>
+<div class="flex flex-col gap-24 transition-opacity duration-500" id="detailed-selections">
+<!-- Color Palette -->
+<section>
+<div class="flex items-baseline justify-between mb-8 border-b ghost-border pb-4">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Color Story</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Select up to 3</span>
+</div>
+<div class="flex flex-wrap gap-6">
+<label class="color-swatch bg-[#1A1A1A]" title="Midnight Charcoal">
+<input class="visually-hidden" type="checkbox"/>
+</label>
+<label class="color-swatch bg-[#F3F0EF]" title="Alabaster Ivory">
+<input class="visually-hidden" type="checkbox"/>
+</label>
+<label class="color-swatch bg-[#94452E]" title="Terracotta Earth">
+<input class="visually-hidden" type="checkbox"/>
+</label>
+<label class="color-swatch bg-[#775A19]" title="Burnished Olive">
+<input class="visually-hidden" type="checkbox"/>
+</label>
+<label class="color-swatch bg-[#B75760]" title="Muted Rose">
+<input class="visually-hidden" type="checkbox"/>
+</label>
+<label class="color-swatch bg-[#FED488]" title="Pale Ochre">
+<input class="visually-hidden" type="checkbox"/>
+</label>
+<label class="color-swatch relative flex items-center justify-center border-dashed" title="Custom Hue">
+<input class="visually-hidden" type="checkbox"/>
+<span class="material-symbols-outlined text-on-surface-variant">add</span>
+</label>
+</div>
+</section>
+<!-- Silhouette Grids -->
+<section>
+<div class="flex items-baseline justify-between mb-8 border-b ghost-border pb-4">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Silhouette</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Required</span>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+<!-- Silhouette Options -->
+<label class="selection-card ghost-border bg-surface-container-lowest p-6 flex flex-col items-center text-center gap-4 group">
+<input class="visually-hidden" name="silhouette" type="radio"/>
+<div class="w-full aspect-[3/4] bg-surface-container-low mb-2 relative overflow-hidden" data-alt="A minimalist line drawing sketch of a flowing A-line dress silhouette on a textured cream background. The style is high-fashion editorial, using thin charcoal linework to define the organic shape against the warm terracotta and ivory palette." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCxmefEh0RliqBb_wg7ez2dmVmUQyXE7CoHpMMlvQnMjjFNFxQGnKD8D6hgoT9I8feyu19Q3mXbeUlQ7lnNRO3www4mB9hzxK3ueP51BjF7g0vSm_WQB3Rvf-xW96oIWh7-B1sRbt4wEXyXGCHEJypq44Dhc1PvgMiIET3HrOBIjoKdXNv8hy7XH15_wyuqyuglyBd2YU9_HjP1T-2GLyH3kWDiqQi18pXv6FiYPmusdfyhVJRemdNW')"></div>
+<span class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest group-hover:text-primary transition-colors">Flowing A-Line</span>
+</label>
+<label class="selection-card ghost-border bg-surface-container-lowest p-6 flex flex-col items-center text-center gap-4 group">
+<input class="visually-hidden" name="silhouette" type="radio"/>
+<div class="w-full aspect-[3/4] bg-surface-container-low mb-2 relative overflow-hidden" data-alt="A minimalist line drawing sketch of a structured sheath dress silhouette on a textured cream background. The style is high-fashion editorial, using thin charcoal linework to define the sharp architectural shape against the warm terracotta and ivory palette." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBkn-RjPYvy5kstMu_guk6qYPb91IjVOyZfo1k1cDGtutzk8lN1Xm18OI8v-NT5rE48vcL8KZ2Bo1pn0u4zsKJgM45xORSbXJTbZHPv0cWcfblB1eAMrZDmFlXSDZq8Z1UjD5Bg-vILsHUDnSQacHWwbWNDPXKaO0lB77K8xL7Me6j27aZ0AkwBcJ3lk4QolJ6WDSb9r2vF5fcpwq3pzg2TcdC68VQ2bwWzzX0xPBCkStCYZgRQYXWj')"></div>
+<span class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest group-hover:text-primary transition-colors">Structured Sheath</span>
+</label>
+<label class="selection-card ghost-border bg-surface-container-lowest p-6 flex flex-col items-center text-center gap-4 group">
+<input class="visually-hidden" name="silhouette" type="radio"/>
+<div class="w-full aspect-[3/4] bg-surface-container-low mb-2 relative overflow-hidden" data-alt="A minimalist line drawing sketch of an oversized relaxed fit garment silhouette on a textured cream background. The style is high-fashion editorial, using thin charcoal linework to define the draped volume against the warm terracotta and ivory palette." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDH_guQG7hP-1JPEUTCwjSBCI_GFMO7xQHh87OC42ofb-P-83fbyHC-5dTyj5ruhiPgYrLaLKRvWQ3Z75mCG62OV7MP1l7Iomt77ojt8Hbci0-zDL5DZv20GKe_uc8GurQpvVZhOIwmFkJWB4g3mdWrJigs3C3gTHnoXokYBPA3LGMMCGFtwLYOFit19HBJc-V9cNkAZmJLp7Ud4w67KZOubojKlJqcUKSJ5lBLgGWOKTigCK-VSK8R')"></div>
+<span class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest group-hover:text-primary transition-colors">Relaxed Drape</span>
+</label>
+<label class="selection-card ghost-border bg-surface-container-lowest p-6 flex flex-col items-center text-center gap-4 group">
+<input class="visually-hidden" name="silhouette" type="radio"/>
+<div class="w-full aspect-[3/4] bg-surface-container-low mb-2 relative flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant">edit</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest group-hover:text-primary transition-colors">Custom Form</span>
+</label>
+</div>
+</section>
+<!-- Text-based choices (Bento style) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+<!-- Neckline -->
+<section>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6 border-b ghost-border pb-2">Neckline</h3>
+<div class="flex flex-wrap gap-3">
+<label class="cursor-pointer">
+<input class="visually-hidden peer" name="neckline" type="radio"/>
+<span class="block px-6 py-3 border ghost-border text-on-surface-variant font-label-sm text-label-sm uppercase tracking-widest peer-checked:bg-on-surface peer-checked:text-on-primary hover:bg-surface-container-low transition-colors">Plunging V</span>
+</label>
+<label class="cursor-pointer">
+<input class="visually-hidden peer" name="neckline" type="radio"/>
+<span class="block px-6 py-3 border ghost-border text-on-surface-variant font-label-sm text-label-sm uppercase tracking-widest peer-checked:bg-on-surface peer-checked:text-on-primary hover:bg-surface-container-low transition-colors">High Collar</span>
+</label>
+<label class="cursor-pointer">
+<input class="visually-hidden peer" name="neckline" type="radio"/>
+<span class="block px-6 py-3 border ghost-border text-on-surface-variant font-label-sm text-label-sm uppercase tracking-widest peer-checked:bg-on-surface peer-checked:text-on-primary hover:bg-surface-container-low transition-colors">Asymmetric</span>
+</label>
+<label class="cursor-pointer">
+<input class="visually-hidden peer" name="neckline" type="radio"/>
+<span class="block px-6 py-3 border ghost-border text-on-surface-variant font-label-sm text-label-sm uppercase tracking-widest peer-checked:bg-on-surface peer-checked:text-on-primary hover:bg-surface-container-low transition-colors">Boatneck</span>
+</label>
+</div>
+</section>
+<!-- Sleeves -->
+<section>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6 border-b ghost-border pb-2">Sleeves</h3>
+<div class="flex flex-wrap gap-3">
+<label class="cursor-pointer">
+<input class="visually-hidden peer" name="sleeves" type="radio"/>
+<span class="block px-6 py-3 border ghost-border text-on-surface-variant font-label-sm text-label-sm uppercase tracking-widest peer-checked:bg-on-surface peer-checked:text-on-primary hover:bg-surface-container-low transition-colors">Sleeveless</span>
+</label>
+<label class="cursor-pointer">
+<input class="visually-hidden peer" name="sleeves" type="radio"/>
+<span class="block px-6 py-3 border ghost-border text-on-surface-variant font-label-sm text-label-sm uppercase tracking-widest peer-checked:bg-on-surface peer-checked:text-on-primary hover:bg-surface-container-low transition-colors">Fitted Long</span>
+</label>
+<label class="cursor-pointer">
+<input class="visually-hidden peer" name="sleeves" type="radio"/>
+<span class="block px-6 py-3 border ghost-border text-on-surface-variant font-label-sm text-label-sm uppercase tracking-widest peer-checked:bg-on-surface peer-checked:text-on-primary hover:bg-surface-container-low transition-colors">Voluminous</span>
+</label>
+<label class="cursor-pointer">
+<input class="visually-hidden peer" name="sleeves" type="radio"/>
+<span class="block px-6 py-3 border ghost-border text-on-surface-variant font-label-sm text-label-sm uppercase tracking-widest peer-checked:bg-on-surface peer-checked:text-on-primary hover:bg-surface-container-low transition-colors">Cap Sleeve</span>
+</label>
+</div>
+</section>
+</div>
+<!-- Fabric & Texture (Glassmorphism inspired cards) -->
+<section>
+<div class="flex items-baseline justify-between mb-8 border-b ghost-border pb-4">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Fabric Feeling</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Optional</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<label class="selection-card relative h-48 ghost-border overflow-hidden group">
+<input class="visually-hidden" type="checkbox"/>
+<div class="absolute inset-0 bg-cover bg-center opacity-40 group-hover:opacity-70 transition-opacity duration-500" data-alt="Close up macro photography of luxurious heavy silk satin fabric pooling with soft specular highlights. The lighting is warm and dramatic, emphasizing the smooth liquid texture within the ivory and warm beige palette." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB8VWUGi7kOzPR48yuHXevO9btFNWrbkhP0P7zXWaVFslLsB80zbSJd2vYjWGxfQ2V6QjaBtG6u8heTowO91bA8IyxjNHO8uIafDKD4PkVK0gHLfSwMfHF53hlJnl9PPnLcQEa0R1Je60lhMMuaLeu8uyOQhp0SNlVslozpWUsq1ItlZnv3BD-P4PVfoW-DnHr8Im06hrbLHke3G7YsoRcoBbZ4IWr9prm9kyrFOy9z-fXuwCCk5waK')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/50 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6">
+<span class="font-headline-md text-headline-md text-on-surface block mb-1">Fluid &amp; Silky</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Satin, Charmeuse, Silk</span>
+</div>
+</label>
+<label class="selection-card relative h-48 ghost-border overflow-hidden group">
+<input class="visually-hidden" type="checkbox"/>
+<div class="absolute inset-0 bg-cover bg-center opacity-40 group-hover:opacity-70 transition-opacity duration-500" data-alt="Close up macro photography of structured raw linen and organic cotton fabric showing intricate weave patterns. The lighting is warm and natural, emphasizing the tactile, earthy texture within the terracotta and warm grey palette." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAYmOUae4S8mt7tvQGqaLQf2DiHPke02NtHqVRylMTnhWGW0odHtkMEpEnv3AtmYioaqNPAv9M_ODmhT3mOSdm_ePf58bRFlBDBDeFJ0bwh4kujIoBo_JLR1gojTy1ErkD3VgGRGPvzRDz6MTjvNLAyda5aFSZVyTmvroWi4hw7htaSRG6r9OfRtj2wsZ81sl8MadDj4B_mR6VegwrQs65O3gNoqxmTLxZMGnW-wlMEpch-iltzEHHF')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/50 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6">
+<span class="font-headline-md text-headline-md text-on-surface block mb-1">Crisp &amp; Structured</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Linen, Poplin, Twill</span>
+</div>
+</label>
+<label class="selection-card relative h-48 ghost-border overflow-hidden group">
+<input class="visually-hidden" type="checkbox"/>
+<div class="absolute inset-0 bg-cover bg-center opacity-40 group-hover:opacity-70 transition-opacity duration-500" data-alt="Close up macro photography of delicate diaphanous tulle and organza fabric layered softly. The lighting is ethereal and back-lit, emphasizing the sheer, weightless texture within the bright ivory and pale ochre palette." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDR7pUHxI3R0grPfpVIlze9E1puEm1J8VhmHh9siIL4jUEKbeQ2XkGjdqXB3Njy0lrKj_6cxnPFDt9WXwzKJDBmXqPRDMf_idJOGs2FZnQK-sevtUrDQwcZzgC65AKQ6hKRaAnr38tq2RLm6F3USQ-cdvtCC_xZa0IAsJUbBEwsX98H4cXPa3LGR45qjSri13yaLxUXijXJY7xZqMKhEv_7KVgHvYQVStdkEbBxDCJuzjVnntdVzBjv')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/50 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6">
+<span class="font-headline-md text-headline-md text-on-surface block mb-1">Sheer &amp; Weightless</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Organza, Tulle, Chiffon</span>
+</div>
+</label>
+</div>
+</section>
+</div>
+</form>
+<!-- Navigation Footer (Fixed to bottom or inline depending on scroll) -->
+<div class="mt-16 pt-8 border-t ghost-border flex flex-col-reverse md:flex-row justify-between items-center gap-6 pb-24 md:pb-12">
+<button class="w-full md:w-auto px-8 py-4 border border-outline text-on-surface font-label-sm text-label-sm uppercase tracking-widest hover:bg-surface-container-low transition-colors text-center">Back</button>
+<button class="w-full md:w-auto px-12 py-4 bg-[#1A1A1A] text-on-primary font-headline-md text-headline-md hover:bg-[#3b0900] transition-colors text-center">Continue</button>
+</div>
+</main>
+<script>
+        // Simple toggle for Expert Mode to fade out the rest of the form
+        document.getElementById('expert-mode').addEventListener('change', function(e) {
+            const details = document.getElementById('detailed-selections');
+            if(e.target.checked) {
+                details.style.opacity = '0.3';
+                details.style.pointerEvents = 'none';
+            } else {
+                details.style.opacity = '1';
+                details.style.pointerEvents = 'auto';
+            }
+        });
+
+        // Add visual selected state to radio/checkbox cards
+        document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
+            input.addEventListener('change', (e) => {
+                const name = e.target.name;
+                if(name) {
+                    // It's a radio, clear others in group
+                    document.querySelectorAll(`input[name="${name}"]`).forEach(radio => {
+                        const label = radio.closest('.selection-card') || radio.closest('.color-swatch');
+                        if(label) label.classList.remove('selected');
+                    });
+                }
+                const label = e.target.closest('.selection-card') || e.target.closest('.color-swatch');
+                if(label) {
+                    if(e.target.checked) {
+                        label.classList.add('selected');
+                    } else {
+                        label.classList.remove('selected');
+                    }
+                }
+            });
+        });
+    </script>
+</body></html>

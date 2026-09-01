@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Order Management Production Board</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;700&amp;family=Syne:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#785a1a",
+                        "primary-container": "#b35d44",
+                        "tertiary-fixed-dim": "#ffb2b6",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-tertiary-fixed-variant": "#7c2a34",
+                        "surface-container": "#f0eded",
+                        "outline-variant": "#dbc1ba",
+                        "on-secondary-fixed": "#261900",
+                        "surface": "#fcf9f8",
+                        "on-primary-container": "#fffdff",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#974730",
+                        "surface-variant": "#e5e2e1",
+                        "primary-fixed-dim": "#ffb5a0",
+                        "primary-fixed": "#ffdbd1",
+                        "secondary": "#775a19",
+                        "on-primary-fixed-variant": "#78301b",
+                        "on-primary-fixed": "#3b0900",
+                        "surface-bright": "#fcf9f8",
+                        "primary": "#94452e",
+                        "on-tertiary-fixed": "#40000d",
+                        "outline": "#88726d",
+                        "on-tertiary-container": "#fffcff",
+                        "secondary-fixed": "#ffdea5",
+                        "surface-container-highest": "#e5e2e1",
+                        "tertiary": "#983f49",
+                        "inverse-surface": "#313030",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f6f3f2",
+                        "secondary-fixed-dim": "#e9c176",
+                        "inverse-primary": "#ffb5a0",
+                        "on-background": "#1c1b1b",
+                        "surface-dim": "#dcd9d9",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "tertiary-fixed": "#ffdadb",
+                        "background": "#fcf9f8",
+                        "on-surface-variant": "#55433e",
+                        "tertiary-container": "#b75760",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#fed488",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1c1b1b",
+                        "surface-container-high": "#eae7e7",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "section-gap": "120px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Syne"],
+                        "display-xl": ["Syne"],
+                        "label-sm": ["Karla"],
+                        "body-lg": ["Karla"],
+                        "headline-lg": ["Syne"],
+                        "headline-md": ["Syne"],
+                        "display-lg": ["Syne"],
+                        "body-md": ["Karla"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-xl": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .ghost-border { border: 0.5px solid var(--tw-colors-outline-variant); }
+        .whisper-shadow { box-shadow: 0px 4px 20px rgba(26, 26, 26, 0.04); }
+        /* Hide scrollbar for kanban board */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md overflow-hidden">
+<!-- TopAppBar -->
+<header class="bg-background dark:bg-on-background text-primary dark:text-primary-fixed-dim border-b border-outline-variant/30 dark:border-outline/20 flat no shadows transition-all duration-300 ease-in-out docked full-width top-0 z-50">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-6 max-w-[1440px] mx-auto">
+<div class="text-display-lg font-display-lg text-on-background dark:text-surface-bright tracking-tighter">FADEN</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-on-surface-variant dark:text-surface-variant font-label-sm tracking-widest text-label-sm hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-300" href="#">Boutiques</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-sm tracking-widest text-label-sm hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-300" href="#">Designs</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-sm tracking-widest text-label-sm hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-300" href="#">Materials</a>
+<a class="text-primary dark:text-primary-fixed-dim border-b border-primary dark:border-primary-fixed-dim pb-1 font-label-sm tracking-widest text-label-sm hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-300" href="#">Atelier</a>
+</nav>
+<div class="flex gap-4 items-center text-label-sm font-label-sm">
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span></button>
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined" data-icon="person">person</span></button>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden max-w-[1440px] mx-auto w-full">
+<!-- Sidebar (Production Active context) -->
+<aside class="hidden lg:flex flex-col w-64 border-r border-outline-variant/30 px-6 py-8 bg-surface-container-lowest">
+<div class="space-y-6">
+<div>
+<h3 class="text-label-sm font-label-sm text-on-surface-variant mb-4 uppercase tracking-widest">Atelier Management</h3>
+<nav class="space-y-2">
+<a class="flex items-center gap-3 px-3 py-2 text-body-md font-body-md text-on-surface-variant hover:bg-surface-container rounded-sm transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span> Overview
+                        </a>
+<a class="flex items-center gap-3 px-3 py-2 text-body-md font-body-md bg-surface-container-high text-primary font-medium rounded-sm border-l-2 border-primary" href="#">
+<span class="material-symbols-outlined text-[20px]">view_kanban</span> Production Board
+                        </a>
+<a class="flex items-center gap-3 px-3 py-2 text-body-md font-body-md text-on-surface-variant hover:bg-surface-container rounded-sm transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span> Inventory
+                        </a>
+<a class="flex items-center gap-3 px-3 py-2 text-body-md font-body-md text-on-surface-variant hover:bg-surface-container rounded-sm transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">groups</span> Staff Schedule
+                        </a>
+</nav>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col min-w-0 bg-background overflow-hidden">
+<!-- Board Header -->
+<div class="px-6 py-6 border-b border-outline-variant/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h1 class="text-headline-md font-headline-md text-on-background">Production Board</h1>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1">Active Orders Lifecycle</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2 border border-outline-variant text-body-md font-body-md text-on-background hover:bg-surface-container transition-colors rounded-sm bg-transparent">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+<span>Filter by Staff</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-[#1A1A1A] text-white text-body-md font-body-md hover:bg-black transition-colors rounded-sm">
+<span class="material-symbols-outlined text-[18px]">table_rows</span>
+<span>Toggle Table View</span>
+</button>
+</div>
+</div>
+<!-- Kanban Board -->
+<div class="flex-1 overflow-x-auto hide-scrollbar p-6 bg-surface-container-low">
+<div class="flex gap-6 h-full items-start w-max">
+<!-- Column: Measurements -->
+<div class="w-80 flex flex-col flex-shrink-0 max-h-full">
+<div class="flex items-center justify-between mb-4 px-2">
+<h2 class="text-label-sm font-label-sm uppercase tracking-widest text-on-surface-variant">Measurements</h2>
+<span class="bg-surface-variant text-on-surface-variant text-[10px] px-2 py-0.5 rounded-full font-bold">2</span>
+</div>
+<div class="flex-1 overflow-y-auto space-y-4 pr-2 pb-8">
+<!-- Placeholder empty state or generic cards could go here to show full board context, but focusing on Stitching column as requested -->
+<div class="p-4 bg-surface-container-lowest ghost-border whisper-shadow relative">
+<div class="text-body-md font-body-md text-on-background">Aarav Patel</div>
+<div class="text-label-sm font-label-sm text-on-surface-variant mt-1">Bespoke Sherwani</div>
+</div>
+</div>
+</div>
+<!-- Column: Stitching (Active Focus) -->
+<div class="w-80 flex flex-col flex-shrink-0 max-h-full bg-surface-container/50 rounded-lg p-2 border border-outline-variant/30">
+<div class="flex items-center justify-between mb-4 px-2 pt-2">
+<h2 class="text-label-sm font-label-sm uppercase tracking-widest text-primary flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary inline-block"></span>
+                                Stitching
+                            </h2>
+<span class="bg-primary/10 text-primary text-[10px] px-2 py-0.5 rounded-full font-bold">1</span>
+</div>
+<div class="flex-1 overflow-y-auto space-y-4 pb-4">
+<!-- Detailed Active Card -->
+<div class="bg-surface-container-lowest ghost-border whisper-shadow p-5 relative group cursor-grab">
+<!-- Status indicator top right -->
+<div class="absolute top-4 right-4 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>
+<span class="text-[10px] font-label-sm text-on-surface-variant uppercase">On Track</span>
+</div>
+<div class="flex items-start gap-4 mb-4 mt-2">
+<img class="w-12 h-16 object-cover ghost-border" data-alt="A detailed, high-fashion editorial close-up photograph of intricate gold embroidery on a rich crimson silk lehenga fabric, highlighting the artisanal stitching process in a warm, well-lit atelier. The lighting is soft and directional, emphasizing the texture of the threads. Warm terracotta and ivory background tones blur softly out of focus, creating a sophisticated and luxurious mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8_d4oCzGsdKx2ijoqi2NrVJXiatQxIzbQXaR0Fv-3iugCY1VF8CK6Yr8dvXEqt5mZtCbSegN_SU3-BI_7o40gij3BeOP9_pKyVB_jafiMWiDNMTuCTUn3NUTIj5CKKNCSbmHxw0hfTtxMPEzrTgYQmllMod81YGQQFuentbH6miU3LG0ritDUZh59XcxgI9zaesenEVuPDiYvc1CKB8YQOKjqegpzbF29j05ukJcI1xR1u_quHQKh"/>
+<div>
+<h3 class="text-body-md font-body-md text-on-background font-bold mb-0.5">Ananya Reddy</h3>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Reception Lehenga</p>
+</div>
+</div>
+<div class="space-y-3 mb-4">
+<div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase">Due</span>
+<span class="text-body-md font-body-md text-on-background">Sep 18</span>
+</div>
+<div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase">Assigned</span>
+<div class="flex items-center gap-1.5">
+<div class="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center text-[10px] font-bold text-primary">M</div>
+<span class="text-body-md font-body-md text-on-background">Meera</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-1 border border-secondary-container bg-secondary-container/10 text-secondary-fixed-dim text-[10px] font-label-sm uppercase rounded-sm">Partially Paid</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Column: Quality Check -->
+<div class="w-80 flex flex-col flex-shrink-0 max-h-full">
+<div class="flex items-center justify-between mb-4 px-2">
+<h2 class="text-label-sm font-label-sm uppercase tracking-widest text-on-surface-variant">Quality Check</h2>
+<span class="bg-surface-variant text-on-surface-variant text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
+</div>
+<div class="flex-1 overflow-y-auto space-y-4 pr-2 pb-8 border-2 border-dashed border-outline-variant/30 rounded-lg flex items-center justify-center bg-surface-container-lowest/50">
+<span class="text-label-sm font-label-sm text-on-surface-variant/50">Drop cards here</span>
+</div>
+</div>
+<!-- Column: Ready -->
+<div class="w-80 flex flex-col flex-shrink-0 max-h-full">
+<div class="flex items-center justify-between mb-4 px-2">
+<h2 class="text-label-sm font-label-sm uppercase tracking-widest text-on-surface-variant">Ready</h2>
+<span class="bg-surface-variant text-on-surface-variant text-[10px] px-2 py-0.5 rounded-full font-bold">3</span>
+</div>
+<div class="flex-1 overflow-y-auto space-y-4 pr-2 pb-8">
+<div class="p-4 bg-surface-container-lowest ghost-border whisper-shadow opacity-60">
+<div class="text-body-md font-body-md text-on-background line-through decoration-outline">Priya Sharma</div>
+<div class="text-label-sm font-label-sm text-on-surface-variant mt-1">Sangeet Outfit</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

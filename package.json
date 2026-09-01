@@ -1,0 +1,57 @@
+{
+  "name": "faden-platform",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "npm@10.5.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo dev --parallel",
+    "dev:marketplace": "npm run dev --workspace=@faden/marketplace",
+    "dev:studio": "npm run dev --workspace=@faden/studio",
+    "dev:admin": "npm run dev --workspace=@faden/admin",
+    "build": "turbo build",
+    "lint": "eslint apps packages --max-warnings=0",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test",
+    "check": "npm run lint && npm run typecheck && npm run test && npm run build",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "supabase:start": "npx supabase start",
+    "supabase:stop": "npx supabase stop",
+    "supabase:status": "npx supabase status",
+    "supabase:reset": "npx supabase db reset",
+    "supabase:test": "npx supabase test db",
+    "supabase:types": "node scripts/generate-supabase-types.mjs",
+    "env:local": "node scripts/sync-local-env.mjs",
+    "seed:auth": "node scripts/seed-local-users.mjs",
+    "test:auth": "node scripts/test-local-auth.mjs",
+    "test:catalog": "node scripts/test-local-catalog.mjs",
+    "test:marketplace": "node --test scripts/test-marketplace-parity.mjs",
+    "test:requests": "node scripts/test-local-requests.mjs",
+    "test:offers": "node scripts/test-local-offers.mjs",
+    "test:orders": "node scripts/test-local-orders.mjs",
+    "test:payments": "node --test scripts/test-payments-core.mjs",
+    "test:designs": "node scripts/test-local-design-reviews.mjs",
+    "test:studio": "node scripts/test-local-studio.mjs",
+    "demo:offers": "node scripts/seed-local-offer-demo.mjs"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "3.2.0",
+    "@supabase/supabase-js": "2.112.4",
+    "eslint": "9.17.0",
+    "eslint-config-next": "15.5.24",
+    "postcss": "8.5.23",
+    "prettier": "3.4.2",
+    "turbo": "2.3.3",
+    "typescript": "5.7.2"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "overrides": {
+    "postcss": "8.5.23"
+  }
+}

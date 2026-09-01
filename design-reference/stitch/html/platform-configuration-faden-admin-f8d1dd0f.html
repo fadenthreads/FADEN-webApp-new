@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FADEN Admin - Platform Configuration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&amp;family=Syne:wght@400..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#ece7e7",
+                        "on-primary-container": "#fffdff",
+                        "inverse-primary": "#ffb5a0",
+                        "secondary": "#775a19",
+                        "warning-amber": "#c98e3d",
+                        "on-tertiary-fixed-variant": "#005048",
+                        "audit-log-gray": "#55433e",
+                        "outline-variant": "#dbc1ba",
+                        "surface-container-highest": "#e6e1e1",
+                        "on-secondary-container": "#785a19",
+                        "surface-bright": "#fdf8f8",
+                        "surface": "#fdf8f8",
+                        "tertiary-fixed-dim": "#74d7c9",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#ffdea3",
+                        "tertiary-container": "#008478",
+                        "on-surface": "#1c1b1b",
+                        "surface-tint": "#974730",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#b35d44",
+                        "on-surface-variant": "#55433e",
+                        "tertiary": "#00695f",
+                        "info-azure": "#4b738c",
+                        "primary": "#94452e",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#ba1a1a",
+                        "error-crimson": "#a63d40",
+                        "primary-fixed": "#ffdbd1",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#90f4e5",
+                        "on-tertiary": "#ffffff",
+                        "surface-ivory": "#fcf9f8",
+                        "surface-container-low": "#f7f2f2",
+                        "on-primary-fixed-variant": "#78301b",
+                        "outline": "#88726d",
+                        "surface-container": "#f1edec",
+                        "primary-fixed-dim": "#ffb5a0",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f4f0ef",
+                        "success-emerald": "#4a7c59",
+                        "on-background": "#1c1b1b",
+                        "on-tertiary-container": "#fafffd",
+                        "on-tertiary-fixed": "#00201c",
+                        "surface-dim": "#ddd9d8",
+                        "secondary-fixed-dim": "#e8c176",
+                        "background": "#fdf8f8",
+                        "on-secondary-fixed-variant": "#5c4200",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#313030",
+                        "on-primary-fixed": "#3b0900",
+                        "on-secondary-fixed": "#261900",
+                        "secondary-container": "#fdd587",
+                        "surface-variant": "#e6e1e1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "drawer-gap": "24px",
+                        "container-margin": "32px",
+                        "table-row-h": "12px",
+                        "sidebar-padding": "16px",
+                        "unit": "4px",
+                        "table-row-v": "8px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Karla"],
+                        "data-mono": ["Karla"],
+                        "body-sm": ["Karla"],
+                        "label-condensed": ["Karla"],
+                        "headline-lg": ["Syne"],
+                        "headline-md": ["Syne"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "data-mono": ["13px", { "lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+                        "body-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                        "label-condensed": ["11px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "1.3", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex overflow-hidden">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[280px] bg-surface-ivory dark:bg-inverse-surface border-r border-outline-variant dark:border-outline flex flex-col py-sidebar-padding gap-drawer-gap z-50">
+<div class="px-sidebar-padding flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded bg-primary-container text-on-primary-container flex items-center justify-center font-headline-md">F</div>
+<div>
+<h1 class="text-headline-md font-headline-md font-bold text-primary dark:text-inverse-primary">FADEN</h1>
+<p class="font-label-condensed text-label-condensed text-on-surface-variant">Platform Admin</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-1 overflow-y-auto">
+<a class="flex items-center gap-3 py-3 text-on-surface-variant font-body-md pl-4 dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Overview
+            </a>
+<a class="flex items-center gap-3 py-3 text-on-surface-variant font-body-md pl-4 dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+                Marketplace
+            </a>
+<a class="flex items-center gap-3 py-3 text-on-surface-variant font-body-md pl-4 dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                Commerce
+            </a>
+<a class="flex items-center gap-3 py-3 text-on-surface-variant font-body-md pl-4 dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+                Trust &amp; Support
+            </a>
+<a class="flex items-center gap-3 py-3 text-primary font-bold border-l-4 border-primary pl-4 dark:text-inverse-primary dark:border-inverse-primary bg-surface-container-low transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+                Platform
+            </a>
+<a class="flex items-center gap-3 py-3 text-on-surface-variant font-body-md pl-4 dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+                Administration
+            </a>
+</nav>
+<div class="mt-auto flex flex-col gap-1 border-t border-outline-variant pt-4 px-sidebar-padding">
+<a class="flex items-center gap-3 py-2 text-on-surface-variant font-body-md hover:bg-surface-container-high transition-colors rounded" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+                Profile
+            </a>
+<a class="flex items-center gap-3 py-2 text-on-surface-variant font-body-md hover:bg-surface-container-high transition-colors rounded" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Logout
+            </a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-[280px] flex flex-col h-screen relative">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center px-container-margin w-full sticky top-0 z-40 bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline h-16">
+<div class="flex items-center gap-4">
+<h2 class="font-headline-md text-headline-md text-primary dark:text-inverse-primary">Platform Configuration</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 text-on-surface-variant">
+<button class="hover:bg-surface-container-low p-2 rounded-full transition-transform scale-95 active:opacity-80">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="hover:bg-surface-container-low p-2 rounded-full transition-transform scale-95 active:opacity-80">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+</button>
+</div>
+<div class="flex items-center gap-3 pl-4 border-l border-outline-variant">
+<span class="font-label-condensed text-label-condensed text-primary bg-primary-fixed px-2 py-1 rounded">Production</span>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A small, professional headshot avatar of an admin user in a corporate setting. The lighting is bright and modern, reflecting a clean, high-end digital platform aesthetic with subtle terracotta accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5Tw0MKIKnl8sqfMS61DQxT20DewM3NcqTWNX19xzkClzQjI2DFJNhdqurQ8r08riLbkwTWbReZYF1yxQVyhQtPR8Uf1Ux2-KSm_DjLDp-rNi9ManI601K7j5czqt_5PQYExKhpNuaXAPgLiYzdcLgEw80Cu7SE6gmuPz8rWzKjUPR17Zaabzwj4JhdAzyxKj6nHuURncp1yVw8zmx-sgGXFLprW9q1Spe6TsKW8ALyQfNx4Ev7Zqd"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto p-container-margin">
+<div class="max-w-[1440px] mx-auto grid grid-cols-12 gap-6">
+<!-- Page Title Area -->
+<div class="col-span-12 mb-4">
+<p class="text-on-surface-variant font-body-sm mb-1">Platform &gt; Settings</p>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Configuration Dashboard</h2>
+</div>
+<!-- Bento Grid Layout -->
+<!-- Commission Rules Widget (Large) -->
+<div class="col-span-12 xl:col-span-8 bg-surface-container-lowest rounded-lg border border-outline-variant shadow-sm overflow-hidden flex flex-col">
+<div class="p-4 border-b border-outline-variant bg-surface-ivory flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-primary">Commission Rules</h3>
+<button class="text-primary font-label-condensed text-label-condensed tracking-wider hover:bg-surface-container-low px-3 py-1.5 rounded transition-colors border border-primary">EDIT RATES</button>
+</div>
+<div class="p-6 flex-1 flex flex-col gap-6">
+<div class="flex gap-4">
+<div class="bg-surface-container p-4 rounded-lg flex-1 border border-outline-variant">
+<p class="font-label-condensed text-label-condensed text-on-surface-variant mb-1 uppercase">Global Default Rate</p>
+<p class="font-headline-lg text-headline-lg text-on-surface">15.5%</p>
+<p class="font-body-sm text-success-emerald mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                                    Active
+                                </p>
+</div>
+<div class="bg-surface-container p-4 rounded-lg flex-1 border border-outline-variant">
+<p class="font-label-condensed text-label-condensed text-on-surface-variant mb-1 uppercase">Proposed Default</p>
+<p class="font-headline-lg text-headline-lg text-on-surface">16.0%</p>
+<p class="font-body-sm text-warning-amber mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">pending</span>
+                                    Pending Approval
+                                </p>
+</div>
+</div>
+<!-- Data Table: Category Overrides -->
+<div class="mt-2 border border-outline-variant rounded">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-ivory border-b border-primary">
+<tr>
+<th class="font-label-condensed text-label-condensed text-on-surface-variant p-3 font-semibold uppercase">Category</th>
+<th class="font-label-condensed text-label-condensed text-on-surface-variant p-3 font-semibold uppercase">Current Rate</th>
+<th class="font-label-condensed text-label-condensed text-on-surface-variant p-3 font-semibold uppercase">Proposed Rate</th>
+<th class="font-label-condensed text-label-condensed text-on-surface-variant p-3 font-semibold uppercase">Impact</th>
+</tr>
+</thead>
+<tbody class="font-data-mono text-data-mono">
+<tr class="border-b border-outline-variant last:border-b-0 hover:bg-surface-container-lowest transition-colors">
+<td class="p-3 text-on-surface py-table-row-v">Lehenga</td>
+<td class="p-3 text-on-surface py-table-row-v">18.0%</td>
+<td class="p-3 text-on-surface py-table-row-v">18.5%</td>
+<td class="p-3 py-table-row-v">
+<span class="inline-flex items-center gap-1 bg-error-container text-error-crimson px-2 py-1 rounded text-[11px] font-bold">
+<span class="material-symbols-outlined text-[12px]">warning</span> High
+                                            </span>
+</td>
+</tr>
+<tr class="border-b border-outline-variant last:border-b-0 hover:bg-surface-container-lowest transition-colors">
+<td class="p-3 text-on-surface py-table-row-v">Saree</td>
+<td class="p-3 text-on-surface py-table-row-v">12.0%</td>
+<td class="p-3 text-on-surface py-table-row-v">12.0%</td>
+<td class="p-3 py-table-row-v text-on-surface-variant">Neutral</td>
+</tr>
+<tr class="border-b border-outline-variant last:border-b-0 hover:bg-surface-container-lowest transition-colors">
+<td class="p-3 text-on-surface py-table-row-v">Accessories</td>
+<td class="p-3 text-on-surface py-table-row-v">20.0%</td>
+<td class="p-3 text-on-surface py-table-row-v">19.0%</td>
+<td class="p-3 py-table-row-v">
+<span class="inline-flex items-center gap-1 bg-[#d3e5cd] text-success-emerald px-2 py-1 rounded text-[11px] font-bold">
+<span class="material-symbols-outlined text-[12px]">trending_down</span> Low
+                                            </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Category Management (Smaller Widget) -->
+<div class="col-span-12 xl:col-span-4 bg-surface-container-lowest rounded-lg border border-outline-variant shadow-sm overflow-hidden flex flex-col">
+<div class="p-4 border-b border-outline-variant bg-surface-ivory">
+<h3 class="font-headline-md text-headline-md text-primary">Category Management</h3>
+</div>
+<div class="p-4 flex-1 flex flex-col gap-3 overflow-y-auto">
+<div class="flex items-center justify-between p-3 border border-outline-variant rounded hover:bg-surface-container-low cursor-pointer transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="checkroom">checkroom</span>
+</div>
+<span class="font-body-md font-medium text-on-surface">Lehenga</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+<div class="flex items-center justify-between p-3 border border-outline-variant rounded hover:bg-surface-container-low cursor-pointer transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="dry_cleaning">dry_cleaning</span>
+</div>
+<span class="font-body-md font-medium text-on-surface">Saree</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+<div class="flex items-center justify-between p-3 border border-outline-variant rounded hover:bg-surface-container-low cursor-pointer transition-colors opacity-60">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="diamond">diamond</span>
+</div>
+<span class="font-body-md font-medium text-on-surface">Jewelry (Draft)</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+<button class="mt-auto w-full py-2 bg-surface-container text-on-surface font-label-condensed text-label-condensed uppercase tracking-wider rounded border border-outline-variant hover:bg-surface-container-high transition-colors">
+                            + Add Category
+                        </button>
+</div>
+</div>
+<!-- Content Curation & Service Areas (Bottom Row) -->
+<div class="col-span-12 md:col-span-6 bg-surface-container-lowest rounded-lg border border-outline-variant shadow-sm p-6 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full pointer-events-none"></div>
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary" data-icon="web">web</span>
+<h3 class="font-headline-md text-headline-md text-primary">Homepage Curation</h3>
+</div>
+<p class="font-body-sm text-on-surface-variant mb-4">Manage featured boutiques, editorial spotlights, and trending collections for the main storefront.</p>
+<div class="space-y-3">
+<div class="flex justify-between items-center py-2 border-b border-outline-variant">
+<span class="font-data-mono text-data-mono text-on-surface">Hero Carousel</span>
+<span class="font-label-condensed text-label-condensed text-success-emerald bg-[#d3e5cd] px-2 py-1 rounded">Live</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-outline-variant">
+<span class="font-data-mono text-data-mono text-on-surface">Featured Boutiques</span>
+<span class="font-label-condensed text-label-condensed text-warning-amber bg-secondary-fixed px-2 py-1 rounded">Needs Review</span>
+</div>
+</div>
+<button class="mt-4 text-primary font-label-condensed text-label-condensed uppercase tracking-wider flex items-center gap-1 hover:underline">
+                        Open Editor <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</button>
+</div>
+<div class="col-span-12 md:col-span-6 bg-surface-container-lowest rounded-lg border border-outline-variant shadow-sm p-6">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary" data-icon="map">map</span>
+<h3 class="font-headline-md text-headline-md text-primary">Service Areas</h3>
+</div>
+<p class="font-body-sm text-on-surface-variant mb-4">Configure shipping zones, local pickup regions, and tax jurisdictions.</p>
+<div class="h-32 bg-surface-container rounded border border-outline-variant relative overflow-hidden mb-4">
+<div class="bg-cover bg-center w-full h-full opacity-50 grayscale mix-blend-multiply" data-alt="A detailed, abstract map graphic in a modern UI style. It uses subtle terracotta and ivory tones to demarcate different regions on a grid, reflecting a clean, high-end administrative dashboard map interface." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAR1ZgwbyqFOxDm3EXYma0WqH72e9gK2ahSgIRGs6OErrVD-ku3M4VJmzziTzEuDq3bQSCLvqtlC8iM2JYAKFVHvYkGrbBOJawJU3XR5R9gOBrQbxK4UtcBPL0vJoNJ7Vy85bSlCCQ4dJaVs-zKeECKUnWAqNeO85k48VTe3vXXzebLxvZiOdx1CrGj692d3ATdatgelCQjBtyfoIA51hyywW9549riGlNocoOhIgVa2pZ1KFzAYP4U')"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="font-label-condensed text-label-condensed bg-surface-ivory px-3 py-1 rounded shadow-sm border border-outline-variant">3 Active Zones</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-2 bg-primary text-on-primary font-label-condensed text-label-condensed uppercase tracking-wider rounded hover:bg-primary-container transition-colors">Manage Zones</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

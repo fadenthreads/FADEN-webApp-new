@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test
+      - run: npm run test:payments
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: build-only-placeholder
+          NEXT_PUBLIC_GOOGLE_AUTH_ENABLED: "false"
+      - run: npm audit --omit=dev
+
+  database:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - run: supabase start
+      - run: supabase db reset
+      - run: supabase test db
+      - run: npm run seed:auth
+      - run: npm run test:auth
+      - run: npm run test:catalog
+      - run: npm run env:local
+      - run: npm run build --workspace=@faden/marketplace
+      - run: npm run build --workspace=@faden/studio
+      - name: Marketplace and private request integration tests
+        shell: bash
+        run: |
+          npm run start --workspace=@faden/marketplace > "$RUNNER_TEMP/faden-marketplace.log" 2>&1 &
+          faden_server_pid=$!
+          npm run start --workspace=@faden/studio > "$RUNNER_TEMP/faden-studio.log" 2>&1 &
+          faden_studio_pid=$!
+          trap 'kill "$faden_server_pid" "$faden_studio_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..60}; do
+            if curl --fail --silent http://localhost:3000/api/health > /dev/null; then break; fi
+            sleep 1
+          done
+          curl --fail --silent http://localhost:3000/api/health > /dev/null
+          for attempt in {1..60}; do
+            if curl --fail --silent http://localhost:3001/api/health > /dev/null; then break; fi
+            sleep 1
+          done
+          curl --fail --silent http://localhost:3001/api/health > /dev/null
+          npm run test:marketplace
+          npm run test:requests
+          npm run test:offers
+          npm run test:orders
+          # Includes design, production, appointments, fulfilment, aftercare and private messaging checks.
+          npm run test:designs
+          npm run test:studio
+
+  container:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: [marketplace, studio, admin]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile.web
+          build-args: APP_NAME=${{ matrix.app }}
+          push: false
+          tags: faden/${{ matrix.app }}:${{ github.sha }}

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Create My Outfit - Inspiration | FADEN</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;700&amp;family=Syne:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                            "on-error-container": "#93000a",
+                            "outline-variant": "#dbc1ba",
+                            "error-container": "#ffdad6",
+                            "primary-container": "#b35d44",
+                            "on-tertiary-container": "#fffcff",
+                            "secondary-fixed-dim": "#e9c176",
+                            "on-primary-fixed": "#3b0900",
+                            "on-surface": "#1c1b1b",
+                            "surface-dim": "#dcd9d9",
+                            "on-tertiary": "#ffffff",
+                            "tertiary-container": "#b75760",
+                            "inverse-primary": "#ffb5a0",
+                            "on-error": "#ffffff",
+                            "surface-container": "#f0eded",
+                            "surface-bright": "#fcf9f8",
+                            "secondary-container": "#fed488",
+                            "on-secondary-fixed-variant": "#5d4201",
+                            "secondary": "#775a19",
+                            "error": "#ba1a1a",
+                            "on-secondary-fixed": "#261900",
+                            "secondary-fixed": "#ffdea5",
+                            "on-primary-fixed-variant": "#78301b",
+                            "surface-variant": "#e5e2e1",
+                            "primary": "#94452e",
+                            "surface-container-low": "#f6f3f2",
+                            "on-surface-variant": "#55433e",
+                            "inverse-on-surface": "#f3f0ef",
+                            "on-secondary-container": "#785a1a",
+                            "surface-container-highest": "#e5e2e1",
+                            "on-primary-container": "#fffdff",
+                            "background": "#fcf9f8",
+                            "primary-fixed": "#ffdbd1",
+                            "surface-container-lowest": "#ffffff",
+                            "tertiary": "#983f49",
+                            "on-tertiary-fixed-variant": "#7c2a34",
+                            "on-primary": "#ffffff",
+                            "surface-tint": "#974730",
+                            "outline": "#88726d",
+                            "tertiary-fixed-dim": "#ffb2b6",
+                            "on-secondary": "#ffffff",
+                            "on-background": "#1c1b1b",
+                            "tertiary-fixed": "#ffdadb",
+                            "surface": "#fcf9f8",
+                            "on-tertiary-fixed": "#40000d",
+                            "inverse-surface": "#313030",
+                            "primary-fixed-dim": "#ffb5a0",
+                            "surface-container-high": "#eae7e7"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "0.25rem",
+                            "lg": "0.5rem",
+                            "xl": "0.75rem",
+                            "full": "9999px"
+                    },
+                    "spacing": {
+                            "unit": "4px",
+                            "section-gap": "120px",
+                            "margin-desktop": "64px",
+                            "margin-mobile": "20px",
+                            "gutter": "24px"
+                    },
+                    "fontFamily": {
+                            "headline-lg-mobile": ["Syne"],
+                            "headline-md": ["Syne"],
+                            "label-sm": ["Karla"],
+                            "headline-lg": ["Syne"],
+                            "body-md": ["Karla"],
+                            "display-lg": ["Syne"],
+                            "display-xl": ["Syne"],
+                            "body-lg": ["Karla"]
+                    },
+                    "fontSize": {
+                            "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                            "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                            "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                            "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                            "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                            "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                            "display-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                            "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .whisper-shadow {
+            box-shadow: 0px 4px 20px rgba(26, 26, 26, 0.04);
+        }
+        .ghost-border {
+            border: 1px solid var(--tw-colors-surface-dim);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-md min-h-screen flex flex-col">
+<!-- Top Navigation (Suppressed per Nav Shell Mandate for Transactional Flow, using simplified header) -->
+<header class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-8 w-full max-w-[1440px] mx-auto bg-background z-50">
+<div class="font-display-lg text-display-lg font-bold tracking-tighter text-on-surface">FADEN</div>
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
+<span>Save &amp; Exit</span>
+<span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">logout</span>
+</button>
+</header>
+<main class="flex-grow w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop py-12 md:py-16">
+<!-- Progress Indicator -->
+<div class="mb-12 flex flex-col gap-4">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Step 3 of 6</span>
+<div class="w-full h-1 bg-surface-container overflow-hidden rounded-full">
+<div class="h-full bg-primary w-3/6 rounded-full"></div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Context & Upload Area -->
+<div class="lg:col-span-5 flex flex-col gap-8">
+<div>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-4">Show us what you love</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Upload anything that helps us understand your vision. Photos, sketches, textures—build your digital mood board.</p>
+</div>
+<!-- Main Upload Dropzone -->
+<div class="w-full aspect-[4/3] border-dashed border-2 border-outline-variant hover:border-primary transition-colors bg-surface-container-lowest rounded-DEFAULT flex flex-col items-center justify-center gap-4 cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant group-hover:text-primary transition-colors" style="font-variation-settings: 'FILL' 0;">cloud_upload</span>
+<div class="text-center">
+<span class="font-label-sm text-label-sm text-on-surface block mb-2">DRAG &amp; DROP OR BROWSE</span>
+<span class="font-body-md text-body-md text-on-surface-variant text-sm">JPG, PNG, GIF up to 10MB</span>
+</div>
+</div>
+<!-- External Links -->
+<div class="flex flex-col gap-4 pt-6 border-t border-surface-dim">
+<span class="font-label-sm text-label-sm text-on-surface">LINK INSPIRATION</span>
+<div class="relative w-full">
+<input class="w-full bg-transparent border-b border-on-surface focus:border-b-2 focus:border-primary pb-2 font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none transition-all" placeholder="Paste Pinterest or Instagram URL..." type="text"/>
+<button class="absolute right-0 top-0 bottom-2 text-primary font-label-sm text-label-sm hover:opacity-80 transition-opacity">ADD</button>
+</div>
+</div>
+</div>
+<!-- Visual Grid (Mood Board) -->
+<div class="lg:col-span-7 lg:pl-12 mt-12 lg:mt-0">
+<div class="columns-1 md:columns-2 gap-gutter space-y-gutter">
+<!-- Inspiration Item 1 -->
+<div class="break-inside-avoid relative group whisper-shadow bg-surface-container-lowest rounded-DEFAULT p-2 ghost-border">
+<div class="relative w-full overflow-hidden rounded-sm">
+<img class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" data-alt="A high-fashion editorial photograph of a textured silk fabric draped elegantly over a form, bathed in warm, directional lighting. The color palette features terracotta and ivory tones. The mood is sophisticated and avant-garde, fitting an experimental luxury brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXR1b344zJX7QBU8RARtRqbn7C3zwIbF2A5Tdn91_3rLquN8nz3-CsFlZlMhEI4uyg49ZbwllvOawY-bfZPN3BQ9zfAv1eJjo9BBQiUjGlUw_p-6dTbxZRBH0fIO1ZKze68ASRbxHXPssjaRK6xHJDsPH8d94sEp5gHvIsEYW3KMG27TYlgueUThnNml51bqZ9eog7vKKesNZ6mui9auQMHQot3elD5dyLWYqr2sv5QjWS-zE0bNaQ"/>
+<button class="absolute top-2 right-2 bg-background/80 backdrop-blur-sm p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center hover:bg-background">
+<span class="material-symbols-outlined text-on-surface text-[18px]">close</span>
+</button>
+</div>
+<div class="mt-3 px-1">
+<input class="w-full bg-transparent border-none p-0 font-body-md text-body-md text-on-surface focus:ring-0 placeholder:text-surface-variant/50 border-b border-transparent focus:border-outline-variant transition-colors" placeholder="Add a note..." type="text" value="Love this draping"/>
+</div>
+</div>
+<!-- Inspiration Item 2 -->
+<div class="break-inside-avoid relative group whisper-shadow bg-surface-container-lowest rounded-DEFAULT p-2 ghost-border">
+<div class="relative w-full overflow-hidden rounded-sm">
+<img class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" data-alt="A close-up studio shot of avant-garde neckline construction on a custom garment. The material is a heavy structured cotton in deep charcoal, contrasting with an ivory background. The lighting is crisp and editorial, highlighting the architectural linework of the seam." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7qaLkHyyA7QvFKDzsPxbg0S_KpKrkA3LkuT98y6Y5CT5A_OOfafXuG5HESBr4kjgt0WSvuD1OMRRvStQrjjhAxIyjn9M72dZoHqWzi9Kj5WmZLbn4L9u1nJe7wA3trhTRpNCiszfOiorRshf2mWmK8w5eWdcgBvTxzgVvUxEhCZCGanacTW5bjCNcDWx9ryFG9HBX3ChmF68QTETvToVoUCykG8oOEG70Q9HgWqfXLMZtHyzFyZ9M"/>
+<button class="absolute top-2 right-2 bg-background/80 backdrop-blur-sm p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center hover:bg-background">
+<span class="material-symbols-outlined text-on-surface text-[18px]">close</span>
+</button>
+</div>
+<div class="mt-3 px-1">
+<input class="w-full bg-transparent border-none p-0 font-body-md text-body-md text-on-surface focus:ring-0 placeholder:text-surface-variant/50 border-b border-transparent focus:border-outline-variant transition-colors" placeholder="Add a note..." type="text" value="Exactly this neckline structure"/>
+</div>
+</div>
+<!-- Inspiration Item 3 (Pinterest Link placeholder) -->
+<div class="break-inside-avoid relative group whisper-shadow bg-surface-container-lowest rounded-DEFAULT p-4 ghost-border flex items-start gap-4">
+<div class="w-12 h-12 bg-surface-container flex items-center justify-center shrink-0 rounded-sm">
+<span class="material-symbols-outlined text-on-surface-variant">link</span>
+</div>
+<div class="flex-grow min-w-0">
+<p class="font-body-md text-body-md text-on-surface truncate">Pinterest Board: 'Avant-garde Textures'</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-1 block">EXTERNAL LINK</span>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Actions Sticky -->
+<div class="fixed bottom-0 left-0 w-full bg-background/90 backdrop-blur-md border-t border-surface-dim z-40 px-margin-mobile md:px-margin-desktop py-6">
+<div class="w-full max-w-[1440px] mx-auto flex justify-between items-center">
+<button class="font-label-sm text-label-sm text-on-surface hover:text-primary transition-colors flex items-center gap-2 px-4 py-2 border border-transparent hover:border-surface-dim rounded-DEFAULT">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span>Back</span>
+</button>
+<button class="bg-on-surface text-on-primary font-headline-md text-headline-md px-8 py-3 rounded-DEFAULT hover:bg-tertiary transition-colors duration-300 flex items-center gap-3 group">
+<span>Continue</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</body></html>

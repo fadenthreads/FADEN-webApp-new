@@ -1,0 +1,14 @@
+**/.env
+**/.env.*
+**/.git/**
+**/node_modules/**
+**/.next/**
+**/.turbo/**
+**/*.log
+**/*.tsbuildinfo
+design-reference/stitch/html/**
+design-reference/stitch/screenshots/**
+design-reference/stitch/screens/**
+supabase/.temp/**
+supabase/.branches/**
+**/.vercel/**

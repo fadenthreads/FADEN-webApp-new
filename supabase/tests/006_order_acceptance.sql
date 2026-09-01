@@ -1,0 +1,18 @@
+begin;
+select no_plan();
+select ok(not has_table_privilege('anon','public.customer_orders','SELECT'),'anonymous cannot read orders');
+select ok(has_table_privilege('authenticated','public.customer_orders','SELECT'),'authenticated reads are RLS protected');
+select ok(not has_table_privilege('authenticated','public.customer_orders','INSERT'),'cannot bypass acceptance RPC');
+select ok(not has_table_privilege('authenticated','public.customer_orders','UPDATE'),'cannot change order price or payment state');
+select ok(not has_table_privilege('authenticated','public.customer_orders','DELETE'),'cannot delete commercial snapshots');
+select ok(not has_function_privilege('anon','public.accept_boutique_offer(uuid,integer,boolean)','EXECUTE'),'anonymous cannot call acceptance');
+select ok(has_function_privilege('authenticated','public.accept_boutique_offer(uuid,integer,boolean)','EXECUTE'),'authenticated acceptance available');
+select ok((select relrowsecurity from pg_class where oid='public.customer_orders'::regclass),'RLS enabled');
+select is((select count(*)::integer from pg_constraint where conrelid='public.customer_orders'::regclass and contype='u'),2,'request and offer independently unique');
+set local role authenticated;
+select throws_ok($$select public.accept_boutique_offer(gen_random_uuid(),1,false)$$,'P0001',null,'consent checked in database');
+select throws_ok($$select public.accept_boutique_offer(gen_random_uuid(),1,true)$$,'P0001',null,'unknown offer cannot be accepted');
+select throws_ok($$update public.customer_orders set status='paid'$$,'42501',null,'paid state cannot be spoofed by direct table update');
+reset role;
+select * from finish();
+rollback;
