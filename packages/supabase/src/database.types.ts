@@ -168,32 +168,50 @@ export type Database = {
         Row: {
           action: string
           actor_id: string | null
+          actor_role: Database["public"]["Enums"]["app_role"] | null
+          after_json: Json | null
+          before_json: Json | null
           created_at: string
           entity_id: string | null
           entity_type: string
           id: number
+          ip_hash: string | null
           metadata: Json
           reason: string | null
+          request_id: string | null
+          user_agent_summary: string | null
         }
         Insert: {
           action: string
           actor_id?: string | null
+          actor_role?: Database["public"]["Enums"]["app_role"] | null
+          after_json?: Json | null
+          before_json?: Json | null
           created_at?: string
           entity_id?: string | null
           entity_type: string
           id?: never
+          ip_hash?: string | null
           metadata?: Json
           reason?: string | null
+          request_id?: string | null
+          user_agent_summary?: string | null
         }
         Update: {
           action?: string
           actor_id?: string | null
+          actor_role?: Database["public"]["Enums"]["app_role"] | null
+          after_json?: Json | null
+          before_json?: Json | null
           created_at?: string
           entity_id?: string | null
           entity_type?: string
           id?: never
+          ip_hash?: string | null
           metadata?: Json
           reason?: string | null
+          request_id?: string | null
+          user_agent_summary?: string | null
         }
         Relationships: [
           {
@@ -1841,6 +1859,23 @@ export type Database = {
         }
         Returns: undefined
       }
+      append_audit_event: {
+        Args: {
+          p_action: string
+          p_actor_id?: string
+          p_actor_role?: Database["public"]["Enums"]["app_role"]
+          p_after_json?: Json
+          p_before_json?: Json
+          p_entity_id?: string
+          p_entity_type: string
+          p_ip_hash?: string
+          p_metadata?: Json
+          p_reason?: string
+          p_request_id?: string
+          p_user_agent_summary?: string
+        }
+        Returns: number
+      }
       attach_test_gateway_order: {
         Args: { amount: number; gateway_order: string; target_attempt: string }
         Returns: undefined
@@ -1926,6 +1961,8 @@ export type Database = {
         Args: { target_order: string; through_sequence: number }
         Returns: undefined
       }
+      normalize_audit_request_id: { Args: { input: string }; Returns: string }
+      normalize_audit_user_agent: { Args: { input: string }; Returns: string }
       owns_verified_atelier: { Args: { boutique: string }; Returns: boolean }
       publish_order_design: {
         Args: {
@@ -1942,6 +1979,20 @@ export type Database = {
           target_appointment: string
         }
         Returns: string
+      }
+      record_audit_event: {
+        Args: {
+          p_action: string
+          p_after?: Json
+          p_before?: Json
+          p_entity_id?: string
+          p_entity_type: string
+          p_ip_hash?: string
+          p_reason?: string
+          p_request_id?: string
+          p_user_agent_summary?: string
+        }
+        Returns: number
       }
       record_production_update: {
         Args: {
@@ -1994,6 +2045,7 @@ export type Database = {
         Args: { target_share: string }
         Returns: undefined
       }
+      sanitize_audit_json: { Args: { input: Json }; Returns: Json }
       save_boutique_offer: {
         Args: {
           expected_version: number

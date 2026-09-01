@@ -8,6 +8,25 @@ export {
   routeGuardError,
 } from "./request-guards.mjs";
 export {
+  AUDIT_ACTIONS,
+  AuditRecordError,
+  PLATFORM_ADMIN_AUDIT_ACTIONS,
+  WORKFLOW_AUDIT_ACTIONS,
+  extractClientIp,
+  extractRequestMetadata,
+  hashIpAddress,
+  isPlatformAdminAuditAction,
+  MAX_AUDIT_JSON_BYTES,
+  MAX_ENTITY_ID_LENGTH,
+  MAX_REQUEST_ID_LENGTH,
+  MAX_USER_AGENT_SUMMARY_LENGTH,
+  normalizeAuditRecordInput,
+  normalizeRequestId,
+  recordAuditEvent,
+  sanitizeAuditPayload,
+  summarizeUserAgent,
+} from "./audit.mjs";
+export {
   DISPLAY_MAX_EDGE,
   DISPLAY_WIDTHS,
   IMAGE_MAX_BYTES,

@@ -252,7 +252,7 @@ Execute phases in this order. Do not activate payments or shipping before the ad
 - Failed uploads do not create a database record.
 - Removing an unreferenced upload removes its object safely.
 
-## [ ] F05 Add audit-event service
+## [x] F05 Add audit-event service
 
 **Goal:** Make privileged and financially significant actions traceable.
 

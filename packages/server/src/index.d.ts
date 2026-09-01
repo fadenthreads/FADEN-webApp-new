@@ -35,6 +35,34 @@ export function routeGuardError(
   fallback?: string,
 ): NextResponse<JsonErrorBody>;
 
+export type {
+  AuditAction,
+  AuditRecordFailure,
+  AuditRecordInput,
+  AuditRecordResult,
+  RecordAuditEventOptions,
+} from "./audit.d.ts";
+
+export {
+  AUDIT_ACTIONS,
+  AuditRecordError,
+  PLATFORM_ADMIN_AUDIT_ACTIONS,
+  WORKFLOW_AUDIT_ACTIONS,
+  extractClientIp,
+  extractRequestMetadata,
+  hashIpAddress,
+  isPlatformAdminAuditAction,
+  MAX_AUDIT_JSON_BYTES,
+  MAX_ENTITY_ID_LENGTH,
+  MAX_REQUEST_ID_LENGTH,
+  MAX_USER_AGENT_SUMMARY_LENGTH,
+  normalizeAuditRecordInput,
+  normalizeRequestId,
+  recordAuditEvent,
+  sanitizeAuditPayload,
+  summarizeUserAgent,
+} from "./audit.d.ts";
+
 export const STORAGE_BUCKETS: {
   readonly portfolioImages: "portfolio-images";
   readonly requestInspirations: "request-inspirations";

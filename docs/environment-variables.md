@@ -19,10 +19,11 @@ These may appear in client bundles. They must never be the only control for a pr
 
 ## Platform workflow flags (server-only)
 
-| Variable                        | Default | Purpose                                                                                      |
-| ------------------------------- | ------- | -------------------------------------------------------------------------------------------- |
-| `FADEN_ENABLE_LIVE_WORKFLOWS`   | `false` | Master server gate for live payments, shipping, Daily rooms and transactional email dispatch |
-| `FADEN_ALLOW_PREVIEW_MUTATIONS` | `false` | Allows rehearsal/preview mutation routes in non-live environments. Do not set in production  |
+| Variable                        | Default | Purpose                                                                                                                   |
+| ------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `FADEN_ENABLE_LIVE_WORKFLOWS`   | `false` | Master server gate for live payments, shipping, Daily rooms and transactional email dispatch                              |
+| `FADEN_ALLOW_PREVIEW_MUTATIONS` | `false` | Allows rehearsal/preview mutation routes in non-live environments. Do not set in production                               |
+| `FADEN_AUDIT_IP_HASH_SECRET`    | unset   | Server-only keyed secret for privacy-preserving audit IP hashes. Required when recording request metadata from API routes |
 
 Use `@faden/integrations` readiness helpers instead of reading these flags directly in routes.
 

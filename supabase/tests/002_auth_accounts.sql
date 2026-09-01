@@ -1,5 +1,5 @@
 begin;
-select plan(10);
+select plan(11);
 
 select ok(
   (select relrowsecurity from pg_class where oid = 'public.user_addresses'::regclass),
@@ -34,8 +34,12 @@ select ok(
   'authenticated users cannot directly update roles'
 );
 select ok(
-  not has_table_privilege('authenticated', 'public.audit_events', 'SELECT'),
-  'audit events remain unavailable to browser clients'
+  has_table_privilege('authenticated', 'public.audit_events', 'SELECT'),
+  'authenticated select on audit events is granted for RLS enforcement'
+);
+select ok(
+  (select count(*) >= 1 from pg_policies where tablename = 'audit_events' and cmd = 'SELECT'),
+  'audit events AAL2 select policy is installed'
 );
 select ok(
   not has_table_privilege('authenticated', 'public.outbox_events', 'SELECT'),
