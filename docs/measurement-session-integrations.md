@@ -11,7 +11,7 @@ The shared `@faden/integrations` package provides:
 - private rooms available 15 minutes before a session until 30 minutes after it;
 - participant-bound, expiring meeting tokens;
 - camera and microphone off on entry;
-- recording forced off; and
+- recording capability omitted from rooms and tokens so it remains unavailable; and
 - a ten-second provider timeout with no credential or response-body leakage in errors.
 
 Authenticated readiness endpoints exist in Marketplace and Studio at `/api/appointments/readiness`. They never return the API key or the names of missing secrets.

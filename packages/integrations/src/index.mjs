@@ -99,7 +99,6 @@ export function createDailyClient(config, fetcher = fetch) {
             properties: {
               nbf: window.nbf,
               exp: window.exp,
-              enable_recording: "off",
               start_video_off: true,
               start_audio_off: true,
             },
@@ -130,7 +129,6 @@ export function createDailyClient(config, fetcher = fetch) {
               is_owner: Boolean(isOwner),
               nbf: window.nbf,
               exp: window.exp,
-              enable_recording: "off",
             },
           }),
         },

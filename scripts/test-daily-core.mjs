@@ -75,8 +75,8 @@ test("client creates private non-recorded rooms and participant-bound tokens", a
   const room = JSON.parse(calls[0].init.body);
   const token = JSON.parse(calls[1].init.body);
   assert.equal(room.privacy, "private");
-  assert.equal(room.properties.enable_recording, "off");
+  assert.equal("enable_recording" in room.properties, false);
   assert.equal(token.properties.room_name, room.name);
-  assert.equal(token.properties.enable_recording, "off");
+  assert.equal("enable_recording" in token.properties, false);
   assert.equal(calls[0].init.headers.Authorization, "Bearer server-secret");
 });
