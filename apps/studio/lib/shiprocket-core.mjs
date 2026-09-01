@@ -1,4 +1,5 @@
 import { createHash, timingSafeEqual } from "node:crypto";
+import { getShippingReadiness } from "@faden/integrations";
 
 const DEFAULT_BASE_URL = "https://apiv2.shiprocket.in/v1/external";
 const REQUEST_TIMEOUT_MS = 10_000;
@@ -14,26 +15,13 @@ function booleanFlag(value) {
 }
 
 export function getShiprocketReadiness(env = process.env) {
-  const missing = [];
-  if (!env.SHIPROCKET_API_EMAIL) missing.push("SHIPROCKET_API_EMAIL");
-  if (!env.SHIPROCKET_API_PASSWORD) missing.push("SHIPROCKET_API_PASSWORD");
-  if (!env.SHIPROCKET_PICKUP_LOCATION)
-    missing.push("SHIPROCKET_PICKUP_LOCATION");
-  if (!env.SHIPROCKET_PICKUP_POSTCODE)
-    missing.push("SHIPROCKET_PICKUP_POSTCODE");
-  if (!env.SHIPROCKET_WEBHOOK_SECRET) missing.push("SHIPROCKET_WEBHOOK_SECRET");
-
-  const apiEnabled = booleanFlag(env.SHIPROCKET_API_ENABLED);
-  const bookingRequested = booleanFlag(env.SHIPROCKET_LIVE_BOOKING_ENABLED);
-  const production = env.NEXT_PUBLIC_APP_ENV === "production";
-
+  const readiness = getShippingReadiness(env);
   return {
-    provider: "shiprocket",
-    configured: missing.length === 0,
-    apiEnabled,
-    liveBookingEnabled:
-      missing.length === 0 && apiEnabled && bookingRequested && production,
-    missing,
+    provider: readiness.provider,
+    configured: readiness.configured,
+    apiEnabled: booleanFlag(env.SHIPROCKET_API_ENABLED),
+    liveBookingEnabled: readiness.live,
+    missing: readiness.missing,
   };
 }
 

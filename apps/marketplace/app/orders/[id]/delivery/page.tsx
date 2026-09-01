@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FulfilmentPanel } from "@faden/ui";
+import { isPreviewMutationAllowed } from "@faden/integrations";
 import { customerOrder } from "../../../../lib/orders";
 import { getSupabaseServerClient } from "../../../../lib/supabase/server";
 import { MarketplaceHeader } from "../../../../components/marketplace-header";
@@ -37,10 +38,7 @@ export default async function Delivery({
           details={a.data}
           events={e.data ?? []}
           acknowledged={!!c.data}
-          readOnly={
-            o.status === "cancelled" ||
-            process.env.NEXT_PUBLIC_APP_ENV === "production"
-          }
+          readOnly={o.status === "cancelled" || !isPreviewMutationAllowed()}
         />
       </main>
     </div>

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isPreviewMutationAllowed } from "@faden/integrations";
 import { getSupabaseServerClient } from "../../../lib/supabase/server";
 export async function POST(request: NextRequest) {
   if (request.headers.get("origin") !== request.nextUrl.origin)
@@ -6,7 +7,7 @@ export async function POST(request: NextRequest) {
       { error: "Invalid request origin." },
       { status: 403 },
     );
-  if (process.env.NEXT_PUBLIC_APP_ENV === "production")
+  if (!isPreviewMutationAllowed())
     return NextResponse.json(
       { error: "Fulfilment rehearsal is disabled in production." },
       { status: 503 },

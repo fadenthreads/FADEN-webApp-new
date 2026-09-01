@@ -10,30 +10,29 @@ import {
   verifyShiprocketWebhookToken,
 } from "../apps/studio/lib/shiprocket-core.mjs";
 
+const base = {
+  SHIPROCKET_API_EMAIL: "api@example.com",
+  SHIPROCKET_API_PASSWORD: "secret",
+  SHIPROCKET_PICKUP_LOCATION: "FADEN",
+  SHIPROCKET_PICKUP_POSTCODE: "110001",
+  SHIPROCKET_WEBHOOK_SECRET: "webhook-secret",
+  SHIPROCKET_API_ENABLED: "true",
+  SHIPROCKET_LIVE_BOOKING_ENABLED: "true",
+};
+
 test("shipping remains disabled without configuration", () => {
-  const state = getShiprocketReadiness({ NEXT_PUBLIC_APP_ENV: "preview" });
+  const state = getShiprocketReadiness({});
   assert.equal(state.configured, false);
   assert.equal(state.liveBookingEnabled, false);
 });
 
-test("live booking needs credentials, both flags and production", () => {
-  const base = {
-    SHIPROCKET_API_EMAIL: "api@example.com",
-    SHIPROCKET_API_PASSWORD: "secret",
-    SHIPROCKET_PICKUP_LOCATION: "FADEN",
-    SHIPROCKET_PICKUP_POSTCODE: "110001",
-    SHIPROCKET_WEBHOOK_SECRET: "webhook-secret",
-    SHIPROCKET_API_ENABLED: "true",
-    SHIPROCKET_LIVE_BOOKING_ENABLED: "true",
-  };
+test("live booking needs credentials, both flags and live workflows", () => {
+  assert.equal(getShiprocketReadiness(base).liveBookingEnabled, false);
   assert.equal(
-    getShiprocketReadiness({ ...base, NEXT_PUBLIC_APP_ENV: "preview" })
-      .liveBookingEnabled,
-    false,
-  );
-  assert.equal(
-    getShiprocketReadiness({ ...base, NEXT_PUBLIC_APP_ENV: "production" })
-      .liveBookingEnabled,
+    getShiprocketReadiness({
+      ...base,
+      FADEN_ENABLE_LIVE_WORKFLOWS: "true",
+    }).liveBookingEnabled,
     true,
   );
 });

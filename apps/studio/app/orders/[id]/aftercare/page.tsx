@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AftercarePanel } from "@faden/ui";
 import { notFound } from "next/navigation";
+import { isPreviewMutationAllowed } from "@faden/integrations";
 import { atelierContext } from "../../../../lib/atelier";
 import { AtelierShell } from "../../../../components/atelier-shell";
 export default async function Aftercare({
@@ -56,9 +57,7 @@ export default async function Aftercare({
         items={i.data ?? []}
         events={e.data ?? []}
         eligible={
-          !!c.data &&
-          o.status !== "cancelled" &&
-          process.env.NEXT_PUBLIC_APP_ENV !== "production"
+          !!c.data && o.status !== "cancelled" && isPreviewMutationAllowed()
         }
       />
     </>

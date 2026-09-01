@@ -1,5 +1,7 @@
 # FADEN Platform
 
+The step-by-step remaining implementation specification is in [docs/CURSOR_BUILD_PLAN.md](docs/CURSOR_BUILD_PLAN.md). It is organized as small Cursor-ready tickets with required files, database/security rules, acceptance criteria and validation commands.
+
 FADEN is an India-first luxury custom-fashion marketplace. This repository contains three responsive web applications backed by one Supabase project:
 
 - Marketplace (`http://localhost:3000`)

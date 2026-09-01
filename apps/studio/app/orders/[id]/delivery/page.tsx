@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FulfilmentPanel } from "@faden/ui";
+import { isPreviewMutationAllowed } from "@faden/integrations";
 import { atelierContext } from "../../../../lib/atelier";
 import { AtelierShell } from "../../../../components/atelier-shell";
 export default async function Delivery({
@@ -44,10 +45,7 @@ export default async function Delivery({
         details={a.data}
         events={e.data ?? []}
         acknowledged={!!c.data}
-        readOnly={
-          o.data.status === "cancelled" ||
-          process.env.NEXT_PUBLIC_APP_ENV === "production"
-        }
+        readOnly={o.data.status === "cancelled" || !isPreviewMutationAllowed()}
       />
     </AtelierShell>
   );

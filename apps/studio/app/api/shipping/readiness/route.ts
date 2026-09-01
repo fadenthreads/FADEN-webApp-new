@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
+import { getShippingReadiness, toPublicReadiness } from "@faden/integrations";
 import { getSupabaseServerClient } from "../../../../lib/supabase/server";
-import { getShiprocketReadiness } from "../../../../lib/shiprocket-core.mjs";
 
 export const dynamic = "force-dynamic";
 
@@ -9,18 +9,9 @@ export async function GET() {
   if (!(await supabase.auth.getUser()).data.user)
     return NextResponse.json({ error: "Please sign in." }, { status: 401 });
 
-  const readiness = getShiprocketReadiness();
-  return NextResponse.json(
-    {
-      provider: readiness.provider,
-      configured: readiness.configured,
-      apiEnabled: readiness.apiEnabled,
-      liveBookingEnabled: readiness.liveBookingEnabled,
+  return NextResponse.json(toPublicReadiness(getShippingReadiness()), {
+    headers: {
+      "Cache-Control": "private, no-store, max-age=0",
     },
-    {
-      headers: {
-        "Cache-Control": "private, no-store, max-age=0",
-      },
-    },
-  );
+  });
 }

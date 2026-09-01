@@ -1,30 +1,23 @@
 const DEFAULT_DAILY_BASE_URL = "https://api.daily.co/v1";
 const REQUEST_TIMEOUT_MS = 10_000;
 
+export {
+  getDailyReadiness,
+  getEmailReadiness,
+  getLiveWorkflowsReadiness,
+  getMapsReadiness,
+  getPaymentsReadiness,
+  getShippingReadiness,
+  isPreviewMutationAllowed,
+  toPublicReadiness,
+} from "./readiness.mjs";
+
+import { getDailyReadiness } from "./readiness.mjs";
+
 function required(value, name) {
   if (typeof value !== "string" || !value.trim())
     throw new Error(`${name} is not configured.`);
   return value.trim();
-}
-
-function enabled(value) {
-  return value === "true";
-}
-
-export function getDailyReadiness(env = process.env) {
-  const missing = [];
-  if (!env.DAILY_API_KEY) missing.push("DAILY_API_KEY");
-  const apiEnabled = enabled(env.DAILY_API_ENABLED);
-  const liveRoomsRequested = enabled(env.DAILY_LIVE_ROOMS_ENABLED);
-  const production = env.NEXT_PUBLIC_APP_ENV === "production";
-  return {
-    provider: "daily",
-    configured: missing.length === 0,
-    apiEnabled,
-    liveRoomsEnabled:
-      missing.length === 0 && apiEnabled && liveRoomsRequested && production,
-    missing,
-  };
 }
 
 export function dailyConfiguration(env = process.env) {

@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
       { status: 403 },
     );
   const readiness = getDailyReadiness();
-  if (!readiness.liveRoomsEnabled)
+  if (!readiness.live)
     return NextResponse.json(
       { error: "Video calls are not enabled yet." },
       { status: 503 },

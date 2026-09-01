@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { getMapsReadiness } from "@faden/integrations";
 import { getSupabaseServerClient } from "../../../lib/supabase/server";
 
 export const runtime = "nodejs";
@@ -56,8 +57,8 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const apiKey = process.env.GEOAPIFY_API_KEY;
-  if (!apiKey) {
+  const maps = getMapsReadiness();
+  if (!maps.configured || !maps.enabled) {
     return NextResponse.json(
       {
         error: "Address search is not configured. Enter the address manually.",
@@ -65,6 +66,8 @@ export async function GET(request: NextRequest) {
       { status: 503 },
     );
   }
+
+  const apiKey = process.env.GEOAPIFY_API_KEY!;
 
   const endpoint = new URL("https://api.geoapify.com/v1/geocode/autocomplete");
   endpoint.search = new URLSearchParams({

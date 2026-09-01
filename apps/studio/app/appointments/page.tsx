@@ -87,7 +87,7 @@ export default async function Appointments({
           state: "booked",
         }))}
         boutiques={boutiques}
-        videoEnabled={getDailyReadiness().liveRoomsEnabled}
+        videoEnabled={getDailyReadiness().live}
       />
       <nav className="appointment-tabs" aria-label="Booking pages">
         {page > 1 && <Link href={href(view, page - 1)}>Previous page</Link>}

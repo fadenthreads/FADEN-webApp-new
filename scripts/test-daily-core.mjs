@@ -12,25 +12,23 @@ const startsAt = "2026-09-02T10:00:00.000Z";
 const endsAt = "2026-09-02T11:00:00.000Z";
 
 test("video calls remain disabled without credentials", () => {
-  const readiness = getDailyReadiness({ NEXT_PUBLIC_APP_ENV: "production" });
+  const readiness = getDailyReadiness({});
   assert.equal(readiness.configured, false);
-  assert.equal(readiness.liveRoomsEnabled, false);
+  assert.equal(readiness.live, false);
 });
 
-test("live rooms need credentials, both flags and production", () => {
+test("live rooms need credentials, both flags and live workflows", () => {
   const configured = {
     DAILY_API_KEY: "server-secret",
     DAILY_API_ENABLED: "true",
     DAILY_LIVE_ROOMS_ENABLED: "true",
   };
+  assert.equal(getDailyReadiness(configured).live, false);
   assert.equal(
-    getDailyReadiness({ ...configured, NEXT_PUBLIC_APP_ENV: "preview" })
-      .liveRoomsEnabled,
-    false,
-  );
-  assert.equal(
-    getDailyReadiness({ ...configured, NEXT_PUBLIC_APP_ENV: "production" })
-      .liveRoomsEnabled,
+    getDailyReadiness({
+      ...configured,
+      FADEN_ENABLE_LIVE_WORKFLOWS: "true",
+    }).live,
     true,
   );
 });

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AftercarePanel } from "@faden/ui";
+import { isPreviewMutationAllowed } from "@faden/integrations";
 import { customerOrder } from "../../../../lib/orders";
 import { getSupabaseServerClient } from "../../../../lib/supabase/server";
 import { MarketplaceHeader } from "../../../../components/marketplace-header";
@@ -46,9 +47,7 @@ export default async function Aftercare({
         items={i.data ?? []}
         events={e.data ?? []}
         eligible={
-          !!c.data &&
-          o.status !== "cancelled" &&
-          process.env.NEXT_PUBLIC_APP_ENV !== "production"
+          !!c.data && o.status !== "cancelled" && isPreviewMutationAllowed()
         }
       />
     </>

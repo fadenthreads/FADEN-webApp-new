@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { productionStages, briefText } from "@faden/ui";
+import { isPreviewMutationAllowed } from "@faden/integrations";
 import { atelierContext } from "../../../../lib/atelier";
 import { AtelierShell } from "../../../../components/atelier-shell";
 import { ProductionEditor } from "../../../../components/production-editor";
@@ -45,7 +46,7 @@ export default async function ProductionOrder({
     o.status !== "cancelled" &&
     reviews?.[0]?.status === "approved" &&
     (latest?.sequence ?? 0) < 100 &&
-    process.env.NEXT_PUBLIC_APP_ENV !== "production";
+    isPreviewMutationAllowed();
   const history = await Promise.all(
     (updates ?? []).map(async (p) => ({
       ...p,

@@ -50,7 +50,7 @@ export default async function OrderAppointments({
             ...a,
             state: "booked",
           }))}
-          videoEnabled={getDailyReadiness().liveRoomsEnabled}
+          videoEnabled={getDailyReadiness().live}
         />
       </main>
     </div>

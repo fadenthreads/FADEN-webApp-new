@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { OrderMessages } from "@faden/ui";
+import { isPreviewMutationAllowed } from "@faden/integrations";
 import { customerOrder } from "../../../../lib/orders";
 import { getSupabaseServerClient } from "../../../../lib/supabase/server";
 import { MarketplaceHeader } from "../../../../components/marketplace-header";
@@ -68,7 +69,7 @@ export default async function Messages({
         eligible={
           o.status !== "cancelled" &&
           !!boutique.data &&
-          process.env.NEXT_PUBLIC_APP_ENV !== "production"
+          isPreviewMutationAllowed()
         }
       />
       <nav className="chat-pagination" aria-label="Message history">

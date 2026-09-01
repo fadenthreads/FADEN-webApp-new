@@ -8,7 +8,7 @@
     "start": "next start -p 3001",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "node ../../scripts/test-shiprocket-core.mjs"
+    "test": "node --test ../../scripts/test-shiprocket-core.mjs"
   },
   "dependencies": {
     "@faden/auth": "*",
