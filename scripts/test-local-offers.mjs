@@ -186,12 +186,12 @@ try {
     (await call("/api/shares", shareBody, { who: outsider })).status === 400,
     "Other customer cannot share",
   );
+  const crossOriginShare = await call("/api/shares", shareBody, {
+    origin: "https://untrusted.invalid",
+  });
   check(
-    (
-      await call("/api/shares", shareBody, {
-        origin: "https://untrusted.invalid",
-      })
-    ).status === 400,
+    crossOriginShare.status === 403 &&
+      crossOriginShare.data?.code === "invalid_origin",
     "Cross-origin sharing denied",
   );
   r = await call("/api/shares", shareBody);
@@ -271,14 +271,14 @@ try {
       .status === 400,
     "Customer cannot issue quote",
   );
+  const crossOriginOffer = await call("/api/offers", body, {
+    studio: true,
+    who: owner,
+    origin: "https://untrusted.invalid",
+  });
   check(
-    (
-      await call("/api/offers", body, {
-        studio: true,
-        who: owner,
-        origin: "https://untrusted.invalid",
-      })
-    ).status === 400,
+    crossOriginOffer.status === 403 &&
+      crossOriginOffer.data?.code === "invalid_origin",
     "Cross-origin offer denied",
   );
   r = await call("/api/offers", body, { studio: true, who: owner });
