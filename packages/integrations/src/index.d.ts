@@ -30,7 +30,9 @@ export function createDailyClient(
   config: DailyConfiguration,
   fetcher?: typeof fetch,
 ): {
+  getRoom(appointmentId: string): Promise<Record<string, unknown> | null>;
   createPrivateRoom(input: DailyRoomInput): Promise<Record<string, unknown>>;
+  ensurePrivateRoom(input: DailyRoomInput): Promise<Record<string, unknown>>;
   createMeetingToken(input: DailyTokenInput): Promise<Record<string, unknown>>;
   deleteRoom(appointmentId: string): Promise<Record<string, unknown>>;
 };

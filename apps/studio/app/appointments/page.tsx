@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AppointmentPanel } from "@faden/ui";
 import { atelierContext } from "../../lib/atelier";
 import { AtelierShell } from "../../components/atelier-shell";
+import { getDailyReadiness } from "@faden/integrations";
 export default async function Appointments({
   searchParams,
 }: {
@@ -86,6 +87,7 @@ export default async function Appointments({
           state: "booked",
         }))}
         boutiques={boutiques}
+        videoEnabled={getDailyReadiness().liveRoomsEnabled}
       />
       <nav className="appointment-tabs" aria-label="Booking pages">
         {page > 1 && <Link href={href(view, page - 1)}>Previous page</Link>}

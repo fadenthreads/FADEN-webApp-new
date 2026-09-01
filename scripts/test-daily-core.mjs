@@ -78,5 +78,35 @@ test("client creates private non-recorded rooms and participant-bound tokens", a
   assert.equal("enable_recording" in room.properties, false);
   assert.equal(token.properties.room_name, room.name);
   assert.equal("enable_recording" in token.properties, false);
+  assert.equal(token.properties.eject_at_token_exp, true);
   assert.equal(calls[0].init.headers.Authorization, "Bearer server-secret");
+});
+
+test("room provisioning reuses an existing deterministic room", async () => {
+  const calls = [];
+  const fetcher = async (url, init) => {
+    calls.push({ url: String(url), init });
+    return new Response(
+      JSON.stringify({
+        name: normalizeRoomName(appointmentId),
+        url: "https://faden.daily.co/existing",
+      }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
+  };
+  const client = createDailyClient(
+    { apiKey: "server-secret", baseUrl: "https://example.test/v1" },
+    fetcher,
+  );
+  const room = await client.ensurePrivateRoom({
+    appointmentId,
+    startsAt,
+    endsAt,
+  });
+  assert.equal(room.url, "https://faden.daily.co/existing");
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].init.method, "GET");
 });

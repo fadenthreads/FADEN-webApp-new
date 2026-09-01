@@ -29,12 +29,14 @@ export function AppointmentPanel({
   appointments,
   orderId,
   boutiques,
+  videoEnabled = false,
   demo = false,
 }: {
   slots: AppointmentSlot[];
   appointments: Appointment[];
   orderId?: string;
   boutiques?: { id: string; name: string }[];
+  videoEnabled?: boolean;
   demo?: boolean;
 }) {
   const router = useRouter();
@@ -66,6 +68,31 @@ export function AppointmentPanel({
     } catch (e) {
       setError(e instanceof Error ? e.message : "Please retry.");
     } finally {
+      setBusy(false);
+    }
+  }
+  async function joinVideo(appointmentId: string) {
+    setBusy(true);
+    setError("");
+    try {
+      const response = await fetch("/api/appointments/video", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ appointmentId }),
+      });
+      const body = (await response.json()) as {
+        joinUrl?: string;
+        error?: string;
+      };
+      if (!response.ok || !body.joinUrl)
+        throw new Error(body.error ?? "Video room could not be opened.");
+      window.location.assign(body.joinUrl);
+    } catch (cause) {
+      setError(
+        cause instanceof Error
+          ? cause.message
+          : "Video room could not be opened.",
+      );
       setBusy(false);
     }
   }
@@ -306,6 +333,30 @@ export function AppointmentPanel({
                   : `${a.location} · This saved venue is private to the appointment participants.`}
               </p>
               <small>Order {a.order_id.slice(0, 8)}</small>
+              {a.kind === "video" &&
+                a.status === "confirmed" &&
+                videoEnabled && (
+                  <>
+                    <button
+                      className="offer-btn"
+                      disabled={
+                        busy ||
+                        demo ||
+                        Date.now() < Date.parse(a.starts_at) - 15 * 60_000 ||
+                        Date.now() > Date.parse(a.ends_at) + 30 * 60_000
+                      }
+                      onClick={() => void joinVideo(a.id)}
+                    >
+                      {busy
+                        ? "Preparing secure room…"
+                        : "Join secure video call"}
+                    </button>
+                    <p>
+                      Join access opens 15 minutes before the session and closes
+                      30 minutes after.
+                    </p>
+                  </>
+                )}
               {a.follow_up_of && (
                 <p>
                   Follow-up to session{" "}

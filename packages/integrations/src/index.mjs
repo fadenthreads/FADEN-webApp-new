@@ -65,7 +65,13 @@ export function sessionWindow(startsAt, endsAt) {
   };
 }
 
-async function jsonRequest(config, path, options, fetcher) {
+async function jsonRequest(
+  config,
+  path,
+  options,
+  fetcher,
+  allowNotFound = false,
+) {
   const response = await fetcher(`${config.baseUrl}${path}`, {
     ...options,
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
@@ -77,6 +83,7 @@ async function jsonRequest(config, path, options, fetcher) {
     },
   });
   const body = await response.json().catch(() => null);
+  if (allowNotFound && response.status === 404) return null;
   if (!response.ok)
     throw new Error(`Daily request failed with status ${response.status}.`);
   if (!body || typeof body !== "object")
@@ -85,7 +92,16 @@ async function jsonRequest(config, path, options, fetcher) {
 }
 
 export function createDailyClient(config, fetcher = fetch) {
-  return {
+  const client = {
+    getRoom(appointmentId) {
+      return jsonRequest(
+        config,
+        `/rooms/${encodeURIComponent(normalizeRoomName(appointmentId))}`,
+        { method: "GET" },
+        fetcher,
+        true,
+      );
+    },
     createPrivateRoom({ appointmentId, startsAt, endsAt }) {
       const window = sessionWindow(startsAt, endsAt);
       return jsonRequest(
@@ -129,6 +145,9 @@ export function createDailyClient(config, fetcher = fetch) {
               is_owner: Boolean(isOwner),
               nbf: window.nbf,
               exp: window.exp,
+              eject_at_token_exp: true,
+              start_video_off: true,
+              start_audio_off: true,
             },
           }),
         },
@@ -142,6 +161,20 @@ export function createDailyClient(config, fetcher = fetch) {
         { method: "DELETE" },
         fetcher,
       );
+    },
+  };
+  return {
+    ...client,
+    async ensurePrivateRoom(input) {
+      const existing = await client.getRoom(input.appointmentId);
+      if (existing) return existing;
+      try {
+        return await client.createPrivateRoom(input);
+      } catch {
+        const raced = await client.getRoom(input.appointmentId);
+        if (raced) return raced;
+        throw new Error("Daily room could not be prepared.");
+      }
     },
   };
 }

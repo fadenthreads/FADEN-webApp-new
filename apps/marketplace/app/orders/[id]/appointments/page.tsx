@@ -3,6 +3,7 @@ import { AppointmentPanel } from "@faden/ui";
 import { customerOrder } from "../../../../lib/orders";
 import { getSupabaseServerClient } from "../../../../lib/supabase/server";
 import { MarketplaceHeader } from "../../../../components/marketplace-header";
+import { getDailyReadiness } from "@faden/integrations";
 export default async function OrderAppointments({
   params,
 }: {
@@ -49,6 +50,7 @@ export default async function OrderAppointments({
             ...a,
             state: "booked",
           }))}
+          videoEnabled={getDailyReadiness().liveRoomsEnabled}
         />
       </main>
     </div>
