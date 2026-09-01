@@ -1,4 +1,5 @@
 import { notFound, redirect } from "next/navigation";
+import { createInspirationDisplayUrl } from "@faden/server";
 import { getSupabaseServerClient } from "../lib/supabase/server";
 import {
   EMPTY_DRAFT,
@@ -39,10 +40,8 @@ export async function RequestPage({
   await Promise.all(
     draft.inspirations.map(async (i) => {
       if (!i.key.startsWith(`${auth.user!.id}/${row?.id}/`)) return;
-      const result = await supabase.storage
-        .from("request-inspiration")
-        .createSignedUrl(i.key, 900);
-      if (result.data) urls[i.key] = result.data.signedUrl;
+      const signed = await createInspirationDisplayUrl(supabase, i.key, 800);
+      if (signed) urls[i.key] = signed.signedUrl;
     }),
   );
   const { data: saved } = await supabase

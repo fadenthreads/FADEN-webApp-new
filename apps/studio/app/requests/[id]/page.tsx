@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { briefText, briefList, object } from "@faden/ui";
+import { createInspirationDisplayUrl } from "@faden/server";
 import { atelierContext } from "../../../lib/atelier";
 import { AtelierShell } from "../../../components/atelier-shell";
 import { AtelierNotes } from "../../../components/atelier-notes";
@@ -41,12 +42,10 @@ export default async function RequestDetail({
     inspirations.map(async (item) => {
       const key = typeof item.key === "string" ? item.key : "";
       if (!key.startsWith(`${s.customer_id}/${s.request_id}/`)) return null;
-      const { data } = await supabase.storage
-        .from("request-inspiration")
-        .createSignedUrl(key, 900);
-      return data
+      const signed = await createInspirationDisplayUrl(supabase, key, 800);
+      return signed
         ? {
-            url: data.signedUrl,
+            url: signed.signedUrl,
             note: typeof item.note === "string" ? item.note : "",
           }
         : null;

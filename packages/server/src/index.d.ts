@@ -45,6 +45,9 @@ export const STORAGE_BUCKETS: {
 export const IMAGE_MAX_BYTES: number;
 export const PDF_MAX_BYTES: number;
 export const SIGNED_URL_TTL_SECONDS: number;
+export const DISPLAY_MAX_EDGE: number;
+export const DISPLAY_WIDTHS: readonly number[];
+export const LEGACY_INSPIRATION_BUCKET: "request-inspiration";
 export const IMAGE_MIME_TYPES: readonly string[];
 export const ORDER_FILE_PURPOSES: readonly string[];
 
@@ -99,6 +102,28 @@ export function buildStorageObjectPath(input: {
   objectId?: string;
 }): string;
 export function isSafeObjectPath(path: string, bucket: string): boolean;
+export function displayWidthFor(value: unknown): number | null;
+export function looksLikeSignedUrl(value: unknown): boolean;
+export function isOwnedPortfolioKey(path: string, boutiqueId: string): boolean;
+export function isOwnedInspirationKey(
+  path: string,
+  userId: string,
+  requestId: string,
+): boolean;
+export function portfolioPublicUrl(
+  supabaseUrl: string,
+  path: string,
+  width?: number,
+): string;
+export function createInspirationDisplayUrl(
+  supabase: SupabaseClient<Database>,
+  path: string,
+  width?: number,
+): Promise<{ bucket: string; path: string; signedUrl: string } | null>;
+export function uploadRequestInspirationObject(
+  supabase: SupabaseClient<Database>,
+  input: { userId: string; requestId: string; file: File },
+): Promise<{ bucket: string; path: string; mimeType: string }>;
 export function stripImageExif(
   input: Uint8Array | ArrayBuffer | Buffer,
   mimeType: string,

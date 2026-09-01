@@ -43,6 +43,22 @@ export async function testStudio({ admin, owner, customer, other, b, page }) {
     assert.equal(r.error, null);
     return r.data;
   };
+  async function postStorage(who, body, origin = "http://localhost:3001") {
+    const r = await fetch(`${origin}/api/storage`, {
+      method: "POST",
+      headers: {
+        Origin: origin,
+        "Content-Type": "application/json",
+        ...(who ? { Cookie: who.cookie } : {}),
+      },
+      body: JSON.stringify(body),
+    });
+    return { status: r.status, data: await r.json() };
+  }
+  const png = Buffer.from(
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aV1cAAAAASUVORK5CYII=",
+    "base64",
+  );
   try {
     assert.equal(
       (
@@ -135,6 +151,105 @@ export async function testStudio({ admin, owner, customer, other, b, page }) {
     );
     id = created.data.id;
     ok((await load()).base_price_paise === 2500055, "paise preserved");
+    ok(
+      (
+        await post(owner, {
+          ...draft,
+          action: "update",
+          id,
+          version: (await load()).updated_at,
+          image:
+            "https://example.test/storage/v1/object/sign/portfolio-images/x?token=secret",
+        })
+      ).status === 400,
+      "signed image URLs cannot be persisted",
+    );
+    const signed = await postStorage(owner, {
+      action: "sign-upload",
+      bucket: "portfolio-images",
+      subjectId: b.id,
+      mimeType: "image/png",
+      byteSize: png.length,
+    });
+    ok(signed.status === 200 && signed.data.path, "portfolio upload granted");
+    const put = await fetch(signed.data.signedUrl, {
+      method: "PUT",
+      headers: { "Content-Type": "image/png" },
+      body: png,
+    });
+    ok(put.ok, "portfolio object uploaded");
+    const firstKey = signed.data.path;
+    ok(
+      (
+        await post(owner, {
+          ...draft,
+          action: "update",
+          id,
+          version: (await load()).updated_at,
+          image: firstKey,
+        })
+      ).status === 200,
+      "design stores the object key",
+    );
+    ok(
+      (await load()).primary_image_url === firstKey,
+      "persisted value is the storage key",
+    );
+    ok(
+      (
+        await postStorage(customer, {
+          action: "remove",
+          bucket: "portfolio-images",
+          path: firstKey,
+        })
+      ).status >= 400,
+      "customer cannot remove boutique media",
+    );
+    ok(
+      (
+        await postStorage(owner, {
+          action: "remove",
+          bucket: "portfolio-images",
+          path: firstKey,
+        })
+      ).status === 409,
+      "referenced portfolio object is kept",
+    );
+    const replacement = await postStorage(owner, {
+      action: "sign-upload",
+      bucket: "portfolio-images",
+      subjectId: b.id,
+      mimeType: "image/png",
+      byteSize: png.length,
+    });
+    ok(replacement.status === 200, "replacement upload granted");
+    ok(
+      (
+        await fetch(replacement.data.signedUrl, {
+          method: "PUT",
+          headers: { "Content-Type": "image/png" },
+          body: png,
+        })
+      ).ok,
+      "replacement object uploaded",
+    );
+    ok(
+      (
+        await post(owner, {
+          ...draft,
+          action: "update",
+          id,
+          version: (await load()).updated_at,
+          image: replacement.data.path,
+        })
+      ).status === 200,
+      "replacement key saved",
+    );
+    ok(
+      (await admin.storage.from("portfolio-images").download(firstKey)).error,
+      "unreferenced previous object removed on save",
+    );
+    draft.image = replacement.data.path;
     ok(
       (await post(owner, draft)).status === 200,
       "identical create retry succeeds",

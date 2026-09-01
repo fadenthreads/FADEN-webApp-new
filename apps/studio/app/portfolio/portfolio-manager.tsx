@@ -3,6 +3,12 @@
 import Link from "next/link";
 import { useRef, useState } from "react";
 import {
+  MediaUploader,
+  isImageObjectKey,
+  portfolioDisplayUrl,
+  sendWithProgress,
+} from "@faden/ui";
+import {
   imageForPortfolio,
   portfolioCategories,
   type PortfolioDesign,
@@ -31,6 +37,9 @@ export function PortfolioManager({
     [busy, setBusy] = useState(false),
     [error, setError] = useState("");
   const [confirmed, setConfirmed] = useState(false);
+  const [imageKey, setImageKey] = useState("");
+  const [imagePreview, setImagePreview] = useState("");
+  const [clearedImage, setClearedImage] = useState(false);
   const command = useRef<string | null>(null);
   const base = demo ? "/preview/portfolio" : "/portfolio";
   const href = (changes: Partial<Filters>) => {
@@ -52,9 +61,24 @@ export function PortfolioManager({
     setError("");
     setConfirmed(false);
     command.current = null;
+    setClearedImage(false);
+    setImageKey(
+      d && isImageObjectKey(d.primary_image_url) ? d.primary_image_url : "",
+    );
+    setImagePreview(
+      d ? imageForPortfolio(d.primary_image_url, marketplaceBase) : "",
+    );
     document
       .getElementById("design-editor")
       ?.scrollIntoView({ behavior: "smooth" });
+  }
+  function persistedImage() {
+    if (imageKey) return imageKey;
+    if (clearedImage) return "";
+    if (editing && !isImageObjectKey(editing.primary_image_url)) {
+      return editing.primary_image_url;
+    }
+    return "";
   }
   async function save(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -76,7 +100,7 @@ export function PortfolioManager({
           description: f.get("description"),
           price: f.get("price"),
           status: f.get("status"),
-          image: f.get("image"),
+          image: persistedImage(),
           minWeeks: Number(f.get("minWeeks")),
           maxWeeks: Number(f.get("maxWeeks")),
           occasions: String(f.get("occasions") || "")
@@ -238,8 +262,7 @@ export function PortfolioManager({
         <h2>{editing ? "Edit your design" : "New portfolio piece"}</h2>
         <p className="studio-muted">
           Drafts stay out of public discovery. Publishing makes this piece
-          visible in the staging marketplace. Collections and image uploads are
-          not connected yet.
+          visible in the staging marketplace. Collections are not connected yet.
         </p>
         <form key={editing?.id || "new"} onSubmit={save}>
           <fieldset
@@ -279,20 +302,98 @@ export function PortfolioManager({
                   defaultValue={editing?.description || ""}
                 />
               </label>
-              <label className="wide">
-                Editorial image URL
-                <input
-                  type="url"
-                  name="image"
-                  maxLength={2048}
-                  defaultValue={editing?.primary_image_url || ""}
+              <div className="wide">
+                <span>Editorial image</span>
+                <MediaUploader
+                  id="portfolio-image"
+                  label="Drag & drop or browse"
+                  hint="JPG, PNG or WebP · up to 10 MB · resized to 2400px on the longest edge"
+                  maxFiles={1}
+                  disabled={demo || busy}
+                  value={
+                    imageKey
+                      ? [
+                          {
+                            key: imageKey,
+                            displayUrl:
+                              imagePreview ||
+                              portfolioDisplayUrl(imageKey, 1200),
+                          },
+                        ]
+                      : []
+                  }
+                  uploadFile={async (file, { onProgress, signal }) => {
+                    const signed = await fetch("/api/storage", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        action: "sign-upload",
+                        bucket: "portfolio-images",
+                        subjectId: boutiqueId,
+                        mimeType: file.type,
+                        byteSize: file.size,
+                      }),
+                      signal,
+                    });
+                    const grant = (await signed.json()) as {
+                      error?: string;
+                      path?: string;
+                      signedUrl?: string;
+                    };
+                    if (!signed.ok || !grant.path || !grant.signedUrl) {
+                      throw new Error(grant.error || "Upload failed.");
+                    }
+                    const put = await sendWithProgress({
+                      url: grant.signedUrl,
+                      method: "PUT",
+                      body: file,
+                      headers: { "Content-Type": file.type },
+                      onProgress,
+                      signal,
+                    });
+                    if (put.status >= 400) {
+                      throw new Error("Upload failed. Please try again.");
+                    }
+                    const displayUrl = portfolioDisplayUrl(grant.path, 1200);
+                    setImageKey(grant.path);
+                    setImagePreview(displayUrl);
+                    setClearedImage(false);
+                    return { key: grant.path, displayUrl };
+                  }}
+                  onRemove={async (item) => {
+                    if (item.key && item.key !== editing?.primary_image_url) {
+                      await fetch("/api/storage", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          action: "remove",
+                          bucket: "portfolio-images",
+                          path: item.key,
+                        }),
+                      });
+                    }
+                    setImageKey("");
+                    setImagePreview("");
+                    setClearedImage(true);
+                  }}
                 />
+                {!imageKey && imagePreview && !clearedImage && (
+                  <img
+                    src={imagePreview}
+                    alt=""
+                    style={{
+                      width: "120px",
+                      height: "120px",
+                      objectFit: "cover",
+                      marginTop: "12px",
+                    }}
+                  />
+                )}
                 <small>
-                  Use an existing Stitch image or an HTTPS public image URL from
-                  this app’s Supabase project. A draft may be saved without a
-                  photo.
+                  Uploads are stored as private object keys and shown with
+                  on-demand display URLs. A draft may be saved without a photo.
                 </small>
-              </label>
+              </div>
               <label>
                 Occasions (comma-separated)
                 <input

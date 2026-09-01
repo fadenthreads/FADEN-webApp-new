@@ -8,6 +8,7 @@ import "@faden/ui/production.css";
 import "@faden/ui/appointments.css";
 import "@faden/ui/fulfilment.css";
 import "@faden/ui/order-messages.css";
+import "@faden/ui/uploads.css";
 
 import type { Metadata } from "next";
 import { Karla, Syne } from "next/font/google";

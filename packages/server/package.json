@@ -13,7 +13,7 @@
   "scripts": {
     "lint": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
-    "test": "node --test ../../scripts/test-request-guards.mjs ../../scripts/test-storage-foundation.mjs",
+    "test": "node --test ../../scripts/test-request-guards.mjs ../../scripts/test-storage-foundation.mjs ../../scripts/test-upload-processing.mjs",
     "build": "tsc --noEmit"
   },
   "dependencies": {

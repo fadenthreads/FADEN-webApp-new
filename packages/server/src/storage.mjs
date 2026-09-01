@@ -19,6 +19,9 @@ export const STORAGE_BUCKETS = Object.freeze({
 export const IMAGE_MAX_BYTES = 10 * 1024 * 1024;
 export const PDF_MAX_BYTES = 15 * 1024 * 1024;
 export const SIGNED_URL_TTL_SECONDS = 900;
+export const DISPLAY_MAX_EDGE = 2400;
+export const DISPLAY_WIDTHS = Object.freeze([400, 800, 1200, 1600, 2400]);
+export const LEGACY_INSPIRATION_BUCKET = "request-inspiration";
 export const IMAGE_MIME_TYPES = Object.freeze([
   "image/jpeg",
   "image/png",
@@ -80,6 +83,12 @@ const AUDIENCE_DOWNLOADS = {
     "verification-documents",
   ],
   admin: ["verification-documents"],
+};
+
+const AUDIENCE_REMOVES = {
+  marketplace: ["request-inspirations"],
+  studio: ["portfolio-images"],
+  admin: [],
 };
 
 export class StorageGrantError extends Error {
@@ -307,6 +316,94 @@ export function isSafeObjectPath(path, bucket) {
   return parts.length === 3;
 }
 
+/** @param {unknown} value */
+export function displayWidthFor(value) {
+  const width = Number(value);
+  return DISPLAY_WIDTHS.includes(width) ? width : null;
+}
+
+/** @param {unknown} value */
+export function looksLikeSignedUrl(value) {
+  if (typeof value !== "string") return false;
+  return (
+    value.includes("/storage/v1/object/sign") ||
+    value.includes("/object/sign/") ||
+    /(?:\?|&)token=/.test(value)
+  );
+}
+
+/** @param {string} path @param {string} boutiqueId */
+export function isOwnedPortfolioKey(path, boutiqueId) {
+  return (
+    isSafeObjectPath(path, STORAGE_BUCKETS.portfolioImages) &&
+    isUuid(boutiqueId) &&
+    path.startsWith(`${boutiqueId}/`) &&
+    !looksLikeSignedUrl(path)
+  );
+}
+
+/** @param {string} path @param {string} userId @param {string} requestId */
+export function isOwnedInspirationKey(path, userId, requestId) {
+  return (
+    isSafeObjectPath(path, STORAGE_BUCKETS.requestInspirations) &&
+    isUuid(userId) &&
+    isUuid(requestId) &&
+    path.startsWith(`${userId}/${requestId}/`) &&
+    !looksLikeSignedUrl(path)
+  );
+}
+
+/**
+ * @param {string} supabaseUrl
+ * @param {string} path
+ * @param {number} [width]
+ */
+export function portfolioPublicUrl(supabaseUrl, path, width) {
+  const base = String(supabaseUrl ?? "").replace(/\/$/, "");
+  if (!base || !isSafeObjectPath(path, STORAGE_BUCKETS.portfolioImages)) {
+    return "";
+  }
+  const encoded = path.split("/").map(encodeURIComponent).join("/");
+  const chosen = displayWidthFor(width);
+  if (chosen) {
+    return `${base}/storage/v1/render/image/public/${STORAGE_BUCKETS.portfolioImages}/${encoded}?width=${chosen}&resize=contain`;
+  }
+  return `${base}/storage/v1/object/public/${STORAGE_BUCKETS.portfolioImages}/${encoded}`;
+}
+
+function transformOptions(width) {
+  const chosen = displayWidthFor(width);
+  return chosen
+    ? { transform: { width: chosen, resize: "contain" } }
+    : undefined;
+}
+
+/**
+ * @param {import('@supabase/supabase-js').SupabaseClient} supabase
+ * @param {string} path
+ * @param {number} [width]
+ */
+export async function createInspirationDisplayUrl(supabase, path, width) {
+  if (!isSafeObjectPath(path, STORAGE_BUCKETS.requestInspirations)) return null;
+  const options = transformOptions(width);
+  for (const bucket of [
+    STORAGE_BUCKETS.requestInspirations,
+    LEGACY_INSPIRATION_BUCKET,
+  ]) {
+    const signed = options
+      ? await supabase.storage
+          .from(bucket)
+          .createSignedUrl(path, SIGNED_URL_TTL_SECONDS, options)
+      : await supabase.storage
+          .from(bucket)
+          .createSignedUrl(path, SIGNED_URL_TTL_SECONDS);
+    if (signed.data?.signedUrl) {
+      return { bucket, path, signedUrl: signed.data.signedUrl };
+    }
+  }
+  return null;
+}
+
 /**
  * @param {Uint8Array | ArrayBuffer | Buffer} input
  * @param {string} mimeType
@@ -347,6 +444,9 @@ export async function handleStorageRequest(request, supabase, audience) {
   try {
     if (payload.action === "sign-download") {
       return await signDownload(supabase, audience, payload);
+    }
+    if (payload.action === "remove") {
+      return await removeObject(supabase, audience, user.id, payload);
     }
     if (payload.action !== "sign-upload") {
       throw new StorageGrantError("Unknown storage action.", 400);
@@ -399,19 +499,24 @@ async function signDownload(supabase, audience, payload) {
     bucket: String(payload.bucket ?? ""),
     path: String(payload.path ?? ""),
   });
+  const options = transformOptions(payload.width);
   if (grant.bucket === STORAGE_BUCKETS.portfolioImages) {
-    const publicUrl = supabase.storage
-      .from(grant.bucket)
-      .getPublicUrl(grant.path);
+    const publicUrl = options
+      ? supabase.storage.from(grant.bucket).getPublicUrl(grant.path, options)
+      : supabase.storage.from(grant.bucket).getPublicUrl(grant.path);
     return NextResponse.json({
       bucket: grant.bucket,
       path: grant.path,
       signedUrl: publicUrl.data.publicUrl,
     });
   }
-  const signed = await supabase.storage
-    .from(grant.bucket)
-    .createSignedUrl(grant.path, SIGNED_URL_TTL_SECONDS);
+  const signed = options
+    ? await supabase.storage
+        .from(grant.bucket)
+        .createSignedUrl(grant.path, SIGNED_URL_TTL_SECONDS, options)
+    : await supabase.storage
+        .from(grant.bucket)
+        .createSignedUrl(grant.path, SIGNED_URL_TTL_SECONDS);
   if (signed.error || !signed.data?.signedUrl) {
     throw new StorageGrantError(
       "This file is not available.",
@@ -424,6 +529,160 @@ async function signDownload(supabase, audience, payload) {
     path: grant.path,
     signedUrl: signed.data.signedUrl,
   });
+}
+
+async function removeObject(supabase, audience, userId, payload) {
+  const bucket = String(payload.bucket ?? "");
+  const path = String(payload.path ?? "");
+  const allowed = AUDIENCE_REMOVES[audience] ?? [];
+  if (!allowed.includes(bucket) || !isSafeObjectPath(path, bucket)) {
+    throw new StorageGrantError(
+      "This file is not available.",
+      404,
+      "not_found",
+    );
+  }
+  if (bucket === STORAGE_BUCKETS.portfolioImages) {
+    const [, ownerId] = path.split("/");
+    if (ownerId !== userId) {
+      throw new StorageGrantError(
+        "This upload is not available.",
+        403,
+        "forbidden",
+      );
+    }
+    await assertUploadSubject(supabase, audience, userId, {
+      bucket,
+      path,
+      purpose: null,
+      mimeType: "image/jpeg",
+    });
+    const referenced = await supabase
+      .from("designs")
+      .select("id", { count: "exact", head: true })
+      .eq("primary_image_url", path);
+    if ((referenced.count ?? 0) > 0) {
+      throw new StorageGrantError(
+        "This image is still in use.",
+        409,
+        "still_referenced",
+      );
+    }
+    const removed = await supabase.storage.from(bucket).remove([path]);
+    if (removed.error) {
+      throw new StorageGrantError(
+        "This file is not available.",
+        404,
+        "not_found",
+      );
+    }
+    return NextResponse.json({ ok: true, bucket, path });
+  }
+  if (!path.startsWith(`${userId}/`)) {
+    throw new StorageGrantError(
+      "This upload is not available.",
+      403,
+      "forbidden",
+    );
+  }
+  if (await isInspirationReferenced(supabase, userId, path)) {
+    throw new StorageGrantError(
+      "This image is still in use.",
+      409,
+      "still_referenced",
+    );
+  }
+  const current = await supabase.storage.from(bucket).remove([path]);
+  const legacy = await supabase.storage
+    .from(LEGACY_INSPIRATION_BUCKET)
+    .remove([path]);
+  if (current.error && legacy.error) {
+    throw new StorageGrantError(
+      "This file is not available.",
+      404,
+      "not_found",
+    );
+  }
+  return NextResponse.json({ ok: true, bucket, path });
+}
+
+async function isInspirationReferenced(supabase, userId, path) {
+  const { data } = await supabase
+    .from("outfit_requests")
+    .select("id, draft")
+    .eq("user_id", userId);
+  return (data ?? []).some((row) => {
+    const inspirations = row?.draft?.inspirations;
+    return (
+      Array.isArray(inspirations) &&
+      inspirations.some((item) => item && item.key === path)
+    );
+  });
+}
+
+/**
+ * @param {import('@supabase/supabase-js').SupabaseClient} supabase
+ * @param {{ userId: string, requestId: string, file: File }} input
+ */
+export async function uploadRequestInspirationObject(supabase, input) {
+  const file = input.file;
+  if (!(file instanceof File) || file.size === 0) {
+    throw new StorageGrantError(
+      "Choose a JPG, PNG or WebP image under 10 MB.",
+      400,
+    );
+  }
+  if (file.size > IMAGE_MAX_BYTES) {
+    throw new StorageGrantError(
+      "Images must be under 10 MB.",
+      413,
+      "payload_too_large",
+    );
+  }
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  const mimeType = detectAllowedMime(bytes, file.type);
+  if (!mimeType || mimeType === "application/pdf") {
+    throw new StorageGrantError(
+      "The file does not match a supported image format.",
+      400,
+      "unsupported_type",
+    );
+  }
+  const { data: row } = await supabase
+    .from("outfit_requests")
+    .select("id")
+    .eq("id", input.requestId)
+    .eq("user_id", input.userId)
+    .maybeSingle();
+  if (!row) {
+    throw new StorageGrantError(
+      "This file is not available.",
+      404,
+      "not_found",
+    );
+  }
+  const path = buildStorageObjectPath({
+    bucket: STORAGE_BUCKETS.requestInspirations,
+    userId: input.userId,
+    subjectId: input.requestId,
+    mimeType,
+  });
+  const stripped = stripImageExif(bytes, mimeType);
+  const upload = await supabase.storage
+    .from(STORAGE_BUCKETS.requestInspirations)
+    .upload(path, stripped, { contentType: mimeType, upsert: false });
+  if (upload.error) {
+    throw new StorageGrantError(
+      "Upload failed. Please try again.",
+      403,
+      "forbidden",
+    );
+  }
+  return {
+    bucket: STORAGE_BUCKETS.requestInspirations,
+    path,
+    mimeType,
+  };
 }
 
 async function handleInspirationUpload(request, supabase, audience, userId) {
@@ -441,61 +700,20 @@ async function handleInspirationUpload(request, supabase, audience, userId) {
     const form = await request.formData();
     const file = form.get("file");
     const requestId = String(form.get("requestId") ?? "");
-    if (!(file instanceof File) || file.size === 0) {
+    if (!(file instanceof File)) {
       throw new StorageGrantError(
         "Choose a JPG, PNG or WebP image under 10 MB.",
         400,
       );
     }
-    if (file.size > IMAGE_MAX_BYTES) {
-      throw new StorageGrantError(
-        "Images must be under 10 MB.",
-        413,
-        "payload_too_large",
-      );
-    }
-    const bytes = new Uint8Array(await file.arrayBuffer());
-    const mimeType = detectAllowedMime(bytes, file.type);
-    if (!mimeType || mimeType === "application/pdf") {
-      throw new StorageGrantError(
-        "The file does not match a supported image format.",
-        400,
-        "unsupported_type",
-      );
-    }
-    const { data: row } = await supabase
-      .from("outfit_requests")
-      .select("id")
-      .eq("id", requestId)
-      .eq("user_id", userId)
-      .maybeSingle();
-    if (!row) {
-      throw new StorageGrantError(
-        "This file is not available.",
-        404,
-        "not_found",
-      );
-    }
-    const path = buildStorageObjectPath({
-      bucket: STORAGE_BUCKETS.requestInspirations,
+    const uploaded = await uploadRequestInspirationObject(supabase, {
       userId,
-      subjectId: requestId,
-      mimeType,
+      requestId,
+      file,
     });
-    const stripped = stripImageExif(bytes, mimeType);
-    const upload = await supabase.storage
-      .from(STORAGE_BUCKETS.requestInspirations)
-      .upload(path, stripped, { contentType: mimeType, upsert: false });
-    if (upload.error) {
-      throw new StorageGrantError(
-        "Upload failed. Please try again.",
-        403,
-        "forbidden",
-      );
-    }
     return NextResponse.json({
-      bucket: STORAGE_BUCKETS.requestInspirations,
-      path,
+      bucket: uploaded.bucket,
+      path: uploaded.path,
     });
   } catch (error) {
     return storageHttpError(error);

@@ -227,7 +227,7 @@ Execute phases in this order. Do not activate payments or shipping before the ad
 - Suspended/revoked membership denial.
 - Admin verification-document read at AAL2 only.
 
-## [ ] F04 Add image processing and reusable uploader
+## [x] F04 Add image processing and reusable uploader
 
 **Goal:** Replace URL-entry placeholders with reliable uploads.
 

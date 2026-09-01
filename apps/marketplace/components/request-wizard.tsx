@@ -15,6 +15,7 @@ import {
   type Measurements,
 } from "../lib/outfit-request";
 import { MarketIcon } from "./market-icon";
+import { MediaUploader, sendWithProgress } from "@faden/ui";
 
 const colorOptions = [
   ["Midnight Charcoal", "#1a1a1a"],
@@ -87,6 +88,7 @@ export function RequestWizard({
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [link, setLink] = useState("");
+  const [confirmRemove, setConfirmRemove] = useState<string | null>(null);
   useEffect(() => {
     if (!dirty) return;
     const warn = (event: BeforeUnloadEvent) => {
@@ -117,8 +119,8 @@ export function RequestWizard({
       throw new Error(result.error ?? "Unable to save. Please try again.");
     return result;
   }
-  async function save(complete = false) {
-    const cleaned = validateDraft(draft, complete);
+  async function save(complete = false, nextDraft = draft) {
+    const cleaned = validateDraft(nextDraft, complete);
     let key = id,
       rev = revision;
     if (!key) {
@@ -173,29 +175,70 @@ export function RequestWizard({
       router.push(`/requests/${row.id}`);
     });
   }
-  async function upload(file: File) {
+  async function uploadInspiration(
+    file: File,
+    context: { onProgress: (percent: number) => void; signal: AbortSignal },
+  ) {
+    const row = await save();
+    const form = new FormData();
+    form.set("file", file);
+    form.set("version", String(row.version));
+    const result = await sendWithProgress({
+      url: `/api/requests/${row.id}/inspiration`,
+      method: "POST",
+      body: form,
+      onProgress: context.onProgress,
+      signal: context.signal,
+    });
+    if (result.status >= 400) {
+      throw new Error(
+        typeof result.json.error === "string"
+          ? result.json.error
+          : "Upload failed.",
+      );
+    }
+    const data = result.json as {
+      row: { draft: unknown; version: number };
+      key: string;
+      url?: string;
+    };
+    setDraft(validateDraft(data.row.draft));
+    setRevision(data.row.version);
+    if (data.url) {
+      setUrls((current) => ({ ...current, [data.key]: data.url as string }));
+    }
+    setDirty(false);
+    setMessage("Image saved privately.");
+    return { key: data.key, displayUrl: data.url ?? "" };
+  }
+  async function removeInspiration(key: string) {
+    if (confirmRemove !== key) {
+      setConfirmRemove(key);
+      return;
+    }
     await run(async () => {
-      if (
-        file.size > 10 * 1024 * 1024 ||
-        !["image/jpeg", "image/png", "image/webp"].includes(file.type)
-      )
-        throw new Error("Choose a JPG, PNG or WebP under 10 MB.");
-      const row = await save();
-      const form = new FormData();
-      form.set("file", file);
-      form.set("version", String(row.version));
-      const response = await fetch(`/api/requests/${row.id}/inspiration`, {
-        method: "POST",
-        body: form,
+      const next = {
+        ...draft,
+        inspirations: draft.inspirations.filter((item) => item.key !== key),
+      };
+      const row = await save(false, next);
+      setDraft(validateDraft(row.draft));
+      setUrls((current) => {
+        const copy = { ...current };
+        delete copy[key];
+        return copy;
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error ?? "Upload failed.");
-      setDraft(validateDraft(data.row.draft));
-      setRevision(data.row.version);
-      if (data.url)
-        setUrls((current) => ({ ...current, [data.key]: data.url }));
-      setDirty(false);
-      setMessage("Image saved privately.");
+      await fetch("/api/storage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "remove",
+          bucket: "request-inspirations",
+          path: key,
+        }),
+      });
+      setConfirmRemove(null);
+      setMessage("Image removed.");
     });
   }
   function toggle(key: "colors" | "fabrics", value: string, max: number) {
@@ -311,30 +354,16 @@ export function RequestWizard({
                   Photos, sketches, textures—build your digital mood board. Your
                   uploads are private.
                 </p>
-                <label
+                <MediaUploader
                   className="inspiration-upload"
-                  onDragOver={(e) => e.preventDefault()}
-                  onDrop={(e) => {
-                    e.preventDefault();
-                    if (!busy && e.dataTransfer.files[0])
-                      void upload(e.dataTransfer.files[0]);
-                  }}
-                >
-                  <span aria-hidden="true">↑</span>
-                  <strong>Drag & drop or browse</strong>
-                  <small>JPG, PNG, WebP · up to 10 MB · 8 images</small>
-                  <input
-                    className="sr-only"
-                    aria-label="Upload inspiration image"
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp"
-                    disabled={busy || draft.inspirations.length >= 8}
-                    onChange={(e) => {
-                      if (e.target.files?.[0]) void upload(e.target.files[0]);
-                      e.target.value = "";
-                    }}
-                  />
-                </label>
+                  label="Drag & drop or browse"
+                  hint="JPG, PNG, WebP · up to 10 MB · 8 images"
+                  maxFiles={8}
+                  takenCount={draft.inspirations.length}
+                  disabled={busy}
+                  retainReady={false}
+                  uploadFile={uploadInspiration}
+                />
                 <div className="request-section">
                   <label htmlFor="inspiration-link">Link inspiration</label>
                   <div className="inspiration-link">
@@ -426,15 +455,20 @@ export function RequestWizard({
                     </label>
                     <button
                       type="button"
-                      onClick={() =>
-                        update(
-                          "inspirations",
-                          draft.inspirations.filter((_, n) => n !== i),
-                        )
-                      }
+                      onClick={() => void removeInspiration(item.key)}
                     >
-                      Remove from board
+                      {confirmRemove === item.key
+                        ? "Confirm remove"
+                        : "Remove from board"}
                     </button>
+                    {confirmRemove === item.key && (
+                      <button
+                        type="button"
+                        onClick={() => setConfirmRemove(null)}
+                      >
+                        Keep
+                      </button>
+                    )}
                   </article>
                 ))}
                 {draft.links.map((url, i) => (

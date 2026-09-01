@@ -98,7 +98,10 @@ try {
     .limit(1);
   check(designs?.length === 1, "Catalog source exists");
   let result = await request("/api/requests", { design: designs[0].slug });
-  check(result.status === 200 && result.data.id, "Create request");
+  check(
+    result.status === 200 && result.data.id,
+    `Create request (${result.status}: ${JSON.stringify(result.data)})`,
+  );
   let row = result.data;
   ids.push(row.id);
   check(
@@ -160,6 +163,11 @@ try {
     (await request(`${path}/inspiration`, badFile)).status === 400,
     "MIME mismatch rejected",
   );
+  check(
+    !Array.isArray(row.draft?.inspirations) ||
+      row.draft.inspirations.length === 0,
+    "Failed upload did not persist an inspiration",
+  );
   const form = new FormData();
   form.set("version", String(row.version));
   form.set(
@@ -177,16 +185,21 @@ try {
   );
   result = await request(`${path}/inspiration`, form);
   check(
-    result.status === 200 && result.data.url,
+    result.status === 200 && result.data.url && result.data.key,
     "Private image uploaded and signed",
   );
   row = result.data.row;
   objects.push(result.data.key);
+  check(
+    row.draft.inspirations.some((item) => item.key === result.data.key) &&
+      !JSON.stringify(row.draft).includes("token="),
+    "Draft persists the object key, not a signed URL",
+  );
   check((await fetch(result.data.url)).ok, "Signed image renders");
   check(
     (
       await fetch(
-        `${api}/storage/v1/object/public/request-inspiration/${objects[0]}`,
+        `${api}/storage/v1/object/public/request-inspirations/${objects[0]}`,
       )
     ).status >= 400,
     "Image not publicly accessible",
@@ -194,10 +207,20 @@ try {
   check(
     (
       await other.client.storage
-        .from("request-inspiration")
+        .from("request-inspirations")
         .createSignedUrl(objects[0], 60)
     ).error,
     "Other user cannot sign private image",
+  );
+  check(
+    (
+      await request("/api/storage", {
+        action: "remove",
+        bucket: "request-inspirations",
+        path: objects[0],
+      })
+    ).status === 409,
+    "Referenced inspiration cannot be deleted",
   );
   check(
     (
@@ -265,6 +288,37 @@ try {
     confirmation.status === 200 && confirmation.data.includes("Wedding"),
     "Owner sees confirmation",
   );
+  const extra = await request("/api/requests", { design: designs[0].slug });
+  check(extra.status === 200 && extra.data.id, "Cleanup fixture created");
+  ids.push(extra.data.id);
+  const extraForm = new FormData();
+  extraForm.set("version", String(extra.data.version));
+  extraForm.set("file", form.get("file"));
+  const extraUpload = await request(
+    `/api/requests/${extra.data.id}/inspiration`,
+    extraForm,
+  );
+  check(extraUpload.status === 200, "Cleanup fixture uploaded");
+  objects.push(extraUpload.data.key);
+  const detached = await request(
+    `/api/requests/${extra.data.id}`,
+    {
+      version: extraUpload.data.row.version,
+      draft: { ...extraUpload.data.row.draft, inspirations: [] },
+    },
+    { method: "PATCH" },
+  );
+  check(detached.status === 200, "Inspiration detached before cleanup");
+  check(
+    (
+      await request("/api/storage", {
+        action: "remove",
+        bucket: "request-inspirations",
+        path: extraUpload.data.key,
+      })
+    ).status === 200,
+    "Unreferenced inspiration object removed",
+  );
   const denied = await request(`/requests/${row.id}`, undefined, {
     method: "GET",
     who: other,
@@ -289,7 +343,7 @@ try {
   // Remove only the exact objects and rows created by this test run.
   if (objects.length) {
     const { error } = await admin.storage
-      .from("request-inspiration")
+      .from("request-inspirations")
       .remove(objects);
     assert.equal(error, null);
   }

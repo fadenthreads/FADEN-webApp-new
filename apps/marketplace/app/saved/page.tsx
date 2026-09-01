@@ -4,6 +4,7 @@ import { CatalogCard } from "../../components/catalog-card";
 import { MarketplaceFooter } from "../../components/marketplace-footer";
 import { MarketplaceHeader } from "../../components/marketplace-header";
 import { formatInr } from "../../lib/catalog";
+import { stitchImage } from "../../lib/stitch-assets";
 import { getSupabaseServerClient } from "../../lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -53,7 +54,7 @@ export default async function SavedPage() {
                   <CatalogCard
                     boutique={design.boutiques.name}
                     href={`/designs/${design.slug}`}
-                    imageUrl={design.primary_image_url}
+                    imageUrl={stitchImage(design.primary_image_url)}
                     key={design.id}
                     meta={`${formatInr(design.base_price_paise)} · ${design.lead_time_min_weeks}-${design.lead_time_max_weeks} weeks`}
                     title={design.title}

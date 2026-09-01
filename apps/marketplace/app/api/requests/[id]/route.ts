@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import type { Database } from "@faden/supabase";
 import {
   isNextResponse,
+  isOwnedInspirationKey,
   readJsonBody,
   requireSameOrigin,
   requireUser,
@@ -30,9 +31,7 @@ export async function PATCH(
       throw new Error("Reload this draft before saving.");
     const draft = validateDraft(payload.draft);
     if (
-      draft.inspirations.some(
-        (i) => !i.key.startsWith(`${user.id}/${id}/`) || i.key.includes(".."),
-      )
+      draft.inspirations.some((i) => !isOwnedInspirationKey(i.key, user.id, id))
     )
       throw new Error("Invalid inspiration ownership.");
     const { data, error } = await supabase

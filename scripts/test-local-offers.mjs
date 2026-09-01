@@ -214,7 +214,7 @@ try {
   check(
     (
       await owner.client.storage
-        .from("request-inspiration")
+        .from("request-inspirations")
         .createSignedUrl(objects[0], 60)
     ).error,
     "Unapproved image signing denied",
@@ -419,7 +419,7 @@ try {
   check(
     (
       await owner.client.storage
-        .from("request-inspiration")
+        .from("request-inspirations")
         .createSignedUrl(objects[1], 60)
     ).data?.signedUrl,
     "Explicit image consent honored",
@@ -435,7 +435,7 @@ try {
   check(
     (
       await owner.client.storage
-        .from("request-inspiration")
+        .from("request-inspirations")
         .createSignedUrl(objects[1], 60)
     ).error,
     "Revocation prevents new signed image links",
@@ -462,7 +462,7 @@ try {
 } finally {
   if (objects.length) {
     const { error } = await admin.storage
-      .from("request-inspiration")
+      .from("request-inspirations")
       .remove(objects);
     assert.equal(error, null);
   }

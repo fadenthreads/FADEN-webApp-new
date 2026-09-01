@@ -150,6 +150,9 @@ export function validateDraft(raw: unknown, submit = false): OutfitDraft {
     if (
       typeof i.key !== "string" ||
       i.key.length > 250 ||
+      i.key.includes("://") ||
+      i.key.includes("?") ||
+      i.key.includes("..") ||
       typeof i.note !== "string" ||
       i.note.length > 1000
     )

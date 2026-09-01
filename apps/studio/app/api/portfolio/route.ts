@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import type { User } from "@supabase/supabase-js";
 import {
   isNextResponse,
+  isOwnedPortfolioKey,
   jsonError,
   readJsonBody,
   requireSameOrigin,
@@ -57,7 +58,7 @@ async function savePortfolio(
     !["draft", "published", "archived"].includes(String(b.status)) ||
     typeof b.image !== "string" ||
     b.image.length > 2048 ||
-    !allowedPortfolioImage(b.image) ||
+    !allowedPortfolioImage(b.image, b.boutiqueId as string) ||
     !Number.isInteger(b.minWeeks) ||
     !Number.isInteger(b.maxWeeks) ||
     (b.minWeeks as number) < 1 ||
@@ -162,5 +163,21 @@ async function savePortfolio(
       "Design changed or could not be saved. Reload and retry.",
       409,
     );
+  const previous = current.data?.primary_image_url;
+  const next = patch.primary_image_url;
+  if (
+    previous &&
+    previous !== next &&
+    isOwnedPortfolioKey(previous, b.boutiqueId as string) &&
+    previous.split("/")[1] === user.id
+  ) {
+    const leftover = await db
+      .from("designs")
+      .select("id", { count: "exact", head: true })
+      .eq("primary_image_url", previous);
+    if ((leftover.count ?? 0) === 0) {
+      await db.storage.from("portfolio-images").remove([previous]);
+    }
+  }
   return NextResponse.json({ id: result.data.id });
 }

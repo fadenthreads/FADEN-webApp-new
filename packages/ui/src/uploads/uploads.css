@@ -1,0 +1,123 @@
+.media-uploader {
+  display: grid;
+  gap: 16px;
+}
+
+.media-uploader .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.media-uploader-drop {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  padding: 24px;
+  border: 2px dashed var(--faden-border, #dbc1ba);
+  background: var(--faden-surface-lowest, #fff);
+  text-align: center;
+  cursor: pointer;
+}
+
+.media-uploader-drop > span {
+  font-size: 32px;
+  color: var(--faden-terracotta, #94452e);
+}
+
+.media-uploader-drop strong {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 12px;
+}
+
+.media-uploader-drop small {
+  color: var(--faden-muted, #55433e);
+}
+
+.media-uploader-drop:focus-within {
+  outline: 2px solid var(--faden-terracotta, #94452e);
+  outline-offset: 4px;
+}
+
+.media-uploader-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.media-uploader-item {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 16px;
+  align-items: center;
+  padding: 12px;
+  background: var(--faden-surface-low, #f6f3f2);
+}
+
+.media-uploader-item img {
+  width: 88px;
+  height: 88px;
+  object-fit: cover;
+  background: var(--faden-surface-high, #eae7e7);
+}
+
+.media-uploader-item p {
+  margin: 0 0 8px;
+  overflow-wrap: anywhere;
+}
+
+.media-uploader-item progress {
+  width: 100%;
+  height: 8px;
+}
+
+.media-uploader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.media-uploader-actions button {
+  border: 0;
+  background: transparent;
+  color: var(--faden-terracotta, #94452e);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+  padding: 4px 0;
+  cursor: pointer;
+}
+
+.media-uploader-actions button:focus-visible,
+.media-uploader-drop:focus-visible {
+  outline: 2px solid var(--faden-terracotta, #94452e);
+  outline-offset: 3px;
+}
+
+.media-uploader-error {
+  color: var(--faden-danger, #a62f32);
+  margin: 0;
+}
+
+@media (max-width: 760px) {
+  .media-uploader-item {
+    grid-template-columns: 64px 1fr;
+  }
+
+  .media-uploader-item img {
+    width: 64px;
+    height: 64px;
+  }
+}

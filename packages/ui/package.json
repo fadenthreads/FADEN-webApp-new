@@ -12,12 +12,13 @@
     "./production.css": "./src/production.css",
     "./appointments.css": "./src/appointments.css",
     "./fulfilment.css": "./src/fulfilment.css",
-    "./order-messages.css": "./src/order-messages.css"
+    "./order-messages.css": "./src/order-messages.css",
+    "./uploads.css": "./src/uploads/uploads.css"
   },
   "scripts": {
     "lint": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
-    "test": "node -e \"console.log('ui: no tests yet')\"",
+    "test": "node --test ../../scripts/test-ui-uploads.mjs",
     "build": "tsc --noEmit"
   },
   "peerDependencies": {

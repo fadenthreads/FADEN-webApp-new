@@ -1,4 +1,10 @@
 import manifest from "../../../design-reference/stitch/assets.json";
+import {
+  isImageObjectKey,
+  looksLikeSignedUrl,
+  portfolioDisplayUrl,
+} from "@faden/ui";
+
 export const portfolioColumns =
   "id,boutique_id,title,description,status,base_price_paise,primary_image_url,occasions,lead_time_min_weeks,lead_time_max_weeks,updated_at,slug,published_at" as const;
 export type PortfolioDesign = {
@@ -24,6 +30,7 @@ export const portfolioCategories = [
   "Bespoke",
 ] as const;
 export function imageForPortfolio(url: string, marketplaceBase: string) {
+  if (isImageObjectKey(url)) return portfolioDisplayUrl(url, 1200);
   const asset = manifest.assets.find(
     (a) => a.sourceUrl === url.replace(/=w\d+(?:-h\d+)?$/, ""),
   );
@@ -35,8 +42,12 @@ export function imageForPortfolio(url: string, marketplaceBase: string) {
     return "";
   }
 }
-export function allowedPortfolioImage(value: string) {
+export function allowedPortfolioImage(value: string, boutiqueId?: string) {
   if (!value) return true;
+  if (looksLikeSignedUrl(value)) return false;
+  if (isImageObjectKey(value)) {
+    return !boutiqueId || value.startsWith(`${boutiqueId}/`);
+  }
   try {
     const u = new URL(value);
     if (
