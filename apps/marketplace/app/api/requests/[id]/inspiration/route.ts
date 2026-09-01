@@ -1,13 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { Database } from "@faden/supabase";
-import { apiError, requestContext } from "../../../../../lib/request-api";
+import {
+  isNextResponse,
+  requireSameOrigin,
+  requireUser,
+  routeGuardError,
+} from "@faden/server";
 import { validateDraft } from "../../../../../lib/outfit-request";
+import { getSupabaseServerClient } from "../../../../../lib/supabase/server";
+
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
+  const originFailure = requireSameOrigin(request);
+  if (originFailure) return originFailure;
+  const supabase = await getSupabaseServerClient();
+  const user = await requireUser(supabase);
+  if (isNextResponse(user)) return user;
   try {
-    const { supabase, user } = await requestContext(request);
     const { id } = await params;
     if (Number(request.headers.get("content-length")) > 11 * 1024 * 1024)
       throw new Error("Images must be under 10 MB.");
@@ -72,6 +83,6 @@ export async function POST(
       .createSignedUrl(key, 900);
     return NextResponse.json({ row: data, key, url: signed.data?.signedUrl });
   } catch (error) {
-    return apiError(error);
+    return routeGuardError(error, "Unable to save your request.");
   }
 }

@@ -12,7 +12,7 @@ FADEN is an India-first custom luxury-fashion marketplace with three Next.js app
 | Boutique Studio | `apps/studio`      | `http://localhost:3001` | Boutique requests, offers, production, appointments and fulfilment      |
 | Platform Admin  | `apps/admin`       | `http://localhost:3002` | FADEN operations, verification, disputes, settlements and configuration |
 
-Shared code belongs in `packages/*`. Database changes belong in append-only Supabase migrations. The current migration sequence ends at `supabase/migrations/202609010020_appointment_session_integrations.sql`.
+Shared code belongs in `packages/*`. Database changes belong in append-only Supabase migrations. The current migration sequence ends at `supabase/migrations/202609010021_storage_foundation.sql`.
 
 The Stitch source-of-truth inventory is `design-reference/stitch/manifest.json`. Screenshots are under `design-reference/stitch/screenshots/` and exported HTML is under `design-reference/stitch/html/`. Reproduce the visual system, but do not copy unsafe client-side data handling from generated HTML.
 
@@ -175,7 +175,7 @@ Execute phases in this order. Do not activate payments or shipping before the ad
 - Readiness responses never reveal credentials.
 - Unit tests cover missing, partially configured and enabled states.
 
-## [ ] F02 Add consistent API request guards
+## [x] F02 Add consistent API request guards
 
 **Goal:** Standardize same-origin, authentication, body-size and error handling.
 
@@ -198,7 +198,7 @@ Execute phases in this order. Do not activate payments or shipping before the ad
 - Errors have a stable `{ error, code? }` structure.
 - Guard tests cover missing session, invalid origin, oversized body and invalid JSON.
 
-## [ ] F03 Add Supabase Storage foundations
+## [x] F03 Add Supabase Storage foundations
 
 **Goal:** Provide safe private and public uploads.
 

@@ -29,5 +29,5 @@ export function createFadenServerClient(cookies: CookieMethodsServer) {
   return createServerClient<Database>(url, publishableKey, { cookies });
 }
 
-export type { Database } from "./database.types";
+export type { Database, Json } from "./database.types";
 export type FadenCookieMethods = CookieMethodsServer;

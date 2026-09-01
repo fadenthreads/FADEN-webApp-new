@@ -1,18 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
-  apiError,
-  jsonBody,
-  requestContext,
-} from "../../../../../lib/request-api";
+  isNextResponse,
+  readJsonBody,
+  requireSameOrigin,
+  requireUser,
+  routeGuardError,
+} from "@faden/server";
 import { validateDraft } from "../../../../../lib/outfit-request";
+import { getSupabaseServerClient } from "../../../../../lib/supabase/server";
+
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
+  const originFailure = requireSameOrigin(request);
+  if (originFailure) return originFailure;
+  const supabase = await getSupabaseServerClient();
+  const user = await requireUser(supabase);
+  if (isNextResponse(user)) return user;
+  const body = await readJsonBody(request, 55_000);
+  if (isNextResponse(body)) return body;
   try {
-    const { supabase, user } = await requestContext(request);
     const { id } = await params;
-    const body = await jsonBody(request);
+    const payload = body as Record<string, unknown>;
     const { data } = await supabase
       .from("outfit_requests")
       .select()
@@ -22,7 +32,7 @@ export async function POST(
     if (!data) throw new Error("Request not found.");
     if (data.status === "submitted") return NextResponse.json({ id });
     validateDraft(data.draft, true);
-    if (body.version !== data.version)
+    if (payload.version !== data.version)
       return NextResponse.json(
         { error: "Your draft changed. Reload and review it again." },
         { status: 409 },
@@ -37,6 +47,6 @@ export async function POST(
       );
     return NextResponse.json({ id });
   } catch (error) {
-    return apiError(error);
+    return routeGuardError(error, "Unable to save your request.");
   }
 }

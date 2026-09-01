@@ -14,6 +14,7 @@
     "@faden/auth": "*",
     "@faden/env": "*",
     "@faden/integrations": "*",
+    "@faden/server": "*",
     "@faden/supabase": "*",
     "@faden/ui": "*",
     "next": "15.5.24",

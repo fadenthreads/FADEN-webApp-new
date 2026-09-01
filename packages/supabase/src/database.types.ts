@@ -34,6 +34,62 @@ export type Database = {
   }
   public: {
     Tables: {
+      appointment_session_integrations: {
+        Row: {
+          appointment_id: string
+          arrival_instructions: string | null
+          created_at: string
+          expires_at: string | null
+          latitude: number | null
+          longitude: number | null
+          provider: string
+          provider_room_name: string | null
+          provider_room_url: string | null
+          provisioned_at: string | null
+          state: string
+          updated_at: string
+          venue_snapshot: Json | null
+        }
+        Insert: {
+          appointment_id: string
+          arrival_instructions?: string | null
+          created_at?: string
+          expires_at?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          provider: string
+          provider_room_name?: string | null
+          provider_room_url?: string | null
+          provisioned_at?: string | null
+          state?: string
+          updated_at?: string
+          venue_snapshot?: Json | null
+        }
+        Update: {
+          appointment_id?: string
+          arrival_instructions?: string | null
+          created_at?: string
+          expires_at?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          provider?: string
+          provider_room_name?: string | null
+          provider_room_url?: string | null
+          provisioned_at?: string | null
+          state?: string
+          updated_at?: string
+          venue_snapshot?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointment_session_integrations_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: true
+            referencedRelation: "measurement_appointments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       appointment_slots: {
         Row: {
           boutique_id: string
@@ -1219,6 +1275,78 @@ export type Database = {
           },
         ]
       }
+      order_shipments: {
+        Row: {
+          address_revision: number
+          awb_code: string | null
+          booked_at: string | null
+          courier_id: string | null
+          courier_name: string | null
+          created_at: string
+          id: string
+          label_url: string | null
+          manifest_url: string | null
+          order_id: string
+          provider: string
+          provider_order_id: string | null
+          provider_shipment_id: string | null
+          status: string
+          tracking_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          address_revision: number
+          awb_code?: string | null
+          booked_at?: string | null
+          courier_id?: string | null
+          courier_name?: string | null
+          created_at?: string
+          id?: string
+          label_url?: string | null
+          manifest_url?: string | null
+          order_id: string
+          provider: string
+          provider_order_id?: string | null
+          provider_shipment_id?: string | null
+          status?: string
+          tracking_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          address_revision?: number
+          awb_code?: string | null
+          booked_at?: string | null
+          courier_id?: string | null
+          courier_name?: string | null
+          created_at?: string
+          id?: string
+          label_url?: string | null
+          manifest_url?: string | null
+          order_id?: string
+          provider?: string
+          provider_order_id?: string | null
+          provider_shipment_id?: string | null
+          status?: string
+          tracking_url?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_shipments_order_id_address_revision_fkey"
+            columns: ["order_id", "address_revision"]
+            isOneToOne: false
+            referencedRelation: "order_delivery_details"
+            referencedColumns: ["order_id", "revision"]
+          },
+          {
+            foreignKeyName: "order_shipments_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: true
+            referencedRelation: "customer_orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       outbox_events: {
         Row: {
           aggregate_id: string
@@ -1479,6 +1607,94 @@ export type Database = {
           },
         ]
       }
+      shipment_tracking_events: {
+        Row: {
+          id: number
+          label: string
+          location: string | null
+          occurred_at: string
+          provider_event_id: string
+          received_at: string
+          shipment_id: string
+          status: string
+        }
+        Insert: {
+          id?: never
+          label: string
+          location?: string | null
+          occurred_at: string
+          provider_event_id: string
+          received_at?: string
+          shipment_id: string
+          status: string
+        }
+        Update: {
+          id?: never
+          label?: string
+          location?: string | null
+          occurred_at?: string
+          provider_event_id?: string
+          received_at?: string
+          shipment_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shipment_tracking_events_shipment_id_fkey"
+            columns: ["shipment_id"]
+            isOneToOne: false
+            referencedRelation: "order_shipments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      shipping_commands: {
+        Row: {
+          attempts: number
+          created_at: string
+          id: string
+          last_error: string | null
+          operation: string
+          order_id: string
+          provider_reference: string | null
+          request_key: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          attempts?: number
+          created_at?: string
+          id: string
+          last_error?: string | null
+          operation: string
+          order_id: string
+          provider_reference?: string | null
+          request_key: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          attempts?: number
+          created_at?: string
+          id?: string
+          last_error?: string | null
+          operation?: string
+          order_id?: string
+          provider_reference?: string | null
+          request_key?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shipping_commands_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "customer_orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_addresses: {
         Row: {
           city: string
@@ -1628,6 +1844,28 @@ export type Database = {
       attach_test_gateway_order: {
         Args: { amount: number; gateway_order: string; target_attempt: string }
         Returns: undefined
+      }
+      can_read_order_file: { Args: { object_name: string }; Returns: boolean }
+      can_read_request_inspiration: {
+        Args: { object_name: string }
+        Returns: boolean
+      }
+      can_read_verification_document: {
+        Args: { object_name: string }
+        Returns: boolean
+      }
+      can_write_order_file: { Args: { object_name: string }; Returns: boolean }
+      can_write_portfolio_image: {
+        Args: { object_name: string }
+        Returns: boolean
+      }
+      can_write_request_inspiration: {
+        Args: { object_name: string }
+        Returns: boolean
+      }
+      can_write_verification_document: {
+        Args: { object_name: string }
+        Returns: boolean
       }
       cancel_measurement_appointment: {
         Args: { confirmed: boolean; target_appointment: string }

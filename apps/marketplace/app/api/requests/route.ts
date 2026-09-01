@@ -1,27 +1,41 @@
 import { NextRequest, NextResponse } from "next/server";
-import { apiError, jsonBody, requestContext } from "../../../lib/request-api";
+import {
+  isNextResponse,
+  readJsonBody,
+  requireSameOrigin,
+  requireUser,
+  routeGuardError,
+} from "@faden/server";
+import { getSupabaseServerClient } from "../../../lib/supabase/server";
+
 export async function POST(request: NextRequest) {
+  const originFailure = requireSameOrigin(request);
+  if (originFailure) return originFailure;
+  const supabase = await getSupabaseServerClient();
+  const user = await requireUser(supabase);
+  if (isNextResponse(user)) return user;
+  const body = await readJsonBody(request, 55_000);
+  if (isNextResponse(body)) return body;
   try {
-    const { supabase, user } = await requestContext(request);
-    const body = await jsonBody(request);
+    const payload = body as Record<string, unknown>;
     let boutiqueId: string | null = null,
       designId: string | null = null;
-    if (body.design) {
+    if (payload.design) {
       const { data } = await supabase
         .from("designs")
         .select("id,boutique_id")
-        .eq("slug", String(body.design))
+        .eq("slug", String(payload.design))
         .eq("status", "published")
         .single();
       if (!data) throw new Error("That design is no longer available.");
       designId = data.id;
       boutiqueId = data.boutique_id;
     }
-    if (body.boutique) {
+    if (payload.boutique) {
       const { data } = await supabase
         .from("boutiques")
         .select("id")
-        .eq("slug", String(body.boutique))
+        .eq("slug", String(payload.boutique))
         .eq("status", "verified")
         .eq("is_published", true)
         .single();
@@ -50,6 +64,6 @@ export async function POST(request: NextRequest) {
     if (error) throw new Error("Could not create a draft. Please try again.");
     return NextResponse.json(data);
   } catch (error) {
-    return apiError(error);
+    return routeGuardError(error, "Unable to save your request.");
   }
 }

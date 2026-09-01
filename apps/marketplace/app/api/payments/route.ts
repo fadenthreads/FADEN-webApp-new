@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requestContext, jsonBody, apiError } from "../../../lib/request-api";
+import {
+  isNextResponse,
+  readJsonBody,
+  requireSameOrigin,
+  requireUser,
+  routeGuardError,
+} from "@faden/server";
 import {
   paymentAdmin,
   reconcilePayment,
@@ -10,26 +16,35 @@ import {
   testCredentials,
   verifyCheckout,
 } from "../../../lib/razorpay-core.mjs";
+import { getSupabaseServerClient } from "../../../lib/supabase/server";
+
 export const runtime = "nodejs";
+
 export async function POST(request: NextRequest) {
+  const originFailure = requireSameOrigin(request);
+  if (originFailure) return originFailure;
+  const supabase = await getSupabaseServerClient();
+  const user = await requireUser(supabase);
+  if (isNextResponse(user)) return user;
+  const body = await readJsonBody(request, 55_000);
+  if (isNextResponse(body)) return body;
   try {
-    const { supabase, user } = await requestContext(request),
-      body = await jsonBody(request);
+    const payload = body as Record<string, unknown>;
     if (
-      typeof body.orderId !== "string" ||
-      !["start", "verify", "refresh"].includes(body.action)
+      typeof payload.orderId !== "string" ||
+      !["start", "verify", "refresh"].includes(String(payload.action))
     )
       throw new Error("Invalid payment request.");
     const { data: order, error } = await supabase
       .from("customer_orders")
       .select()
-      .eq("id", body.orderId)
+      .eq("id", payload.orderId)
       .eq("customer_id", user.id)
       .maybeSingle();
     if (error || !order) throw new Error("Order not found.");
     const credentials = testCredentials();
-    if (body.action === "start") {
-      if (body.confirmed !== true)
+    if (payload.action === "start") {
+      if (payload.confirmed !== true)
         throw new Error("Confirm the test advance before opening checkout.");
       if (order.status === "test_advance_paid")
         return NextResponse.json({ status: "captured" });
@@ -42,8 +57,6 @@ export async function POST(request: NextRequest) {
       if (result.error) throw new Error(result.error.message);
       const attempt = result.data as unknown as Attempt & { is_new: boolean };
       if (attempt.is_new) {
-        // A failed/ambiguous provider request leaves this reservation locked. Never silently
-        // create another remote order: remote creation and our DB commit are not atomic.
         const gateway = await razorpayRequest("/orders", {
           method: "POST",
           credentials,
@@ -76,7 +89,6 @@ export async function POST(request: NextRequest) {
         throw new Error(
           "Checkout creation is pending or unresolved. Wait and refresh; do not create another order. Support reconciliation may be required.",
         );
-      // Reusing the same provider order permits failed-payment retries, not duplicate advances.
       const state = await reconcilePayment(attempt);
       if (state === "captured")
         return NextResponse.json({ status: "captured" });
@@ -99,14 +111,14 @@ export async function POST(request: NextRequest) {
       .eq("customer_id", user.id)
       .maybeSingle();
     if (!attempt) throw new Error("Checkout has not started.");
-    if (body.action === "verify") {
+    if (payload.action === "verify") {
       if (
-        typeof body.paymentId !== "string" ||
-        body.providerOrderId !== attempt.provider_order_id ||
+        typeof payload.paymentId !== "string" ||
+        payload.providerOrderId !== attempt.provider_order_id ||
         !verifyCheckout(
           attempt.provider_order_id ?? "",
-          body.paymentId,
-          body.signature,
+          payload.paymentId,
+          payload.signature as string,
           credentials.secret,
         )
       )
@@ -115,10 +127,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       status: await reconcilePayment(
         attempt,
-        body.action === "verify" ? body.paymentId : undefined,
+        payload.action === "verify" ? (payload.paymentId as string) : undefined,
       ),
     });
   } catch (error) {
-    return apiError(error);
+    return routeGuardError(error, "Unable to save your request.");
   }
 }
