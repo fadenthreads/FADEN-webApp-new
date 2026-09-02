@@ -1,4 +1,5 @@
 import "@faden/ui/styles.css";
+import "./admin.css";
 
 import type { Metadata } from "next";
 import { Karla, Syne } from "next/font/google";

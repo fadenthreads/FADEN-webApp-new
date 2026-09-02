@@ -278,7 +278,7 @@ Execute phases in this order. Do not activate payments or shipping before the ad
 
 Use these Stitch references: `Platform Overview — FADEN Admin`, `Platform Overview (Mobile Admin)`, `Boutiques — FADEN Admin`, `Verification Detail — Aarya Studio`, `Orders — FADEN Admin`, `Dispute Detail — Case #DS-9021`, `Dispute Detail (Mobile Admin)`, `Settlements — FADEN Admin`, `Audit Log — FADEN Admin`, and `Platform Configuration — FADEN Admin`.
 
-## [ ] A01 Build the Admin shell and navigation
+## [x] A01 Build the Admin shell and navigation
 
 **Routes:** `/`, `/boutiques`, `/orders`, `/disputes`, `/settlements`, `/audit`, `/configuration`.
 

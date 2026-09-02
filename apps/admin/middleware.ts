@@ -5,14 +5,23 @@ import {
 import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  let response = NextResponse.next({ request });
+  const pathname = request.nextUrl.pathname;
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-pathname", pathname);
+
+  let response = NextResponse.next({
+    request: { headers: requestHeaders },
+  });
+
   const cookies: FadenCookieMethods = {
     getAll: () => request.cookies.getAll(),
     setAll: (cookiesToSet, headers) => {
       cookiesToSet.forEach(({ name, value }) =>
         request.cookies.set(name, value),
       );
-      response = NextResponse.next({ request });
+      response = NextResponse.next({
+        request: { headers: requestHeaders },
+      });
       cookiesToSet.forEach(({ name, options, value }) =>
         response.cookies.set(name, value, options),
       );
@@ -23,7 +32,6 @@ export async function middleware(request: NextRequest) {
   };
   const supabase = createFadenServerClient(cookies);
   const { data } = await supabase.auth.getUser();
-  const pathname = request.nextUrl.pathname;
   const openRoute =
     pathname.startsWith("/auth/") || pathname.startsWith("/api/");
 
