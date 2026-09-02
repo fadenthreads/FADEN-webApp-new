@@ -330,7 +330,7 @@ Use these Stitch references: `Platform Overview — FADEN Admin`, `Platform Over
 
 **Tests:** Admin-only RPC access and aggregation correctness.
 
-## [ ] A03 Build boutique list and moderation actions
+## [x] A03 Build boutique list and moderation actions
 
 **Route:** `/boutiques`.
 

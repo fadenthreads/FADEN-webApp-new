@@ -5,6 +5,11 @@ import { createClient } from "@supabase/supabase-js";
 import { test } from "node:test";
 
 import { getAdminAccessRedirect } from "../apps/admin/lib/admin-shell-core.mjs";
+import {
+  parseBoutiqueListParams,
+  parseCursorHistory,
+  validateBoutiqueAction,
+} from "../apps/admin/lib/boutique-management-core.mjs";
 import { getReadinessPresentation } from "../apps/admin/lib/admin-overview-core.mjs";
 import {
   formatCount,
@@ -149,6 +154,66 @@ test("admin overview readiness presentation covers every state", () => {
       live: true,
     }).label,
     "Live",
+  );
+});
+
+test("boutique query parsing allowlists filters and bounds URL input", () => {
+  assert.deepEqual(
+    parseBoutiqueListParams({
+      search: "  silk  ",
+      status: "verified",
+      sort: "updated_asc",
+      cursor: "2026-01-01T00:00:00Z|aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    }),
+    {
+      search: "silk",
+      status: "verified",
+      sort: "updated_asc",
+      cursor: "2026-01-01T00:00:00Z|aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    },
+  );
+  const rejected = parseBoutiqueListParams({
+    status: "administrator",
+    sort: "drop_table",
+    cursor: "x".repeat(201),
+  });
+  assert.equal(rejected.status, undefined);
+  assert.equal(rejected.sort, "created_desc");
+  assert.equal(rejected.cursor, undefined);
+});
+
+test("boutique cursor history is bounded and rejects malformed input", () => {
+  assert.deepEqual(parseCursorHistory('[["bad"]]'), []);
+  assert.deepEqual(parseCursorHistory("not-json"), []);
+  assert.equal(
+    parseCursorHistory(
+      JSON.stringify(Array.from({ length: 25 }, (_, i) => `c${i}`)),
+    ).length,
+    20,
+  );
+});
+
+test("boutique moderation validation requires a UUID and bounded reason", () => {
+  const id = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+  assert.deepEqual(
+    validateBoutiqueAction({
+      action: "suspend",
+      boutique_id: id,
+      reason: "  policy  ",
+    }),
+    { action: "suspend", boutiqueId: id, reason: "policy" },
+  );
+  assert.equal(
+    validateBoutiqueAction({
+      action: "suspend",
+      boutique_id: "bad",
+      reason: "x",
+    }),
+    null,
+  );
+  assert.equal(
+    validateBoutiqueAction({ action: "restore", boutique_id: id, reason: " " }),
+    null,
   );
 });
 
@@ -299,6 +364,37 @@ test("admin shell HTTP coverage", async (t) => {
   assert.match(customerAttempt.location ?? "", /\/auth\/unauthorized/);
 
   const admin = await loginAdminAal2();
+
+  const crossOriginMutation = await fetch(
+    new URL("/api/boutiques", adminBase),
+    {
+      method: "POST",
+      headers: {
+        Cookie: admin.cookie,
+        "Content-Type": "application/json",
+        Origin: "https://attacker.example",
+      },
+      body: JSON.stringify({
+        action: "suspend",
+        boutique_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        reason: "test",
+      }),
+    },
+  );
+  assert.equal(crossOriginMutation.status, 403);
+  assert.equal((await crossOriginMutation.json()).code, "invalid_origin");
+
+  const invalidMutation = await fetch(new URL("/api/boutiques", adminBase), {
+    method: "POST",
+    headers: {
+      Cookie: admin.cookie,
+      "Content-Type": "application/json",
+      Origin: new URL(adminBase).origin,
+    },
+    body: JSON.stringify({ action: "suspend", boutique_id: "bad", reason: "" }),
+  });
+  assert.equal(invalidMutation.status, 400);
+  assert.equal((await invalidMutation.json()).code, "invalid_request");
 
   const routes = [
     "/",

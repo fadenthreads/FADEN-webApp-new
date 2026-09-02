@@ -1852,6 +1852,20 @@ export type Database = {
         Returns: string
       }
       admin_dashboard_summary: { Args: never; Returns: Json }
+      admin_list_boutiques: {
+        Args: {
+          p_cursor?: string
+          p_limit?: number
+          p_search?: string
+          p_sort_by?: string
+          p_status?: string
+        }
+        Returns: Json
+      }
+      admin_restore_boutique: {
+        Args: { p_boutique_id: string; p_reason: string }
+        Returns: Json
+      }
       admin_set_user_role: {
         Args: {
           change_reason: string
@@ -1859,6 +1873,10 @@ export type Database = {
           target_user_id: string
         }
         Returns: undefined
+      }
+      admin_suspend_boutique: {
+        Args: { p_boutique_id: string; p_reason: string }
+        Returns: Json
       }
       append_audit_event: {
         Args: {
