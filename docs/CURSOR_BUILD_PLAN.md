@@ -306,7 +306,7 @@ Use these Stitch references: `Platform Overview — FADEN Admin`, `Platform Over
 - Non-admin, unauthenticated and AAL1 sessions are redirected correctly.
 - All routes render in desktop and mobile layouts.
 
-## [ ] A02 Build the live platform overview
+## [x] A02 Build the live platform overview
 
 **Route:** `/`.
 

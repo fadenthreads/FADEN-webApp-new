@@ -516,3 +516,333 @@ body.admin-mobile-menu-open {
     display: none;
   }
 }
+
+.admin-overview-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.admin-overview-metrics {
+  display: grid;
+  gap: 16px;
+  grid-column: span 12;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.admin-metric-card {
+  background: var(--faden-surface-lowest);
+  border: 1px solid var(--faden-border);
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(85, 67, 62, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+}
+
+.admin-metric-card__header {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+}
+
+.admin-metric-card__label {
+  color: var(--faden-muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-metric-card__value-row {
+  align-items: flex-end;
+  display: flex;
+  gap: 12px;
+}
+
+.admin-metric-card__value {
+  font-family: var(--font-karla), Karla, sans-serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+.admin-metric-card__trend {
+  color: var(--faden-muted);
+  font-size: 0.8125rem;
+  margin-bottom: 2px;
+}
+
+.admin-overview-section {
+  background: var(--faden-surface-lowest);
+  border: 1px solid var(--faden-border);
+  border-radius: 12px;
+  box-shadow: 0px 4px 16px rgba(85, 67, 62, 0.02);
+  grid-column: span 12;
+  overflow: hidden;
+}
+
+.admin-overview-section__header {
+  align-items: center;
+  background: var(--faden-surface);
+  border-bottom: 1px solid var(--faden-border);
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 24px;
+}
+
+.admin-overview-section__title {
+  font-family: var(--font-syne), Syne, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.admin-overview-section__body {
+  padding: 24px;
+}
+
+.admin-readiness-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.admin-readiness-card {
+  background: var(--faden-surface-low);
+  border: 1px solid var(--faden-border);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+.admin-readiness-card__header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.admin-readiness-card__provider {
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.admin-readiness-status {
+  border-radius: 12px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 0.3rem 0.65rem;
+  text-transform: uppercase;
+}
+
+.admin-readiness-status--live {
+  background: #e6f0e9;
+  color: var(--faden-success);
+}
+
+.admin-readiness-status--enabled {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.admin-readiness-status--configured {
+  background: #fff8e1;
+  color: #f57c00;
+}
+
+.admin-readiness-status--missing {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.admin-readiness-card__body {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-readiness-card__message {
+  align-items: center;
+  color: var(--faden-muted);
+  display: flex;
+  font-size: 0.8125rem;
+  gap: 8px;
+  margin: 0;
+}
+
+.admin-readiness-card__message--success {
+  color: var(--faden-success);
+}
+
+.admin-activity-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.admin-activity-table thead {
+  border-bottom: 1px solid var(--faden-border);
+}
+
+.admin-activity-table th {
+  color: var(--faden-muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 12px 16px;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.admin-activity-row {
+  border-bottom: 1px solid rgba(85, 67, 62, 0.08);
+  transition: background-color 0.15s ease;
+}
+
+.admin-activity-row:hover {
+  background: var(--faden-surface-low);
+}
+
+.admin-activity-cell {
+  font-size: 0.875rem;
+  padding: 12px 16px;
+}
+
+.admin-activity-cell--time {
+  color: var(--faden-muted);
+  font-family: var(--font-karla), Karla, sans-serif;
+  font-size: 0.8125rem;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.admin-activity-cell--type {
+  white-space: nowrap;
+}
+
+.admin-activity-badge {
+  align-items: center;
+  background: var(--faden-surface-high);
+  border: 1px solid var(--faden-border);
+  border-radius: 4px;
+  display: inline-flex;
+  font-size: 0.68rem;
+  font-weight: 700;
+  gap: 6px;
+  letter-spacing: 0.04em;
+  padding: 0.3rem 0.55rem;
+  text-transform: capitalize;
+}
+
+.admin-activity-cell--entity {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-activity-entity-type {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.admin-activity-entity-id {
+  color: var(--faden-muted);
+  font-family: var(--font-karla), Karla, sans-serif;
+  font-size: 0.8125rem;
+  letter-spacing: -0.01em;
+}
+
+.admin-activity-reason {
+  color: var(--faden-muted);
+  font-size: 0.8125rem;
+  font-style: italic;
+}
+
+.admin-overview-empty {
+  align-items: center;
+  color: var(--faden-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.admin-overview-empty__icon {
+  color: var(--faden-border);
+  font-size: 48px;
+}
+
+.admin-overview-empty__title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.admin-overview-empty__description {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.admin-overview-error {
+  align-items: center;
+  background: #ffebee;
+  border: 1px solid #d32f2f;
+  border-radius: 8px;
+  color: #d32f2f;
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+}
+
+.admin-overview-error__message {
+  flex: 1;
+}
+
+.admin-overview-loading {
+  display: flex;
+  min-height: 16rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: var(--admin-muted);
+}
+
+.admin-overview-loading .material-symbols-rounded {
+  animation: admin-overview-spin 1s linear infinite;
+}
+
+@keyframes admin-overview-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-overview-loading .material-symbols-rounded {
+    animation: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-overview-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-readiness-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-activity-table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .admin-activity-cell--time,
+  .admin-activity-cell--type {
+    font-size: 0.75rem;
+  }
+}

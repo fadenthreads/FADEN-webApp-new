@@ -1851,6 +1851,7 @@ export type Database = {
         }
         Returns: string
       }
+      admin_dashboard_summary: { Args: never; Returns: Json }
       admin_set_user_role: {
         Args: {
           change_reason: string

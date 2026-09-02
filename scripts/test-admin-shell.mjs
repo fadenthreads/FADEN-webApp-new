@@ -5,6 +5,13 @@ import { createClient } from "@supabase/supabase-js";
 import { test } from "node:test";
 
 import { getAdminAccessRedirect } from "../apps/admin/lib/admin-shell-core.mjs";
+import { getReadinessPresentation } from "../apps/admin/lib/admin-overview-core.mjs";
+import {
+  formatCount,
+  formatCurrency,
+  formatISTDateTime,
+  formatTimeRange,
+} from "../apps/admin/lib/format.mjs";
 import {
   ADMIN_PAGE_META,
   ADMIN_PRIMARY_NAV,
@@ -106,6 +113,42 @@ test("getAdminAccessRedirect enforces auth, role and AAL2", () => {
       aal: "aal2",
     }),
     null,
+  );
+});
+
+test("admin overview formats money, counts and explicit IST labels", () => {
+  assert.equal(formatCurrency(500000), "₹5,000.00");
+  assert.equal(formatCount(12345), "12,345");
+  assert.equal(formatTimeRange(30), "Last 30 days (IST)");
+  assert.match(formatISTDateTime("2024-09-01T10:30:00Z"), /IST$/);
+  assert.match(formatISTDateTime("2024-09-01T10:30:00Z"), /4:00 pm/i);
+});
+
+test("admin overview readiness presentation covers every state", () => {
+  const base = {
+    provider: "daily",
+    configured: false,
+    enabled: false,
+    live: false,
+  };
+  assert.equal(getReadinessPresentation(base).label, "Not configured");
+  assert.equal(
+    getReadinessPresentation({ ...base, configured: true }).label,
+    "Configured",
+  );
+  assert.equal(
+    getReadinessPresentation({ ...base, configured: true, enabled: true })
+      .label,
+    "Enabled",
+  );
+  assert.equal(
+    getReadinessPresentation({
+      ...base,
+      configured: true,
+      enabled: true,
+      live: true,
+    }).label,
+    "Live",
   );
 });
 
