@@ -32,10 +32,10 @@ export default async function OrderDetail({
             className="offer-btn secondary"
             href={`/orders/${id}/aftercare`}
           >
-            Aftercare rehearsal
+            Aftercare
           </Link>
           <Link className="offer-btn secondary" href={`/orders/${id}/delivery`}>
-            Delivery rehearsal
+            Delivery tracking
           </Link>
           <Link
             className="offer-btn secondary"
@@ -76,14 +76,14 @@ export default async function OrderDetail({
               <li>
                 <strong>{orderStatusLabel(o.status)}</strong>
                 <span>
-                  No real money collected. Live payments remain disabled.
+                  Payment status is verified before production begins.
                 </span>
               </li>
               <li>
                 <strong>Production not started</strong>
                 <span>
-                  Design review is available. Production and delivery remain
-                  disabled.
+                  Design review, production updates and delivery tracking appear
+                  here as the order progresses.
                 </span>
               </li>
             </ol>
@@ -103,7 +103,7 @@ export default async function OrderDetail({
         {o.status === "awaiting_payment" && <CancelOrder orderId={o.id} />}
         {o.status === "test_advance_paid" && (
           <Link className="offer-btn" href={`/orders/${o.id}/receipt`}>
-            View test receipt →
+            View receipt →
           </Link>
         )}
       </main>

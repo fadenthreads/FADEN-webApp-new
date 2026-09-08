@@ -130,7 +130,7 @@ For every completion report include changed files, schema/RPC changes, authoriza
 
 **Tests:** one full Studio HTTP journey, unrelated boutique denial, staff permission denial, unpaid production denial, stage-transition validation, upload persistence and responsive UI checks.
 
-### [ ] L04 Finish customer launch workflow
+### [x] L04 Finish customer launch workflow
 
 **Goal:** Make the customer journey complete with real Supabase data and no rehearsal pages.
 

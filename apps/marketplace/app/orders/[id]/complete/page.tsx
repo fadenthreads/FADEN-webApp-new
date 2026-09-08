@@ -10,23 +10,25 @@ export default async function Complete({
   const { id } = await params;
   const o = await customerOrder(id);
   const db = await getSupabaseServerClient();
-  const c = await db
-    .from("order_delivery_confirmations")
-    .select()
-    .eq("order_id", id)
-    .maybeSingle();
-  if (c.error) throw new Error("Could not load completion status.");
-  if (!c.data || o.status === "cancelled")
+  const { data: tracking, error: trackingError } = await db.rpc(
+    "read_order_manual_shipment",
+    { p_order_id: id },
+  );
+  if (trackingError) throw new Error("Could not load completion status.");
+  if (
+    (tracking as { shipment?: { status?: string } } | null)?.shipment
+      ?.status !== "delivered" ||
+    o.status === "cancelled"
+  )
     return (
       <main className="offer-main">
-        <h1>Completion preview is not ready.</h1>
+        <h1>Completion is not ready.</h1>
         <p>
           {o.status === "cancelled"
             ? "This order is cancelled."
-            : "Complete the delivery rehearsal and customer confirmation first."}{" "}
-          No real order is marked complete.
+            : "Delivery must be confirmed before completion."}
         </p>
-        <Link href={`/orders/${id}/delivery`}>Back to delivery rehearsal</Link>
+        <Link href={`/orders/${id}/delivery`}>Back to delivery tracking</Link>
       </main>
     );
   const p = await db

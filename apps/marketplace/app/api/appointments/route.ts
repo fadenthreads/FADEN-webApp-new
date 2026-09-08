@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isPreviewMutationAllowed } from "@faden/integrations";
 import {
   isNextResponse,
   jsonError,
@@ -12,8 +11,6 @@ import { getSupabaseServerClient } from "../../../lib/supabase/server";
 export async function POST(request: NextRequest) {
   const originFailure = requireSameOrigin(request);
   if (originFailure) return originFailure;
-  if (!isPreviewMutationAllowed())
-    return jsonError("Preview booking is disabled in production.", 503);
   const supabase = await getSupabaseServerClient();
   const user = await requireUser(supabase);
   if (isNextResponse(user)) return user;
@@ -63,7 +60,23 @@ export async function POST(request: NextRequest) {
     typeof b.commandId === "string" &&
     (b.replacing === null || typeof b.replacing === "string") &&
     b.confirmed === true
-  )
+  ) {
+    const { data: order } = await supabase
+      .from("customer_orders")
+      .select("id")
+      .eq("id", b.orderId)
+      .eq("customer_id", user.id)
+      .maybeSingle();
+    const { data: attempt } = order
+      ? await supabase
+          .from("order_payment_attempts")
+          .select("id")
+          .eq("order_id", order.id)
+          .eq("status", "captured")
+          .maybeSingle()
+      : { data: null };
+    if (!attempt)
+      return jsonError("A confirmed payment is required before booking.", 409);
     result = await supabase.rpc("reserve_measurement_appointment", {
       target_order: b.orderId,
       target_slot: b.slotId,
@@ -71,7 +84,7 @@ export async function POST(request: NextRequest) {
       replacing: b.replacing,
       confirmed: true,
     } as never);
-  else if (
+  } else if (
     b.action === "cancel" &&
     typeof b.appointmentId === "string" &&
     b.confirmed === true
