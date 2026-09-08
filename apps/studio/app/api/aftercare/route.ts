@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isPreviewMutationAllowed } from "@faden/integrations";
 import {
   isNextResponse,
   jsonError,
@@ -12,8 +11,6 @@ import { getSupabaseServerClient } from "../../../lib/supabase/server";
 export async function POST(request: NextRequest) {
   const originFailure = requireSameOrigin(request);
   if (originFailure) return originFailure;
-  if (!isPreviewMutationAllowed())
-    return jsonError("Aftercare rehearsal is disabled in production.", 503);
   const db = await getSupabaseServerClient();
   const user = await requireUser(db);
   if (isNextResponse(user)) return user;
@@ -26,7 +23,7 @@ export async function POST(request: NextRequest) {
     typeof b.commandId !== "string" ||
     typeof b.note !== "string"
   )
-    return jsonError("Complete and confirm your preview submission.", 400);
+    return jsonError("Complete and confirm your aftercare submission.", 400);
   let result;
   if (
     b.action === "submit" &&
@@ -34,7 +31,7 @@ export async function POST(request: NextRequest) {
     (b.kind === "review" || b.kind === "alteration") &&
     (b.rating === null || Number.isInteger(b.rating))
   )
-    result = await db.rpc("submit_aftercare_rehearsal", {
+    result = await db.rpc("submit_aftercare", {
       target_order: b.orderId,
       item_kind: b.kind,
       stars: b.rating,
@@ -48,7 +45,7 @@ export async function POST(request: NextRequest) {
     Number.isInteger(b.version) &&
     typeof b.status === "string"
   )
-    result = await db.rpc("update_aftercare_rehearsal", {
+    result = await db.rpc("update_aftercare", {
       target_item: b.itemId,
       expected_version: b.version as number,
       next_status: b.status,

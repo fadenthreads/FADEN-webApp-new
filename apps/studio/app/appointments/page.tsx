@@ -76,9 +76,9 @@ export default async function Appointments({
         {view === "pending"
           ? "Sessions that have ended and need an outcome."
           : view === "history"
-            ? "Completed, no-show, cancelled and rescheduled preview sessions."
+            ? "Completed, no-show, cancelled and rescheduled sessions."
             : "Confirmed sessions that have not ended yet."}{" "}
-        Outcomes never update measurements, payments or send reminders.
+        Outcomes are recorded separately from measurements and payments.
       </p>
       <AppointmentPanel
         slots={slots ?? []}

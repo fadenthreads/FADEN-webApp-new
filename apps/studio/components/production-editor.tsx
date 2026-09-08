@@ -69,7 +69,7 @@ export function ProductionEditor({
         }
       }}
     >
-      <h2>Record rehearsal progress</h2>
+      <h2>Record production progress</h2>
       <p>
         Updates are immutable and visible to your customer. Do not include
         private measurements, addresses or unrelated people in photos.
@@ -109,11 +109,11 @@ export function ProductionEditor({
         </label>
         <label className="design-confirm">
           <input type="checkbox" name="confirmed" required />I confirm this is a
-          rehearsal update, not authorization for real production or a fitting
-          booking.
+          production update is accurate and contains no private measurements,
+          delivery address or unrelated people.
         </label>
         <button className="offer-btn" disabled={busy}>
-          {busy ? "Recording…" : "Publish rehearsal update"}
+          {busy ? "Recording…" : "Publish production update"}
         </button>
       </fieldset>
       {error && <p role="alert">{error}</p>}

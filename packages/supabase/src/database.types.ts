@@ -2684,6 +2684,17 @@ export type Database = {
         }
         Returns: string
       }
+      submit_aftercare: {
+        Args: {
+          command_id: string
+          confirmed: boolean
+          customer_note: string
+          item_kind: string
+          stars: number
+          target_order: string
+        }
+        Returns: string
+      }
       submit_aftercare_rehearsal: {
         Args: {
           command_id: string
@@ -2697,6 +2708,17 @@ export type Database = {
       }
       submit_outfit_request: {
         Args: { expected_version: number; request_id: string }
+        Returns: string
+      }
+      update_aftercare: {
+        Args: {
+          command_id: string
+          confirmed: boolean
+          expected_version: number
+          next_status: string
+          response_note: string
+          target_item: string
+        }
         Returns: string
       }
       update_aftercare_rehearsal: {

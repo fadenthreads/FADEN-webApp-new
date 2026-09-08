@@ -116,7 +116,7 @@ For every completion report include changed files, schema/RPC changes, authoriza
 
 **Done when:** Admin can identify every paid order and coordinate shipping manually without Shiprocket.
 
-### [ ] L03 Finish Boutique Studio launch workflow
+### [x] L03 Finish Boutique Studio launch workflow
 
 **Goal:** Remove rehearsal behavior from the boutique path required to fulfil an order.
 

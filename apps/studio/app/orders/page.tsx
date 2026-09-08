@@ -21,12 +21,12 @@ export default async function Orders() {
       <span className="offer-kicker">Your accepted commissions</span>
       <h1>Orders</h1>
       <p className="offer-lead">
-        A considered beginning. Accepted quotes are saved here while payment is
-        pending.
+        Accepted commissions are saved here. Payment status controls when your
+        team can start production.
       </p>
       <p className="offer-notice">
-        No real money has been collected through FADEN. Do not begin production
-        or book fulfilment based on acceptance alone.
+        Do not begin production or arrange fulfilment until a confirmed payment
+        is shown on the order.
       </p>
       <div className="atelier-requests">
         {orders?.map((o) => (
@@ -36,7 +36,7 @@ export default async function Orders() {
             <p>
               {o.boutique_name} · {money(o.total_paise)}
             </p>
-            <p>Quoted advance · {money(o.advance_paise)} · Test mode only</p>
+            <p>Quoted advance · {money(o.advance_paise)}</p>
             <span>View order →</span>
           </Link>
         ))}

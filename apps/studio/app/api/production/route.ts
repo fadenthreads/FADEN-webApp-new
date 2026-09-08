@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isPreviewMutationAllowed } from "@faden/integrations";
 import {
   isNextResponse,
   jsonError,
@@ -12,8 +11,6 @@ import { getSupabaseServerClient } from "../../../lib/supabase/server";
 export async function POST(request: NextRequest) {
   const originFailure = requireSameOrigin(request);
   if (originFailure) return originFailure;
-  if (!isPreviewMutationAllowed())
-    return jsonError("Rehearsal updates are disabled in production.", 503);
   const supabase = await getSupabaseServerClient();
   const user = await requireUser(supabase);
   if (isNextResponse(user)) return user;
@@ -30,7 +27,7 @@ export async function POST(request: NextRequest) {
     (b.photo !== null && typeof b.photo !== "string") ||
     b.confirmed !== true
   )
-    return jsonError("Complete and confirm your rehearsal update.", 400);
+    return jsonError("Complete and confirm your production update.", 400);
   const { data, error } = await supabase.rpc("record_production_update", {
     target_order: b.orderId,
     expected_sequence: b.sequence as number,

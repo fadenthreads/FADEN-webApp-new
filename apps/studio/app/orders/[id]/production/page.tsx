@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { productionStages, briefText } from "@faden/ui";
-import { isPreviewMutationAllowed } from "@faden/integrations";
 import { atelierContext } from "../../../../lib/atelier";
 import { AtelierShell } from "../../../../components/atelier-shell";
 import { ProductionEditor } from "../../../../components/production-editor";
@@ -46,7 +45,7 @@ export default async function ProductionOrder({
     o.status !== "cancelled" &&
     reviews?.[0]?.status === "approved" &&
     (latest?.sequence ?? 0) < 100 &&
-    isPreviewMutationAllowed();
+    (updates?.[0]?.sequence ?? 0) < 100;
   const history = await Promise.all(
     (updates ?? []).map(async (p) => ({
       ...p,
@@ -64,8 +63,8 @@ export default async function ProductionOrder({
       <Link href="/production">← Production board</Link>
       <h1>{briefText(o.quote, "title")}</h1>
       <p className="design-notice">
-        Rehearsal only. No live production, payment, shipment or fitting booking
-        is created.
+        Record verified production milestones after customer design approval and
+        confirmed payment. Updates are visible to the customer.
       </p>
       <div className="offer-actions">
         <Link href={`/orders/${id}`}>Order details</Link>
@@ -84,7 +83,7 @@ export default async function ProductionOrder({
             ? "Cancelled order — read-only progress history."
             : reviews?.[0]?.status !== "approved"
               ? "Customer design approval is required before recording progress."
-              : "Further rehearsal updates are unavailable. Contact support."}
+              : "Further production updates are unavailable. Contact support."}
         </p>
       )}
       <h2>Progress history</h2>
@@ -93,7 +92,7 @@ export default async function ProductionOrder({
         {history.map((p) => (
           <article key={p.id}>
             <small>
-              Rehearsal · update {p.sequence} ·{" "}
+              Update {p.sequence} ·{" "}
               {new Date(p.created_at).toLocaleString("en-IN", {
                 timeZone: "Asia/Kolkata",
               })}{" "}

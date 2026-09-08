@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { AftercarePanel } from "@faden/ui";
 import { notFound } from "next/navigation";
-import { isPreviewMutationAllowed } from "@faden/integrations";
 import { atelierContext } from "../../../../lib/atelier";
 import { AtelierShell } from "../../../../components/atelier-shell";
 export default async function Aftercare({
@@ -21,7 +20,7 @@ export default async function Aftercare({
   if (result.error) throw new Error("Could not load order.");
   if (!result.data) notFound();
   const o = result.data;
-  const [i, c] = await Promise.all([
+  const [i, tracking] = await Promise.all([
     db
       .from("order_aftercare_items")
       .select()
@@ -29,13 +28,9 @@ export default async function Aftercare({
       .order("created_at", { ascending: false })
       .order("id")
       .limit(11),
-    db
-      .from("order_delivery_confirmations")
-      .select("order_id")
-      .eq("order_id", id)
-      .maybeSingle(),
+    db.rpc("read_order_manual_shipment", { p_order_id: id }),
   ]);
-  if (i.error || c.error) throw new Error("Could not load aftercare.");
+  if (i.error || tracking.error) throw new Error("Could not load aftercare.");
   const e = i.data?.length
     ? await db
         .from("order_aftercare_events")
@@ -57,7 +52,8 @@ export default async function Aftercare({
         items={i.data ?? []}
         events={e.data ?? []}
         eligible={
-          !!c.data && o.status !== "cancelled" && isPreviewMutationAllowed()
+          (tracking.data as { shipment?: { status?: string } } | null)?.shipment
+            ?.status === "delivered" && o.status !== "cancelled"
         }
       />
     </>

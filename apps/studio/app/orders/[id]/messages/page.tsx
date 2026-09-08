@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { OrderMessages } from "@faden/ui";
 import { notFound } from "next/navigation";
-import { isPreviewMutationAllowed } from "@faden/integrations";
 import { atelierContext } from "../../../../lib/atelier";
 import { AtelierShell } from "../../../../components/atelier-shell";
 export default async function Messages({
@@ -72,11 +71,7 @@ export default async function Messages({
         messages={messages}
         unread={unread.count ?? 0}
         readThrough={messages.at(-1)?.sequence ?? 0}
-        eligible={
-          o.status !== "cancelled" &&
-          !!boutique.data &&
-          isPreviewMutationAllowed()
-        }
+        eligible={o.status !== "cancelled" && !!boutique.data}
       />
       <nav className="chat-pagination" aria-label="Message history">
         {history.data.length > 50 && (

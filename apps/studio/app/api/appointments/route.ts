@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isPreviewMutationAllowed } from "@faden/integrations";
 import {
   isNextResponse,
   jsonError,
@@ -12,8 +11,6 @@ import { getSupabaseServerClient } from "../../../lib/supabase/server";
 export async function POST(request: NextRequest) {
   const originFailure = requireSameOrigin(request);
   if (originFailure) return originFailure;
-  if (!isPreviewMutationAllowed())
-    return jsonError("Preview booking is disabled in production.", 503);
   const supabase = await getSupabaseServerClient();
   const user = await requireUser(supabase);
   if (isNextResponse(user)) return user;

@@ -33,23 +33,22 @@ export default async function Order({
         Order {order.id.slice(0, 8)}
       </p>
       <p className="offer-notice">
-        This is the commercial quote accepted by your customer. No real money
-        has been collected. Rehearsal progress is available after design
-        approval; live production, fitting bookings and courier booking are not
-        enabled.
+        This is the commercial quote accepted by your customer. Production may
+        begin only after FADEN records a confirmed payment. Courier fulfilment
+        is arranged manually by FADEN Admin and appears in the tracking view.
       </p>
       <div className="offer-actions">
         <Link className="offer-btn secondary" href={`/orders/${id}/messages`}>
           Private messages
         </Link>
         <Link className="offer-btn secondary" href={`/orders/${id}/aftercare`}>
-          Aftercare rehearsal
+          Aftercare
         </Link>
         <Link className="offer-btn secondary" href={`/orders/${id}/delivery`}>
-          Delivery rehearsal →
+          Delivery tracking →
         </Link>
         <Link className="offer-btn secondary" href={`/orders/${id}/production`}>
-          Production rehearsal →
+          Production →
         </Link>
         <Link className="offer-btn" href={`/orders/${id}/design`}>
           Design proposals & customer feedback →

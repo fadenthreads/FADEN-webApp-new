@@ -162,7 +162,7 @@ export function StudioOverview({
                     ? "Video consultation"
                     : "In-person fitting"}
                 </h3>
-                <p>Measurement rehearsal</p>
+                <p>Measurement appointment</p>
                 {demo ? (
                   <span className="studio-muted">Calls are not connected</span>
                 ) : (
@@ -183,8 +183,8 @@ export function StudioOverview({
         Counts reflect{" "}
         {demo ? "fictional examples" : "your accessible Supabase records"}. Sent
         offers include previously sent records; accepted orders may include
-        completed rehearsals. No revenue, risk scores or reminders are
-        fabricated. Live payments and calls remain off.
+        completed orders. No revenue, risk scores or reminders are fabricated.
+        Video calls remain off until Daily is configured.
       </p>
     </>
   );
