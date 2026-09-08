@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 
@@ -261,6 +262,22 @@ export function BoutiqueListView({
                       </td>
                       <td>
                         <div className="boutique-actions">
+                          {(boutique.status === "pending_verification" ||
+                            boutique.status === "verified" ||
+                            boutique.status === "rejected") && (
+                            <Link
+                              href={`/boutiques/${boutique.id}/verification`}
+                              className="boutique-action-button boutique-action-button--link"
+                              aria-label={`View verification for ${boutique.name}`}
+                            >
+                              <span className="material-symbols-outlined">
+                                verified
+                              </span>
+                              {boutique.status === "pending_verification"
+                                ? "Review"
+                                : "Verification"}
+                            </Link>
+                          )}
                           {boutique.status === "suspended" ? (
                             <button
                               type="button"
@@ -345,6 +362,21 @@ export function BoutiqueListView({
                     </div>
                   </div>
                   <div className="boutique-card__footer">
+                    {(boutique.status === "pending_verification" ||
+                      boutique.status === "verified" ||
+                      boutique.status === "rejected") && (
+                      <Link
+                        href={`/boutiques/${boutique.id}/verification`}
+                        className="boutique-action-button boutique-action-button--link"
+                      >
+                        <span className="material-symbols-outlined">
+                          verified
+                        </span>
+                        {boutique.status === "pending_verification"
+                          ? "Review Verification"
+                          : "View Verification"}
+                      </Link>
+                    )}
                     {boutique.status === "suspended" ? (
                       <button
                         type="button"

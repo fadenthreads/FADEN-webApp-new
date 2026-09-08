@@ -12,7 +12,7 @@ export function StudioFrame({
 }: {
   children: ReactNode;
   name: string;
-  active: "overview" | "portfolio";
+  active: "overview" | "portfolio" | "verification";
   demo?: boolean;
 }) {
   const links = [
@@ -23,6 +23,7 @@ export function StudioFrame({
     ["production", "/production", "Production"],
     ["appointments", "/appointments", "Appointments"],
     ["portfolio", demo ? "/preview/portfolio" : "/portfolio", "Portfolio"],
+    ["verification", "/verification", "Verification"],
   ];
   const navigation = (
     <nav aria-label="Studio navigation">

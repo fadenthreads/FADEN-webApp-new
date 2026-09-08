@@ -455,6 +455,246 @@ export type Database = {
           },
         ]
       }
+      boutique_verification_documents: {
+        Row: {
+          boutique_id: string
+          category: string
+          created_at: string
+          file_name: string
+          file_size_bytes: number
+          id: string
+          mime_type: string
+          status: string
+          storage_object_key: string
+          submission_id: string
+          uploaded_at: string
+          uploader_id: string
+        }
+        Insert: {
+          boutique_id: string
+          category: string
+          created_at?: string
+          file_name: string
+          file_size_bytes: number
+          id?: string
+          mime_type: string
+          status?: string
+          storage_object_key: string
+          submission_id: string
+          uploaded_at?: string
+          uploader_id: string
+        }
+        Update: {
+          boutique_id?: string
+          category?: string
+          created_at?: string
+          file_name?: string
+          file_size_bytes?: number
+          id?: string
+          mime_type?: string
+          status?: string
+          storage_object_key?: string
+          submission_id?: string
+          uploaded_at?: string
+          uploader_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "boutique_verification_documents_boutique_id_fkey"
+            columns: ["boutique_id"]
+            isOneToOne: false
+            referencedRelation: "boutiques"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "boutique_verification_documents_submission_id_fkey"
+            columns: ["submission_id"]
+            isOneToOne: false
+            referencedRelation: "boutique_verification_submissions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "boutique_verification_documents_uploader_id_fkey"
+            columns: ["uploader_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      boutique_verification_events: {
+        Row: {
+          actor_id: string
+          actor_role: string
+          boutique_id: string
+          created_at: string
+          event_type: string
+          id: number
+          metadata: Json
+          reason: string | null
+          submission_id: string
+        }
+        Insert: {
+          actor_id: string
+          actor_role: string
+          boutique_id: string
+          created_at?: string
+          event_type: string
+          id?: never
+          metadata?: Json
+          reason?: string | null
+          submission_id: string
+        }
+        Update: {
+          actor_id?: string
+          actor_role?: string
+          boutique_id?: string
+          created_at?: string
+          event_type?: string
+          id?: never
+          metadata?: Json
+          reason?: string | null
+          submission_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "boutique_verification_events_actor_id_fkey"
+            columns: ["actor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "boutique_verification_events_boutique_id_fkey"
+            columns: ["boutique_id"]
+            isOneToOne: false
+            referencedRelation: "boutiques"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "boutique_verification_events_submission_id_fkey"
+            columns: ["submission_id"]
+            isOneToOne: false
+            referencedRelation: "boutique_verification_submissions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      boutique_verification_submissions: {
+        Row: {
+          admin_decision_reason: string | null
+          authorized_rep_name: string
+          authorized_rep_role: string
+          boutique_id: string
+          business_type: string
+          city: string
+          contact_email: string
+          contact_phone: string
+          country: string
+          created_at: string
+          declaration_version: string
+          gstin: string | null
+          id: string
+          legal_business_name: string
+          pan: string
+          postal_code: string
+          public_trading_name: string | null
+          registered_address_line1: string
+          registered_address_line2: string | null
+          registration_number: string
+          reviewed_at: string | null
+          reviewing_admin_id: string | null
+          state: string
+          status: string
+          submitted_at: string | null
+          submitting_owner_id: string
+          updated_at: string
+          version: number
+        }
+        Insert: {
+          admin_decision_reason?: string | null
+          authorized_rep_name: string
+          authorized_rep_role: string
+          boutique_id: string
+          business_type: string
+          city: string
+          contact_email: string
+          contact_phone: string
+          country?: string
+          created_at?: string
+          declaration_version?: string
+          gstin?: string | null
+          id?: string
+          legal_business_name: string
+          pan: string
+          postal_code: string
+          public_trading_name?: string | null
+          registered_address_line1: string
+          registered_address_line2?: string | null
+          registration_number: string
+          reviewed_at?: string | null
+          reviewing_admin_id?: string | null
+          state: string
+          status?: string
+          submitted_at?: string | null
+          submitting_owner_id: string
+          updated_at?: string
+          version?: number
+        }
+        Update: {
+          admin_decision_reason?: string | null
+          authorized_rep_name?: string
+          authorized_rep_role?: string
+          boutique_id?: string
+          business_type?: string
+          city?: string
+          contact_email?: string
+          contact_phone?: string
+          country?: string
+          created_at?: string
+          declaration_version?: string
+          gstin?: string | null
+          id?: string
+          legal_business_name?: string
+          pan?: string
+          postal_code?: string
+          public_trading_name?: string | null
+          registered_address_line1?: string
+          registered_address_line2?: string | null
+          registration_number?: string
+          reviewed_at?: string | null
+          reviewing_admin_id?: string | null
+          state?: string
+          status?: string
+          submitted_at?: string | null
+          submitting_owner_id?: string
+          updated_at?: string
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "boutique_verification_submissions_boutique_id_fkey"
+            columns: ["boutique_id"]
+            isOneToOne: false
+            referencedRelation: "boutiques"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "boutique_verification_submissions_reviewing_admin_id_fkey"
+            columns: ["reviewing_admin_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "boutique_verification_submissions_submitting_owner_id_fkey"
+            columns: ["submitting_owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       boutiques: {
         Row: {
           city: string | null
@@ -1851,6 +2091,10 @@ export type Database = {
         }
         Returns: string
       }
+      admin_approve_verification: {
+        Args: { p_reason: string; p_submission_id: string }
+        Returns: Json
+      }
       admin_dashboard_summary: { Args: never; Returns: Json }
       admin_list_boutiques: {
         Args: {
@@ -1860,6 +2104,18 @@ export type Database = {
           p_sort_by?: string
           p_status?: string
         }
+        Returns: Json
+      }
+      admin_read_verification_submission: {
+        Args: { p_submission_id: string }
+        Returns: Json
+      }
+      admin_reject_verification: {
+        Args: { p_reason: string; p_submission_id: string }
+        Returns: Json
+      }
+      admin_request_verification_changes: {
+        Args: { p_reason: string; p_submission_id: string }
         Returns: Json
       }
       admin_restore_boutique: {
@@ -1982,6 +2238,37 @@ export type Database = {
       }
       normalize_audit_request_id: { Args: { input: string }; Returns: string }
       normalize_audit_user_agent: { Args: { input: string }; Returns: string }
+      owner_attach_verification_document: {
+        Args: {
+          p_category: string
+          p_file_name: string
+          p_file_size_bytes: number
+          p_mime_type: string
+          p_storage_object_key: string
+          p_submission_id: string
+        }
+        Returns: Json
+      }
+      owner_create_verification_draft: {
+        Args: { p_boutique_id: string; p_details: Json }
+        Returns: Json
+      }
+      owner_remove_verification_document: {
+        Args: { p_document_id: string }
+        Returns: Json
+      }
+      owner_submit_verification: {
+        Args: { p_expected_version: number; p_submission_id: string }
+        Returns: Json
+      }
+      owner_update_verification_draft: {
+        Args: {
+          p_details: Json
+          p_expected_version: number
+          p_submission_id: string
+        }
+        Returns: Json
+      }
       owns_verified_atelier: { Args: { boutique: string }; Returns: boolean }
       publish_order_design: {
         Args: {
@@ -2155,12 +2442,12 @@ export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -2184,11 +2471,11 @@ export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -2209,11 +2496,11 @@ export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -2234,11 +2521,11 @@ export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -2251,11 +2538,11 @@ export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
+    : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }

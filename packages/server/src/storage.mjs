@@ -87,7 +87,7 @@ const AUDIENCE_DOWNLOADS = {
 
 const AUDIENCE_REMOVES = {
   marketplace: ["request-inspirations"],
-  studio: ["portfolio-images"],
+  studio: ["portfolio-images", "verification-documents"],
   admin: [],
 };
 
@@ -564,6 +564,43 @@ async function removeObject(supabase, audience, userId, payload) {
     if ((referenced.count ?? 0) > 0) {
       throw new StorageGrantError(
         "This image is still in use.",
+        409,
+        "still_referenced",
+      );
+    }
+    const removed = await supabase.storage.from(bucket).remove([path]);
+    if (removed.error) {
+      throw new StorageGrantError(
+        "This file is not available.",
+        404,
+        "not_found",
+      );
+    }
+    return NextResponse.json({ ok: true, bucket, path });
+  }
+  if (bucket === STORAGE_BUCKETS.verificationDocuments) {
+    const [boutiqueId, ownerId] = path.split("/");
+    if (ownerId !== userId) {
+      throw new StorageGrantError(
+        "This file is not available.",
+        403,
+        "forbidden",
+      );
+    }
+    await assertUploadSubject(supabase, audience, userId, {
+      bucket,
+      path,
+      purpose: null,
+      mimeType: "application/pdf",
+    });
+    const referenced = await supabase
+      .from("boutique_verification_documents")
+      .select("id", { count: "exact", head: true })
+      .eq("storage_object_key", path)
+      .eq("boutique_id", boutiqueId);
+    if ((referenced.count ?? 0) > 0) {
+      throw new StorageGrantError(
+        "This file is still in use.",
         409,
         "still_referenced",
       );

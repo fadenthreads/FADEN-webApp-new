@@ -1,5 +1,7 @@
 # FADEN Remaining Build Plan — Cursor Execution Specification
 
+> **Early-stage launch:** follow `docs/EARLY_STAGE_LAUNCH_PLAN.md` first. It replaces the remaining pre-launch scope in this document, including automated Shiprocket shipping. Keep this document as the post-launch/enterprise backlog.
+
 This document is the source of truth for completing FADEN. It is deliberately written as small, sequential tickets that a small coding model can execute without making product or architecture decisions.
 
 ## 1. Product and repository context
