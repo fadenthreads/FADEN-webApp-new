@@ -34,6 +34,126 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_order_address_access_events: {
+        Row: {
+          accessed_at: string
+          admin_id: string
+          id: number
+          order_id: string
+          reason: string
+        }
+        Insert: {
+          accessed_at?: string
+          admin_id: string
+          id?: never
+          order_id: string
+          reason: string
+        }
+        Update: {
+          accessed_at?: string
+          admin_id?: string
+          id?: never
+          order_id?: string
+          reason?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_order_address_access_events_admin_id_fkey"
+            columns: ["admin_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "admin_order_address_access_events_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "customer_orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      admin_order_fulfilment: {
+        Row: {
+          claimed_at: string | null
+          claimed_by: string | null
+          created_at: string
+          order_id: string
+          updated_at: string
+          version: number
+        }
+        Insert: {
+          claimed_at?: string | null
+          claimed_by?: string | null
+          created_at?: string
+          order_id: string
+          updated_at?: string
+          version?: number
+        }
+        Update: {
+          claimed_at?: string | null
+          claimed_by?: string | null
+          created_at?: string
+          order_id?: string
+          updated_at?: string
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_order_fulfilment_claimed_by_fkey"
+            columns: ["claimed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "admin_order_fulfilment_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: true
+            referencedRelation: "customer_orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      admin_order_notes: {
+        Row: {
+          author_id: string
+          body: string
+          created_at: string
+          id: string
+          order_id: string
+        }
+        Insert: {
+          author_id: string
+          body: string
+          created_at?: string
+          id?: string
+          order_id: string
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          created_at?: string
+          id?: string
+          order_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_order_notes_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "admin_order_notes_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "customer_orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       appointment_session_integrations: {
         Row: {
           appointment_id: string
@@ -930,6 +1050,137 @@ export type Database = {
             columns: ["boutique_id"]
             isOneToOne: false
             referencedRelation: "boutiques"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      manual_order_shipments: {
+        Row: {
+          admin_note: string | null
+          carrier_name: string
+          created_at: string
+          created_by: string
+          delivered_at: string | null
+          id: string
+          order_id: string
+          shipped_at: string | null
+          status: string
+          tracking_number: string
+          tracking_url: string | null
+          updated_at: string
+          updated_by: string
+          version: number
+        }
+        Insert: {
+          admin_note?: string | null
+          carrier_name: string
+          created_at?: string
+          created_by: string
+          delivered_at?: string | null
+          id?: string
+          order_id: string
+          shipped_at?: string | null
+          status?: string
+          tracking_number: string
+          tracking_url?: string | null
+          updated_at?: string
+          updated_by: string
+          version?: number
+        }
+        Update: {
+          admin_note?: string | null
+          carrier_name?: string
+          created_at?: string
+          created_by?: string
+          delivered_at?: string | null
+          id?: string
+          order_id?: string
+          shipped_at?: string | null
+          status?: string
+          tracking_number?: string
+          tracking_url?: string | null
+          updated_at?: string
+          updated_by?: string
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "manual_order_shipments_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "manual_order_shipments_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: true
+            referencedRelation: "customer_orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "manual_order_shipments_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      manual_shipment_events: {
+        Row: {
+          actor_id: string
+          carrier_name: string
+          created_at: string
+          id: number
+          order_id: string
+          shipment_id: string
+          status: string
+          tracking_number: string
+          tracking_url: string | null
+        }
+        Insert: {
+          actor_id: string
+          carrier_name: string
+          created_at?: string
+          id?: never
+          order_id: string
+          shipment_id: string
+          status: string
+          tracking_number: string
+          tracking_url?: string | null
+        }
+        Update: {
+          actor_id?: string
+          carrier_name?: string
+          created_at?: string
+          id?: never
+          order_id?: string
+          shipment_id?: string
+          status?: string
+          tracking_number?: string
+          tracking_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "manual_shipment_events_actor_id_fkey"
+            columns: ["actor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "manual_shipment_events_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "customer_orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "manual_shipment_events_shipment_id_fkey"
+            columns: ["shipment_id"]
+            isOneToOne: false
+            referencedRelation: "manual_order_shipments"
             referencedColumns: ["id"]
           },
         ]
@@ -2091,8 +2342,20 @@ export type Database = {
         }
         Returns: string
       }
+      admin_add_order_note: {
+        Args: { p_body: string; p_order_id: string }
+        Returns: string
+      }
       admin_approve_verification: {
         Args: { p_reason: string; p_submission_id: string }
+        Returns: Json
+      }
+      admin_claim_order_fulfilment: {
+        Args: {
+          p_claim: boolean
+          p_expected_version: number
+          p_order_id: string
+        }
         Returns: Json
       }
       admin_dashboard_summary: { Args: never; Returns: Json }
@@ -2106,6 +2369,21 @@ export type Database = {
         }
         Returns: Json
       }
+      admin_list_orders: {
+        Args: {
+          p_cursor?: string
+          p_cursor_id?: string
+          p_limit?: number
+          p_order_status?: string
+          p_payment_status?: string
+          p_queue?: string
+          p_search?: string
+          p_shipment_status?: string
+        }
+        Returns: Json
+      }
+      admin_order_captured: { Args: { p_order_id: string }; Returns: boolean }
+      admin_read_order_detail: { Args: { p_order_id: string }; Returns: Json }
       admin_read_verification_submission: {
         Args: { p_submission_id: string }
         Returns: Json
@@ -2122,6 +2400,10 @@ export type Database = {
         Args: { p_boutique_id: string; p_reason: string }
         Returns: Json
       }
+      admin_reveal_order_address: {
+        Args: { p_order_id: string; p_reason: string }
+        Returns: Json
+      }
       admin_set_user_role: {
         Args: {
           change_reason: string
@@ -2132,6 +2414,19 @@ export type Database = {
       }
       admin_suspend_boutique: {
         Args: { p_boutique_id: string; p_reason: string }
+        Returns: Json
+      }
+      admin_upsert_manual_shipment: {
+        Args: {
+          p_admin_note: string
+          p_carrier_name: string
+          p_confirm_delivered?: boolean
+          p_expected_version: number
+          p_order_id: string
+          p_status: string
+          p_tracking_number: string
+          p_tracking_url: string
+        }
         Returns: Json
       }
       append_audit_event: {
@@ -2277,6 +2572,10 @@ export type Database = {
           target_order: string
         }
         Returns: string
+      }
+      read_order_manual_shipment: {
+        Args: { p_order_id: string }
+        Returns: Json
       }
       record_appointment_outcome: {
         Args: {

@@ -96,7 +96,7 @@ For every completion report include changed files, schema/RPC changes, authoriza
 
 **Done when:** a real local owner can submit and a real local AAL2 Admin can decide through both desktop and mobile UI with no skipped tests.
 
-### [ ] L02 Build Admin order operations and manual shipping queue
+### [x] L02 Build Admin order operations and manual shipping queue
 
 **Goal:** Every accepted or paid order is visible to Admin; every captured order requiring fulfilment appears in a manual shipping queue.
 

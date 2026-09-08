@@ -8,6 +8,151 @@
   min-height: 100vh;
 }
 
+.admin-orders,
+.admin-order-detail {
+  padding: 32px;
+  max-width: 1440px;
+}
+.admin-orders__filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 24px 0;
+}
+.admin-orders__filters form {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  min-width: 280px;
+}
+.admin-orders input,
+.admin-orders select,
+.admin-shipment-form input,
+.admin-shipment-form select,
+.admin-shipment-form textarea,
+.admin-order-grid textarea {
+  border: 1px solid var(--faden-border);
+  border-radius: 4px;
+  padding: 10px;
+  background: #fff;
+  font: inherit;
+}
+.admin-orders__filters input {
+  flex: 1;
+}
+.admin-orders__table {
+  overflow: auto;
+  background: #fff;
+  border: 1px solid var(--faden-border);
+}
+.admin-orders table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 760px;
+}
+.admin-orders th,
+.admin-orders td {
+  padding: 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--faden-border);
+  font-size: 0.875rem;
+}
+.admin-orders small {
+  display: block;
+  color: var(--faden-muted);
+  margin-top: 4px;
+}
+.admin-orders__empty {
+  padding: 48px;
+  background: #fff;
+  border: 1px solid var(--faden-border);
+  text-align: center;
+}
+.admin-pill {
+  padding: 3px 7px;
+  border-radius: 99px;
+  background: var(--faden-surface-high);
+  text-transform: capitalize;
+  font-size: 0.75rem;
+}
+.admin-pill.is-captured {
+  background: #dff3e4;
+  color: #27633d;
+}
+.admin-order-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 24px;
+}
+.admin-order-grid section {
+  border: 1px solid var(--faden-border);
+  background: #fff;
+  padding: 20px;
+}
+.admin-order-grid h2 {
+  font-size: 1.05rem;
+  margin: 0 0 12px;
+}
+.admin-order-grid .button {
+  margin: 8px 8px 0 0;
+}
+.admin-shipment-form {
+  display: grid;
+  gap: 10px;
+}
+.admin-shipment-form label {
+  display: grid;
+  gap: 5px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.admin-shipment-form textarea,
+.admin-order-grid textarea {
+  min-height: 90px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.admin-check {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+}
+.admin-address {
+  background: #fff7e9;
+  padding: 12px;
+  margin-top: 12px;
+  font-style: normal;
+}
+.admin-private-note {
+  border-left: 3px solid var(--faden-terracotta);
+  padding-left: 10px;
+}
+.admin-back {
+  display: inline-block;
+  margin-bottom: 12px;
+}
+.admin-order-detail__amount {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.admin-order-message {
+  grid-column: 1/-1;
+  color: var(--faden-terracotta);
+}
+@media (max-width: 700px) {
+  .admin-orders,
+  .admin-order-detail {
+    padding: 20px;
+  }
+  .admin-order-grid {
+    grid-template-columns: 1fr;
+  }
+  .admin-orders__filters form {
+    min-width: 100%;
+  }
+}
+
 .admin-app :focus-visible {
   outline: 2px solid var(--faden-terracotta);
   outline-offset: 3px;
