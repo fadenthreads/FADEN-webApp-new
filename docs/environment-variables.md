@@ -82,14 +82,23 @@ Readiness: `getMapsReadiness()` from `@faden/integrations`.
 
 ## Email dispatch (worker/server)
 
-| Variable                 | Default | Purpose                                          |
-| ------------------------ | ------- | ------------------------------------------------ |
-| `SMTP_HOST`              | unset   | Outbound SMTP host for transactional mail worker |
-| `SMTP_USER`              | unset   | SMTP username                                    |
-| `SMTP_PASSWORD`          | unset   | SMTP password                                    |
-| `EMAIL_DISPATCH_ENABLED` | `false` | Enables outbound transactional email dispatch    |
+| Variable                 | Default   | Purpose                                            |
+| ------------------------ | --------- | -------------------------------------------------- |
+| `SMTP_HOST`              | unset     | Outbound SMTP host for transactional mail worker   |
+| `SMTP_USER`              | unset     | SMTP username                                      |
+| `SMTP_PASSWORD`          | unset     | SMTP password                                      |
+| `SMTP_PORT`              | `587`     | SMTP port                                          |
+| `SMTP_SECURE`            | `false`   | Use implicit TLS (normally true only for port 465) |
+| `SMTP_FROM`              | SMTP user | Verified sender address                            |
+| `EMAIL_DISPATCH_ENABLED` | `false`   | Enables outbound transactional email dispatch      |
+| `CRON_SECRET`            | unset     | Server-only bearer secret for the scheduled worker |
 
 Auth email is currently handled by Supabase Auth via Resend and is configured in Supabase project settings, not application env files.
+
+On Vercel's free tier the Admin project invokes `/api/internal/email-dispatch`
+once daily at 02:00 UTC. Vercel supplies `Authorization: Bearer $CRON_SECRET`.
+Set the same random `CRON_SECRET` in that project before enabling dispatch. Use a
+more frequent worker only after moving to a plan that supports it.
 
 Readiness: `getEmailReadiness()` from `@faden/integrations`.
 

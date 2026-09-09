@@ -142,7 +142,7 @@ For every completion report include changed files, schema/RPC changes, authoriza
 
 **Tests:** complete customer HTTP journey, share/revoke boundaries, duplicate acceptance, invalid/expired offers, private data isolation, mobile layouts and accessible forms.
 
-### [ ] L05 Implement essential transactional email delivery
+### [x] L05 Implement essential transactional email delivery
 
 **Goal:** Reliably deliver launch-critical email using the existing outbox and configured SMTP.
 

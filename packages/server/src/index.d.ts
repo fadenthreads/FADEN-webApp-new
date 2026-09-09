@@ -161,3 +161,16 @@ export function handleStorageRequest(
   supabase: SupabaseClient<Database>,
   audience: StorageAudience,
 ): Promise<NextResponse>;
+
+export function emailTemplate(
+  eventType: string,
+  payload: unknown,
+  canonicalUrl: string,
+): { subject: string; text: string; html: string } | null;
+export function createSmtpTransport(env?: NodeJS.ProcessEnv): unknown;
+export function sendTransactionalEmail(input: {
+  to: string;
+  eventType: string;
+  payload: unknown;
+  env?: NodeJS.ProcessEnv;
+}): Promise<{ skipped: boolean; messageId?: string }>;

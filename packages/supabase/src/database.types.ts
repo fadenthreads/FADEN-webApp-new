@@ -2359,6 +2359,7 @@ export type Database = {
         Returns: Json
       }
       admin_dashboard_summary: { Args: never; Returns: Json }
+      admin_email_delivery_summary: { Args: never; Returns: Json }
       admin_list_boutiques: {
         Args: {
           p_cursor?: string
@@ -2480,8 +2481,34 @@ export type Database = {
         Args: { confirmed: boolean; target_order: string }
         Returns: string
       }
+      claim_email_outbox: {
+        Args: { p_limit?: number }
+        Returns: {
+          aggregate_id: string
+          aggregate_type: string
+          attempts: number
+          available_at: string
+          created_at: string
+          event_type: string
+          id: number
+          last_error: string | null
+          payload: Json
+          processed_at: string | null
+          status: Database["public"]["Enums"]["job_status"]
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "outbox_events"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       close_boutique_offer: {
         Args: { action: string; expected_version: number; target_offer: string }
+        Returns: undefined
+      }
+      complete_email_outbox: {
+        Args: { p_delivered: boolean; p_error?: string; p_id: number }
         Returns: undefined
       }
       confirm_delivery_rehearsal: {

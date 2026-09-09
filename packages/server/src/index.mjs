@@ -55,3 +55,8 @@ export {
   stripImageExif,
   uploadRequestInspirationObject,
 } from "./storage.mjs";
+export {
+  createSmtpTransport,
+  emailTemplate,
+  sendTransactionalEmail,
+} from "./email.mjs";

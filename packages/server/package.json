@@ -13,12 +13,13 @@
   "scripts": {
     "lint": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
-    "test": "node --test ../../scripts/test-request-guards.mjs ../../scripts/test-storage-foundation.mjs ../../scripts/test-upload-processing.mjs ../../scripts/test-audit-events.mjs",
+    "test": "node --test ../../scripts/test-request-guards.mjs ../../scripts/test-storage-foundation.mjs ../../scripts/test-upload-processing.mjs ../../scripts/test-audit-events.mjs ../../scripts/test-email-core.mjs",
     "build": "tsc --noEmit"
   },
   "dependencies": {
     "@faden/supabase": "*",
-    "next": "15.5.24"
+    "next": "15.5.24",
+    "nodemailer": "^6.9.16"
   },
   "devDependencies": {
     "@types/node": "20.17.10",
