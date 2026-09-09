@@ -28,6 +28,25 @@ export async function POST(request: NextRequest) {
     request.headers.get("x-razorpay-signature"),
     {
       secret,
+      eventId: request.headers.get("x-razorpay-event-id") ?? undefined,
+      recordEvent: async (
+        eventId: string,
+        eventType: string,
+        providerOrderId: string | null,
+        providerPaymentId: string | null,
+      ) => {
+        const { data, error } = await paymentAdmin().rpc(
+          "record_test_provider_event",
+          {
+            p_event_id: eventId,
+            p_event_type: eventType,
+            p_provider_order_id: providerOrderId ?? undefined,
+            p_provider_payment_id: providerPaymentId ?? undefined,
+          },
+        );
+        if (error) throw error;
+        return data;
+      },
       findAttempt: async (providerOrder: string) => {
         const { data, error } = await paymentAdmin()
           .from("order_payment_attempts")
@@ -38,6 +57,19 @@ export async function POST(request: NextRequest) {
         return data;
       },
       reconcile: reconcilePayment,
+      reconcileRefund: async (
+        refundId: string,
+        status: "processed" | "failed",
+      ) => {
+        const { error } = await paymentAdmin().rpc(
+          "record_test_refund_outcome",
+          {
+            p_provider_refund_id: refundId,
+            p_status: status,
+          },
+        );
+        if (error) throw error;
+      },
     },
   );
   return NextResponse.json({ received: status === 200 }, { status });

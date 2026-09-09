@@ -22,6 +22,8 @@ export function OrderOperations({
   const [message, setMessage] = useState("");
   const [address, setAddress] = useState<Record<string, string> | null>(null);
   const [note, setNote] = useState("");
+  const [refundAmount, setRefundAmount] = useState("");
+  const [refundReason, setRefundReason] = useState("");
   const [form, setForm] = useState({
     carrier_name: String(shipment.carrier_name ?? ""),
     tracking_number: String(shipment.tracking_number ?? ""),
@@ -61,6 +63,33 @@ export function OrderOperations({
       );
     } catch (e) {
       setMessage(e instanceof Error ? e.message : "Unable to reveal address");
+    }
+  }
+  async function refund() {
+    if (
+      !confirm(
+        "Start this test refund? It will remain pending until Razorpay confirms it.",
+      )
+    )
+      return;
+    try {
+      const response = await fetch("/api/refunds", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          order_id: orderId,
+          amount_paise: Math.round(Number(refundAmount) * 100),
+          reason: refundReason,
+        }),
+      });
+      const json = await response.json();
+      if (!response.ok)
+        throw new Error(json.error || "Refund could not be started");
+      setMessage("Refund started. Razorpay confirmation is pending.");
+    } catch (error) {
+      setMessage(
+        error instanceof Error ? error.message : "Refund could not be started",
+      );
     }
   }
   return (
@@ -200,6 +229,45 @@ export function OrderOperations({
             {n.body}
           </p>
         ))}
+      </section>
+      <section>
+        <h2>Test refund</h2>
+        <p>
+          Only use this with Razorpay test payments. Provider confirmation is
+          required before the refund is final.
+        </p>
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            refund();
+          }}
+          className="admin-shipment-form"
+        >
+          <label>
+            Amount (₹)
+            <input
+              required
+              min="1"
+              step="0.01"
+              type="number"
+              value={refundAmount}
+              onChange={(event) => setRefundAmount(event.target.value)}
+            />
+          </label>
+          <label>
+            Reason
+            <textarea
+              required
+              minLength={3}
+              maxLength={500}
+              value={refundReason}
+              onChange={(event) => setRefundReason(event.target.value)}
+            />
+          </label>
+          <button className="button" type="submit">
+            Start test refund
+          </button>
+        </form>
       </section>
       <section>
         <h2>Timeline</h2>

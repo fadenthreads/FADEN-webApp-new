@@ -154,7 +154,7 @@ For every completion report include changed files, schema/RPC changes, authoriza
 
 **Tests:** template validation, idempotency, claim locking, retry/permanent failure, safe payloads and Admin-visible failed delivery state.
 
-### [ ] L06 Complete Razorpay test-mode payments and refunds
+### [x] L06 Complete Razorpay test-mode payments and refunds
 
 **Goal:** Prove the financial workflow end to end before live activation.
 

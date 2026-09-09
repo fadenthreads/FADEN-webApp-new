@@ -1959,6 +1959,106 @@ export type Database = {
           },
         ]
       }
+      payment_provider_events: {
+        Row: {
+          event_type: string
+          id: number
+          outcome: string
+          processed_at: string | null
+          provider_event_id: string
+          provider_order_id: string | null
+          provider_payment_id: string | null
+          received_at: string
+        }
+        Insert: {
+          event_type: string
+          id?: never
+          outcome?: string
+          processed_at?: string | null
+          provider_event_id: string
+          provider_order_id?: string | null
+          provider_payment_id?: string | null
+          received_at?: string
+        }
+        Update: {
+          event_type?: string
+          id?: never
+          outcome?: string
+          processed_at?: string | null
+          provider_event_id?: string
+          provider_order_id?: string | null
+          provider_payment_id?: string | null
+          received_at?: string
+        }
+        Relationships: []
+      }
+      payment_refunds: {
+        Row: {
+          amount_paise: number
+          failure_reason: string | null
+          id: string
+          order_id: string
+          payment_attempt_id: string
+          processed_at: string | null
+          provider_payment_id: string
+          provider_refund_id: string | null
+          reason: string
+          requested_at: string
+          requested_by: string
+          status: string
+        }
+        Insert: {
+          amount_paise: number
+          failure_reason?: string | null
+          id?: string
+          order_id: string
+          payment_attempt_id: string
+          processed_at?: string | null
+          provider_payment_id: string
+          provider_refund_id?: string | null
+          reason: string
+          requested_at?: string
+          requested_by: string
+          status?: string
+        }
+        Update: {
+          amount_paise?: number
+          failure_reason?: string | null
+          id?: string
+          order_id?: string
+          payment_attempt_id?: string
+          processed_at?: string | null
+          provider_payment_id?: string
+          provider_refund_id?: string | null
+          reason?: string
+          requested_at?: string
+          requested_by?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_refunds_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "customer_orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_refunds_payment_attempt_id_fkey"
+            columns: ["payment_attempt_id"]
+            isOneToOne: false
+            referencedRelation: "order_payment_attempts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_refunds_requested_by_fkey"
+            columns: ["requested_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -2358,6 +2458,10 @@ export type Database = {
         }
         Returns: Json
       }
+      admin_create_test_refund: {
+        Args: { p_amount_paise: number; p_order_id: string; p_reason: string }
+        Returns: Json
+      }
       admin_dashboard_summary: { Args: never; Returns: Json }
       admin_email_delivery_summary: { Args: never; Returns: Json }
       admin_list_boutiques: {
@@ -2449,6 +2553,10 @@ export type Database = {
       }
       attach_test_gateway_order: {
         Args: { amount: number; gateway_order: string; target_attempt: string }
+        Returns: undefined
+      }
+      attach_test_refund: {
+        Args: { p_provider_refund_id: string; p_refund_id: string }
         Returns: undefined
       }
       can_read_order_file: { Args: { object_name: string }; Returns: boolean }
@@ -2558,6 +2666,10 @@ export type Database = {
         Args: { target_order: string; through_sequence: number }
         Returns: undefined
       }
+      mark_test_provider_event: {
+        Args: { p_event_id: string; p_outcome: string }
+        Returns: undefined
+      }
       normalize_audit_request_id: { Args: { input: string }; Returns: string }
       normalize_audit_user_agent: { Args: { input: string }; Returns: string }
       owner_attach_verification_document: {
@@ -2658,6 +2770,19 @@ export type Database = {
           target_attempt: string
         }
         Returns: string
+      }
+      record_test_provider_event: {
+        Args: {
+          p_event_id: string
+          p_event_type: string
+          p_provider_order_id?: string
+          p_provider_payment_id?: string
+        }
+        Returns: boolean
+      }
+      record_test_refund_outcome: {
+        Args: { p_provider_refund_id: string; p_status: string }
+        Returns: undefined
       }
       reserve_measurement_appointment: {
         Args: {

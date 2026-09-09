@@ -117,6 +117,32 @@ test("webhook HMAC validates raw bytes, not parsed and reserialized JSON", () =>
   );
   assert.equal(verifyHmac(raw, signature(raw), "another-secret"), false);
 });
+test("provider event IDs make refund webhooks idempotent and refund outcomes authoritative", async () => {
+  const raw = Buffer.from(
+    JSON.stringify({
+      event: "refund.processed",
+      payload: {
+        refund: { entity: { id: "rfnd_fixture", payment_id: "pay_fixture" } },
+      },
+    }),
+  );
+  let recorded = 0;
+  let reconciled = 0;
+  const deps = {
+    secret,
+    eventId: "evt_fixture",
+    recordEvent: async () => ++recorded === 1,
+    reconcileRefund: async (refundId, outcome) => {
+      reconciled++;
+      assert.equal(refundId, "rfnd_fixture");
+      assert.equal(outcome, "processed");
+    },
+  };
+  assert.equal(await processWebhook(raw, signature(raw), deps), 200);
+  assert.equal(await processWebhook(raw, signature(raw), deps), 200);
+  assert.equal(recorded, 2);
+  assert.equal(reconciled, 1);
+});
 test("only exact captured and unrefunded payments qualify", () => {
   const a = { provider_order_id: "order_test", amount_paise: 12345 },
     p = {
