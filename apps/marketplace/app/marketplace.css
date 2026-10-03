@@ -214,6 +214,35 @@ body {
   gap: 32px;
   padding: 120px 64px 64px;
 }
+.legal-page__main {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 56px 24px 80px;
+}
+.legal-page__main h1 {
+  font-family: var(--font-syne);
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  margin: 20px 0 8px;
+}
+.legal-page__content {
+  display: grid;
+  gap: 10px;
+  line-height: 1.65;
+}
+.legal-page__content h2 {
+  margin: 26px 0 0;
+  font-size: 1.25rem;
+}
+.legal-page__notice {
+  border-left: 3px solid var(--faden-terracotta);
+  background: #fff5ed;
+  padding: 12px;
+  font-size: 0.9rem;
+}
+.legal-page__updated {
+  color: var(--faden-muted);
+  margin-bottom: 28px;
+}
 .market-footer strong {
   font-size: 64px;
   line-height: 1.1;

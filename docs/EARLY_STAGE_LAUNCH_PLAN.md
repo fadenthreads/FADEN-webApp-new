@@ -180,7 +180,7 @@ For every completion report include changed files, schema/RPC changes, authoriza
 
 **Tests:** ownership, internal-note privacy, duplicate open-case behavior, transitions, refund linkage and audit creation.
 
-### [ ] L08 Add launch legal and trust pages
+### [x] L08 Add launch legal and trust pages
 
 **Routes:** `/terms`, `/privacy`, `/refund-policy`, `/shipping-policy`, `/cancellation-policy`, `/measurement-privacy`, `/help`, `/contact`.
 
