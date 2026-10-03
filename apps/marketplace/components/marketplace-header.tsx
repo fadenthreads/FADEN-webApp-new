@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { MarketIcon } from "./market-icon";
 
@@ -21,16 +22,16 @@ export function MarketplaceHeader({ active }: { active?: string }) {
     >
       <nav aria-label="Marketplace navigation">
         {links.map(([key, label, href]) => (
-          <a
+          <Link
             key={key}
             href={href}
             aria-current={active === key ? "page" : undefined}
           >
             {label}
-          </a>
+          </Link>
         ))}
       </nav>
-      <a className="market-logo" href="/" aria-label="FADEN home">
+      <Link className="market-logo" href="/" aria-label="FADEN home">
         <Image
           src="/stitch-assets/asset-049.jpg"
           alt="FADEN"
@@ -39,22 +40,22 @@ export function MarketplaceHeader({ active }: { active?: string }) {
           priority
           unoptimized
         />
-      </a>
+      </Link>
       <div className="market-actions">
-        <a
+        <Link
           aria-label="Saved pieces"
           href="/saved"
           className="market-action market-action--desktop"
         >
           <MarketIcon name="bag" />
-        </a>
-        <a
+        </Link>
+        <Link
           aria-label="Your account"
           href="/account"
           className="market-action market-action--desktop"
         >
           <MarketIcon name="person" />
-        </a>
+        </Link>
         <button
           aria-label={open ? "Close navigation" : "Open navigation"}
           aria-expanded={open}
@@ -73,12 +74,16 @@ export function MarketplaceHeader({ active }: { active?: string }) {
           aria-label="Mobile navigation"
         >
           {links.map(([key, label, href]) => (
-            <a href={href} key={key}>
+            <Link href={href} key={key} onClick={() => setOpen(false)}>
               {label}
-            </a>
+            </Link>
           ))}
-          <a href="/saved">Saved pieces</a>
-          <a href="/account">Your account</a>
+          <Link href="/saved" onClick={() => setOpen(false)}>
+            Saved pieces
+          </Link>
+          <Link href="/account" onClick={() => setOpen(false)}>
+            Your account
+          </Link>
         </nav>
       )}
     </header>

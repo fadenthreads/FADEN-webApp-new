@@ -273,6 +273,43 @@ body {
   max-width: 1440px;
   padding: 48px 64px 120px;
 }
+.discovery-loading {
+  min-height: 70vh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 20px;
+  color: #55433e;
+}
+.discovery-loading__mark {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #94452e;
+  color: #94452e;
+  font:
+    700 22px/1 var(--font-syne),
+    Syne,
+    sans-serif;
+  animation: discovery-pulse 1.1s ease-in-out infinite alternate;
+}
+.discovery-loading p {
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+}
+@keyframes discovery-pulse {
+  to {
+    opacity: 0.45;
+    transform: scale(0.94);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .discovery-loading__mark {
+    animation: none;
+  }
+}
 .discovery-heading {
   max-width: 896px;
   margin: 0 auto 120px;

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { MarketplaceFooter } from "../../components/marketplace-footer";
 import { MarketplaceHeader } from "../../components/marketplace-header";
 import { SaveButton } from "../../components/save-button";
@@ -173,14 +174,14 @@ export default async function DiscoverPage({
             </form>
             <nav className="discovery-tabs" aria-label="Discovery type">
               {["boutiques", "designs", "materials"].map((item) => (
-                <a
+                <Link
                   aria-current={type === item ? "page" : undefined}
                   className={type === item ? "is-active" : ""}
                   href={`/discover?type=${item}`}
                   key={item}
                 >
                   {item}
-                </a>
+                </Link>
               ))}
             </nav>
           </header>
