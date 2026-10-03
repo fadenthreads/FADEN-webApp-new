@@ -38,23 +38,13 @@ export default async function BoutiqueProfilePage({
     .eq("status", "published")
     .order("is_featured", { ascending: false });
 
-  const { data: authData } = await supabase.auth.getUser();
-  const { data: saved } = authData.user
-    ? await supabase
-        .from("saved_boutiques")
-        .select("boutique_id")
-        .eq("user_id", authData.user.id)
-        .eq("boutique_id", boutique.id)
-        .maybeSingle()
-    : { data: null };
-
   return (
     <div className="market-page stitch-profile">
       <MarketplaceHeader active="boutiques" />
       <DetailHeader
         kind="boutique"
         entityId={boutique.id}
-        initialSaved={Boolean(saved)}
+        initialSaved={false}
         returnPath={`/boutiques/${boutique.slug}`}
         title={boutique.name}
       />
@@ -111,7 +101,7 @@ export default async function BoutiqueProfilePage({
               </a>
               <SaveButton
                 entityId={boutique.id}
-                initialSaved={Boolean(saved)}
+                initialSaved={false}
                 kind="boutique"
                 returnPath={`/boutiques/${boutique.slug}`}
               />

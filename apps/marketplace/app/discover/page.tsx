@@ -36,18 +36,10 @@ export default async function DiscoverPage({
   const isBoutiques = type === "boutiques";
   const page = Math.min(20, Math.max(1, Number.parseInt(p.page ?? "1") || 1));
   const supabase = await getSupabaseServerClient();
-  const { data: auth } = await supabase.auth.getUser();
-  const { data: saved } = auth.user
-    ? await supabase
-        .from(isBoutiques ? "saved_boutiques" : "saved_designs")
-        .select("*")
-        .eq("user_id", auth.user.id)
-    : { data: [] };
-  const savedIds = new Set(
-    (saved ?? []).map((item) =>
-      "boutique_id" in item ? item.boutique_id : item.design_id,
-    ),
-  );
+  // Discovery is a public catalogue. Do not make a blocking Auth request here:
+  // a slow Auth service must not prevent visitors from browsing boutiques.
+  // SaveButton authenticates only when a visitor explicitly saves an item.
+  const savedIds = new Set<string>();
   function href(updates: Record<string, string>) {
     const query = new URLSearchParams();
     Object.entries({ ...p, ...updates }).forEach(([key, value]) => {

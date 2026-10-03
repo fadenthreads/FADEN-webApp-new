@@ -26,16 +26,6 @@ export default async function DesignDetailPage({
     .maybeSingle();
   if (!design) notFound();
 
-  const { data: authData } = await supabase.auth.getUser();
-  const { data: saved } = authData.user
-    ? await supabase
-        .from("saved_designs")
-        .select("design_id")
-        .eq("user_id", authData.user.id)
-        .eq("design_id", design.id)
-        .maybeSingle()
-    : { data: null };
-
   const primary = stitchImage(design.primary_image_url);
   return (
     <div className="market-page stitch-product">
@@ -43,7 +33,7 @@ export default async function DesignDetailPage({
       <DetailHeader
         kind="design"
         entityId={design.id}
-        initialSaved={Boolean(saved)}
+        initialSaved={false}
         returnPath={`/designs/${design.slug}`}
         title={design.title}
       />
@@ -112,7 +102,7 @@ export default async function DesignDetailPage({
             <div className="design-actions">
               <SaveButton
                 entityId={design.id}
-                initialSaved={Boolean(saved)}
+                initialSaved={false}
                 kind="design"
                 returnPath={`/designs/${design.slug}`}
               />
