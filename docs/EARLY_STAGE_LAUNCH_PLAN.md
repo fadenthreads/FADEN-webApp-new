@@ -166,7 +166,7 @@ For every completion report include changed files, schema/RPC changes, authoriza
 
 **Activation:** keep live Razorpay disabled after this ticket.
 
-### [ ] L07 Add basic support, cancellation and refund handling
+### [x] L07 Add basic support, cancellation and refund handling
 
 **Goal:** Give customers and Admin a safe early-stage support workflow without building a complex dispute platform.
 

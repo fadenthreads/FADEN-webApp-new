@@ -2489,6 +2489,10 @@ export type Database = {
       }
       admin_order_captured: { Args: { p_order_id: string }; Returns: boolean }
       admin_read_order_detail: { Args: { p_order_id: string }; Returns: Json }
+      admin_read_order_support_cases: {
+        Args: { p_order_id: string }
+        Returns: Json
+      }
       admin_read_verification_submission: {
         Args: { p_submission_id: string }
         Returns: Json
@@ -2533,6 +2537,10 @@ export type Database = {
           p_tracking_url: string
         }
         Returns: Json
+      }
+      admin_update_support_case: {
+        Args: { p_case_id: string; p_note?: string; p_status: string }
+        Returns: undefined
       }
       append_audit_event: {
         Args: {
@@ -2646,6 +2654,19 @@ export type Database = {
           boutique_slug: string
         }
         Returns: string
+      }
+      customer_open_support_case: {
+        Args: {
+          p_kind: string
+          p_message: string
+          p_order_id: string
+          p_subject: string
+        }
+        Returns: string
+      }
+      customer_read_support_case: {
+        Args: { p_case_id: string }
+        Returns: Json
       }
       decide_order_design: {
         Args: {
@@ -3044,4 +3065,3 @@ export const Constants = {
     },
   },
 } as const
-

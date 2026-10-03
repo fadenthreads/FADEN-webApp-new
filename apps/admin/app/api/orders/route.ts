@@ -37,6 +37,12 @@ export async function POST(request: NextRequest) {
         p_order_id: command.orderId,
         p_reason: command.reason,
       });
+    else if (command.action === "support")
+      result = await supabase.rpc("admin_update_support_case", {
+        p_case_id: command.caseId,
+        p_status: command.status,
+        p_note: command.note,
+      });
     else
       result = await supabase.rpc("admin_upsert_manual_shipment", {
         p_order_id: command.orderId,

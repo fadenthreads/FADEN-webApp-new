@@ -16,6 +16,10 @@ export default async function OrderPage({
       <div className="admin-overview-error">This order is unavailable.</div>
     );
   const d = data as Record<string, unknown>;
+  const { data: supportCases } = await supabase.rpc(
+    "admin_read_order_support_cases",
+    { p_order_id: id },
+  );
   const order = d.order as Record<string, unknown>;
   return (
     <div className="admin-order-detail">
@@ -34,7 +38,10 @@ export default async function OrderPage({
           ₹{(Number(order.total_paise) / 100).toLocaleString("en-IN")}
         </p>
       </div>
-      <OrderOperations orderId={id} detail={d} />
+      <OrderOperations
+        orderId={id}
+        detail={{ ...d, supportCases: supportCases ?? [] }}
+      />
     </div>
   );
 }

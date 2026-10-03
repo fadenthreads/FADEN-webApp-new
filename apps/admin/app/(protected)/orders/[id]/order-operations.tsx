@@ -19,6 +19,9 @@ export function OrderOperations({
 }) {
   const shipment = (detail.shipment ?? {}) as Record<string, unknown>,
     fulfilment = (detail.fulfilment ?? {}) as Record<string, unknown>;
+  const supportCases = (detail.supportCases ?? []) as Array<
+    Record<string, string>
+  >;
   const [message, setMessage] = useState("");
   const [address, setAddress] = useState<Record<string, string> | null>(null);
   const [note, setNote] = useState("");
@@ -91,6 +94,10 @@ export function OrderOperations({
         error instanceof Error ? error.message : "Refund could not be started",
       );
     }
+  }
+  async function updateSupport(caseId: string, status: string) {
+    const note = prompt("Private Admin note (optional):") ?? "";
+    await act({ action: "support", case_id: caseId, status, note });
   }
   return (
     <div className="admin-order-grid">
@@ -268,6 +275,34 @@ export function OrderOperations({
             Start test refund
           </button>
         </form>
+      </section>
+      <section>
+        <h2>Support cases</h2>
+        {supportCases.length ? (
+          supportCases.map((support) => (
+            <div key={support.id} className="admin-private-note">
+              <strong>
+                {support.kind}: {support.subject}
+              </strong>
+              <p>Current status: {support.status}</p>
+              <select
+                aria-label={`Status for ${support.subject}`}
+                value={support.status}
+                onChange={(event) =>
+                  updateSupport(support.id, event.target.value)
+                }
+              >
+                <option value="open">Open</option>
+                <option value="awaiting_customer">Awaiting customer</option>
+                <option value="awaiting_boutique">Awaiting boutique</option>
+                <option value="resolved">Resolved</option>
+                <option value="closed">Closed</option>
+              </select>
+            </div>
+          ))
+        ) : (
+          <p>No support cases for this order.</p>
+        )}
       </section>
       <section>
         <h2>Timeline</h2>

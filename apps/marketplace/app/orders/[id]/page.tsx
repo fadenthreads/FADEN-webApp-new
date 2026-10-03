@@ -28,6 +28,9 @@ export default async function OrderDetail({
           <Link className="offer-btn secondary" href={`/orders/${id}/messages`}>
             Private messages
           </Link>
+          <Link className="offer-btn secondary" href={`/orders/${id}/support`}>
+            Get support
+          </Link>
           <Link
             className="offer-btn secondary"
             href={`/orders/${id}/aftercare`}

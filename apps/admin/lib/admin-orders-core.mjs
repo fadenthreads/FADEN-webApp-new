@@ -47,6 +47,25 @@ export function validateOrderCommand(body) {
   if (body.action === "reveal_address" && typeof body.reason === "string")
     return { action: body.action, orderId: body.order_id, reason: body.reason };
   if (
+    body.action === "support" &&
+    typeof body.case_id === "string" &&
+    [
+      "open",
+      "awaiting_customer",
+      "awaiting_boutique",
+      "resolved",
+      "closed",
+    ].includes(body.status) &&
+    (typeof body.note === "string" || typeof body.note === "undefined")
+  )
+    return {
+      action: body.action,
+      orderId: body.order_id,
+      caseId: body.case_id,
+      status: body.status,
+      note: body.note ?? null,
+    };
+  if (
     body.action === "shipment" &&
     shipmentStatuses.has(body.status) &&
     typeof body.carrier_name === "string" &&
