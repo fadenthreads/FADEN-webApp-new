@@ -5,6 +5,13 @@ import {
 import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  const publicRoute =
+    pathname.startsWith("/auth/") ||
+    pathname.startsWith("/api/") ||
+    pathname === "/preview/overview" ||
+    pathname === "/preview/portfolio";
+  if (publicRoute) return NextResponse.next();
   let response = NextResponse.next({ request });
   const cookies: FadenCookieMethods = {
     getAll: () => request.cookies.getAll(),
@@ -23,13 +30,6 @@ export async function middleware(request: NextRequest) {
   };
   const supabase = createFadenServerClient(cookies);
   const { data } = await supabase.auth.getUser();
-  const pathname = request.nextUrl.pathname;
-  const publicRoute =
-    pathname.startsWith("/auth/") ||
-    pathname.startsWith("/api/") ||
-    pathname === "/preview/overview" ||
-    pathname === "/preview/portfolio";
-
   if (!data.user && !publicRoute) {
     const signIn = request.nextUrl.clone();
     signIn.pathname = "/auth/sign-in";

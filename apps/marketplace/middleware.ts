@@ -5,6 +5,17 @@ import {
 import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  const protectedRoute =
+    pathname.startsWith("/account") ||
+    pathname.startsWith("/saved") ||
+    pathname.startsWith("/create") ||
+    pathname.startsWith("/requests") ||
+    pathname.startsWith("/offers") ||
+    pathname.startsWith("/orders");
+  // Public pages must not depend on an auth-network round trip. This prevents
+  // a slow Auth service from timing out catalogue and landing-page requests.
+  if (!protectedRoute) return NextResponse.next();
   let response = NextResponse.next({ request });
   const cookies: FadenCookieMethods = {
     getAll: () => request.cookies.getAll(),
@@ -24,13 +35,6 @@ export async function middleware(request: NextRequest) {
   const supabase = createFadenServerClient(cookies);
   const { data } = await supabase.auth.getUser();
 
-  const protectedRoute =
-    request.nextUrl.pathname.startsWith("/account") ||
-    request.nextUrl.pathname.startsWith("/saved") ||
-    request.nextUrl.pathname.startsWith("/create") ||
-    request.nextUrl.pathname.startsWith("/requests") ||
-    request.nextUrl.pathname.startsWith("/offers") ||
-    request.nextUrl.pathname.startsWith("/orders");
   if (protectedRoute && !data.user) {
     const signIn = request.nextUrl.clone();
     signIn.pathname = "/auth/sign-in";

@@ -12,6 +12,12 @@ export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
     request: { headers: requestHeaders },
   });
+  const openRoute =
+    pathname.startsWith("/auth/") || pathname.startsWith("/api/");
+  // Role and MFA are verified by requireAdminSession() in the protected
+  // server layout. Middleware only establishes an authenticated session so it
+  // does not add profile and MFA network calls to every navigation.
+  if (openRoute) return response;
 
   const cookies: FadenCookieMethods = {
     getAll: () => request.cookies.getAll(),
@@ -32,41 +38,11 @@ export async function middleware(request: NextRequest) {
   };
   const supabase = createFadenServerClient(cookies);
   const { data } = await supabase.auth.getUser();
-  const openRoute =
-    pathname.startsWith("/auth/") || pathname.startsWith("/api/");
-
   if (!data.user && !openRoute) {
     const signIn = request.nextUrl.clone();
     signIn.pathname = "/auth/sign-in";
     signIn.searchParams.set("next", pathname);
     return NextResponse.redirect(signIn);
-  }
-
-  if (data.user && !pathname.startsWith("/auth/callback")) {
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", data.user.id)
-      .single();
-
-    if (
-      profile?.role !== "admin" &&
-      !pathname.startsWith("/auth/unauthorized")
-    ) {
-      const unauthorized = request.nextUrl.clone();
-      unauthorized.pathname = "/auth/unauthorized";
-      return NextResponse.redirect(unauthorized);
-    }
-
-    if (profile?.role === "admin" && !pathname.startsWith("/auth/")) {
-      const { data: assurance } =
-        await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
-      if (assurance?.currentLevel !== "aal2") {
-        const mfa = request.nextUrl.clone();
-        mfa.pathname = "/auth/mfa";
-        return NextResponse.redirect(mfa);
-      }
-    }
   }
 
   return response;
