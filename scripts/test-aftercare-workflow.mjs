@@ -45,9 +45,9 @@ export async function testAftercare({
     note: "Rehearsal response only. No real alteration work is arranged.",
     commandId: crypto.randomUUID(),
   });
-  const confirmation = (
+  const shipment = (
     await admin
-      .from("order_delivery_confirmations")
+      .from("manual_order_shipments")
       .select()
       .eq("order_id", order.id)
       .single()
@@ -83,7 +83,7 @@ export async function testAftercare({
     assert.equal(
       (
         await admin
-          .from("order_delivery_confirmations")
+          .from("manual_order_shipments")
           .delete()
           .eq("order_id", order.id)
       ).error,
@@ -94,8 +94,7 @@ export async function testAftercare({
       "aftercare requires delivery confirmation",
     );
     assert.equal(
-      (await admin.from("order_delivery_confirmations").insert(confirmation))
-        .error,
+      (await admin.from("manual_order_shipments").insert(shipment)).error,
       null,
     );
     ok(
@@ -121,8 +120,8 @@ export async function testAftercare({
         .eq("order_id", order.id)
     ).data;
     ok(
-      reviews.length === 1 && reviews[0].mode === "rehearsal",
-      "review isolated in rehearsal storage",
+      reviews.length === 1 && reviews[0].mode === "live",
+      "review is stored as launch aftercare",
     );
     ok(
       (
@@ -172,7 +171,7 @@ export async function testAftercare({
     );
     ok(
       (await post(owner, accept, 3001)).status === 200,
-      "owner accepts alteration rehearsal",
+      "owner accepts alteration request",
     );
     ok(
       (await post(owner, accept, 3001)).status === 200,
@@ -202,7 +201,7 @@ export async function testAftercare({
     );
     ok(
       (await post(owner, response(id, 2, "ready"), 3001)).status === 200,
-      "owner marks rehearsal ready",
+      "owner marks alteration ready",
     );
     const close = response(id, 3, "closed");
     ok(
