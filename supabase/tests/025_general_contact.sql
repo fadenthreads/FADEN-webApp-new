@@ -26,6 +26,7 @@ select throws_ok(
 
 insert into auth.users(id,email) values ('a6000000-0000-4000-8000-000000000001','contact-admin@faden.local');
 update public.profiles set role='admin' where id='a6000000-0000-4000-8000-000000000001';
+select set_config('tests.contact_id',(select id from public.contact_inquiries where email='visitor@example.com')::text,true);
 set local role authenticated;
 select set_config('request.jwt.claims','{"sub":"a6000000-0000-4000-8000-000000000001","role":"authenticated","aal":"aal2"}',true);
 select lives_ok(
@@ -34,7 +35,7 @@ select lives_ok(
 );
 select lives_ok(
   format($$select public.admin_update_contact_inquiry('%s'::uuid,'resolved')$$,
-    (select id from public.contact_inquiries where email='visitor@example.com')),
+    current_setting('tests.contact_id')),
   'AAL2 admin can resolve a contact enquiry'
 );
 
