@@ -371,9 +371,9 @@ export async function testFulfilment({
     );
     ok(
       (await page(3001, `/orders/${order.id}/delivery`, owner)).text.includes(
-        "Delivery rehearsal confirmed",
+        "Test courier",
       ),
-      "owner sees rehearsal confirmation",
+      "owner sees the admin-managed manual shipment",
     );
     ok(
       !!(
