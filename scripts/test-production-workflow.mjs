@@ -25,6 +25,7 @@ export async function testProduction({
   ).data[0];
   const ids = [],
     paths = [];
+  const paymentAttemptId = crypto.randomUUID();
   const post = async (who, body, origin = "http://localhost:3001") => {
     const r = await fetch("http://localhost:3001/api/production", {
       method: "POST",
@@ -65,6 +66,27 @@ export async function testProduction({
           .from("order_design_reviews")
           .update({ status: "pending", feedback: "", reviewed_at: null })
           .eq("id", saved.id)
+      ).error,
+      null,
+    );
+    // Production is a live workflow now, so this isolated fixture needs an
+    // authoritative captured-payment record. It is removed again before the
+    // cancellation checks below.
+    assert.equal(
+      (
+        await admin.from("order_payment_attempts").insert({
+          id: paymentAttemptId,
+          order_id: order.id,
+          customer_id: customer.id,
+          amount_paise: Math.max(order.advance_paise ?? 100, 100),
+          currency: "INR",
+          mode: "test",
+          key_id: `rzp_test_${paymentAttemptId.replaceAll("-", "")}`,
+          status: "captured",
+          provider_order_id: `order_${paymentAttemptId.replaceAll("-", "")}`,
+          provider_payment_id: `pay_${paymentAttemptId.replaceAll("-", "")}`,
+          verified_at: new Date().toISOString(),
+        })
       ).error,
       null,
     );
@@ -366,6 +388,15 @@ export async function testProduction({
     );
     assert.equal(
       (
+        await admin
+          .from("order_payment_attempts")
+          .delete()
+          .eq("id", paymentAttemptId)
+      ).error,
+      null,
+    );
+    assert.equal(
+      (
         await customer.client.rpc("cancel_unpaid_order", {
           target_order: order.id,
           confirmed: true,
@@ -387,6 +418,10 @@ export async function testProduction({
       `Passed ${checks} production rehearsal, storage, transition and privacy checks.`,
     );
   } finally {
+    await admin
+      .from("order_payment_attempts")
+      .delete()
+      .eq("id", paymentAttemptId);
     await admin.from("boutiques").update({ owner_id: owner.id }).eq("id", b.id);
     // Restore this isolated fixture for the parent suite's cancellation assertions.
     await admin
