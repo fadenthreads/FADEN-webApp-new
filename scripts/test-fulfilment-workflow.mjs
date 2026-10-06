@@ -55,6 +55,7 @@ export async function testFulfilment({
     details: address,
     commandId: crypto.randomUUID(),
   };
+  const manualShipmentId = crypto.randomUUID();
   const progress = (sequence, stage) => ({
     action: "progress",
     sequence,
@@ -333,6 +334,27 @@ export async function testFulfilment({
       (await post(owner, progress(5, 5), 3001)).status === 409,
       "confirmed history is closed",
     );
+    // Completion now follows the launch manual-shipping source of truth. This
+    // isolated service-role fixture represents the admin having marked the
+    // externally arranged courier delivery complete.
+    assert.equal(
+      (
+        await admin.from("manual_order_shipments").insert({
+          id: manualShipmentId,
+          order_id: order.id,
+          carrier_name: "Test courier",
+          tracking_number: `TEST-${manualShipmentId.slice(0, 8)}`,
+          tracking_url: "https://example.com/test-tracking",
+          status: "delivered",
+          admin_note: "Isolated completion-page test fixture.",
+          shipped_at: new Date().toISOString(),
+          delivered_at: new Date().toISOString(),
+          created_by: customer.id,
+          updated_by: customer.id,
+        })
+      ).error,
+      null,
+    );
     ok(
       (
         await page(3000, `/orders/${order.id}/complete`, customer)
@@ -455,6 +477,14 @@ export async function testFulfilment({
       `Passed ${checks} fulfilment privacy, address, transition and completion checks.`,
     );
   } finally {
+    await admin
+      .from("manual_shipment_events")
+      .delete()
+      .eq("shipment_id", manualShipmentId);
+    await admin
+      .from("manual_order_shipments")
+      .delete()
+      .eq("id", manualShipmentId);
     await admin.from("boutiques").update({ owner_id: owner.id }).eq("id", b.id);
     await admin
       .from("customer_orders")
