@@ -6,12 +6,14 @@ export function OrderCompletion({
   backHref,
   aftercareHref,
   messagesHref,
+  invoiceHref,
   demo = false,
 }: {
   imageUrl?: string;
   backHref: string;
   aftercareHref: string;
   messagesHref: string;
+  invoiceHref?: string;
   demo?: boolean;
 }) {
   return (
@@ -68,9 +70,11 @@ export function OrderCompletion({
             </p>
             <div className="completion-divider" />
             <Link href="/create">↗ Start another outfit</Link>
-            <button className="text" disabled>
-              ▤ Download Invoice — unavailable
-            </button>
+            {invoiceHref ? (
+              <Link href={invoiceHref}>▤ Download Invoice</Link>
+            ) : (
+              <span>▤ Invoice available after a verified payment</span>
+            )}
             <Link href={messagesHref}>□ Message Boutique</Link>
             <Link href={backHref}>← Back to delivery rehearsal</Link>
           </section>

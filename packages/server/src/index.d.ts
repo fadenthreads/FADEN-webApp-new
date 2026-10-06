@@ -174,3 +174,13 @@ export function sendTransactionalEmail(input: {
   payload: unknown;
   env?: NodeJS.ProcessEnv;
 }): Promise<{ skipped: boolean; messageId?: string }>;
+
+export function checkSupabaseHealth(
+  env?: NodeJS.ProcessEnv,
+  fetchImpl?: typeof fetch,
+  timeoutMs?: number,
+): Promise<{
+  ok: boolean;
+  latencyMs: number;
+  reason?: "not_configured" | "unavailable";
+}>;

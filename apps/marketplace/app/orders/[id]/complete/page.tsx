@@ -50,6 +50,7 @@ export default async function Complete({
       backHref={`/orders/${id}/delivery`}
       aftercareHref={`/orders/${id}/aftercare`}
       messagesHref={`/orders/${id}/messages`}
+      invoiceHref={`/orders/${id}/invoice`}
     />
   );
 }

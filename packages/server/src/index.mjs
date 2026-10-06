@@ -60,3 +60,4 @@ export {
   emailTemplate,
   sendTransactionalEmail,
 } from "./email.mjs";
+export { checkSupabaseHealth } from "./health.mjs";

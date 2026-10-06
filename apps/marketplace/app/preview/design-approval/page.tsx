@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DesignReviewView } from "@faden/ui";
 import { sampleDesignReviews } from "../../../lib/design-preview";
+import { PreviewDesignActions } from "../../../components/preview-design-actions";
 export default function DesignPreview() {
   if (process.env.NEXT_PUBLIC_APP_ENV === "production") notFound();
   return (
@@ -13,6 +14,7 @@ export default function DesignPreview() {
       <DesignReviewView
         reviews={sampleDesignReviews}
         boutique="Atelier Maison"
+        actions={<PreviewDesignActions />}
         demo
       />
     </main>

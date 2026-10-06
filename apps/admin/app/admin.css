@@ -1,5 +1,43 @@
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap");
 
+.contact-inquiry-list {
+  display: grid;
+  gap: 18px;
+  padding: 32px;
+  max-width: 1000px;
+}
+.contact-inquiry-list .admin-card,
+.admin-empty-state {
+  padding: 22px;
+  background: white;
+  border: 1px solid var(--faden-border);
+}
+.contact-inquiry-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.contact-inquiry-heading h2 {
+  margin: 0 0 4px;
+}
+.contact-inquiry-heading span {
+  text-transform: capitalize;
+  color: var(--faden-muted);
+}
+.contact-inquiry-list .admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+.contact-inquiry-list button {
+  border: 1px solid var(--faden-border);
+  background: var(--faden-ivory);
+  padding: 9px 12px;
+  cursor: pointer;
+}
+
 .admin-app {
   --admin-sidebar-width: 280px;
   --admin-topbar-height: 64px;

@@ -50,8 +50,8 @@ export function DesignReviewView({
       </header>
       {demo && (
         <p className="design-notice">
-          Sample design · fictional preview, not a real order. Decisions are
-          disabled.
+          Sample design · fictional preview, not a real order. You can try the
+          decision controls; preview actions never modify a real order.
         </p>
       )}
       {latest ? (

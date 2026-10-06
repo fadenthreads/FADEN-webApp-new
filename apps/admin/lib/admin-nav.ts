@@ -4,6 +4,7 @@ export type AdminNavKey =
   | "orders"
   | "settlements"
   | "disputes"
+  | "contacts"
   | "configuration"
   | "audit";
 

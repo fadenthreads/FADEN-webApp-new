@@ -15,10 +15,6 @@ export function LegalPage({ title, updated, children }: LegalPageProps) {
         <Link className="offer-kicker" href="/">
           ← FADEN
         </Link>
-        <p className="legal-page__notice">
-          Launch draft — business and legal review required before public
-          production use.
-        </p>
         <h1>{title}</h1>
         <p className="legal-page__updated">Last updated: {updated}</p>
         <div className="legal-page__content">{children}</div>

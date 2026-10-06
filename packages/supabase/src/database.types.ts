@@ -7,6 +7,11 @@ export type Json =
   | Json[]
 
 export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "14.5"
+  }
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -861,6 +866,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      contact_inquiries: {
+        Row: {
+          category: string
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       customer_orders: {
         Row: {
@@ -2304,6 +2342,138 @@ export type Database = {
           },
         ]
       }
+      support_case_admin_notes: {
+        Row: {
+          admin_id: string
+          body: string
+          case_id: string
+          created_at: string
+          id: number
+        }
+        Insert: {
+          admin_id: string
+          body: string
+          case_id: string
+          created_at?: string
+          id?: never
+        }
+        Update: {
+          admin_id?: string
+          body?: string
+          case_id?: string
+          created_at?: string
+          id?: never
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_case_admin_notes_admin_id_fkey"
+            columns: ["admin_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_case_admin_notes_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "support_cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_case_messages: {
+        Row: {
+          author_id: string
+          body: string
+          case_id: string
+          created_at: string
+          id: number
+        }
+        Insert: {
+          author_id: string
+          body: string
+          case_id: string
+          created_at?: string
+          id?: never
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          case_id?: string
+          created_at?: string
+          id?: never
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_case_messages_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_case_messages_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "support_cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_cases: {
+        Row: {
+          closed_at: string | null
+          created_at: string
+          customer_id: string
+          id: string
+          kind: string
+          order_id: string
+          status: string
+          subject: string
+          updated_at: string
+          version: number
+        }
+        Insert: {
+          closed_at?: string | null
+          created_at?: string
+          customer_id: string
+          id?: string
+          kind: string
+          order_id: string
+          status?: string
+          subject: string
+          updated_at?: string
+          version?: number
+        }
+        Update: {
+          closed_at?: string | null
+          created_at?: string
+          customer_id?: string
+          id?: string
+          kind?: string
+          order_id?: string
+          status?: string
+          subject?: string
+          updated_at?: string
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_cases_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_cases_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "customer_orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_addresses: {
         Row: {
           city: string
@@ -2474,6 +2644,10 @@ export type Database = {
         }
         Returns: Json
       }
+      admin_list_contact_inquiries: {
+        Args: { p_limit?: number; p_status?: string }
+        Returns: Json
+      }
       admin_list_orders: {
         Args: {
           p_cursor?: string
@@ -2525,6 +2699,14 @@ export type Database = {
         Args: { p_boutique_id: string; p_reason: string }
         Returns: Json
       }
+      admin_update_contact_inquiry: {
+        Args: { p_id: string; p_status: string }
+        Returns: undefined
+      }
+      admin_update_support_case: {
+        Args: { p_case_id: string; p_note?: string; p_status: string }
+        Returns: undefined
+      }
       admin_upsert_manual_shipment: {
         Args: {
           p_admin_note: string
@@ -2537,10 +2719,6 @@ export type Database = {
           p_tracking_url: string
         }
         Returns: Json
-      }
-      admin_update_support_case: {
-        Args: { p_case_id: string; p_note?: string; p_status: string }
-        Returns: undefined
       }
       append_audit_event: {
         Args: {
@@ -2664,10 +2842,7 @@ export type Database = {
         }
         Returns: string
       }
-      customer_read_support_case: {
-        Args: { p_case_id: string }
-        Returns: Json
-      }
+      customer_read_support_case: { Args: { p_case_id: string }; Returns: Json }
       decide_order_design: {
         Args: {
           confirmed: boolean
@@ -2876,6 +3051,15 @@ export type Database = {
           item_kind: string
           stars: number
           target_order: string
+        }
+        Returns: string
+      }
+      submit_contact_inquiry: {
+        Args: {
+          p_category: string
+          p_email: string
+          p_message: string
+          p_name: string
         }
         Returns: string
       }

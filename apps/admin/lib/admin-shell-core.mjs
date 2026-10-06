@@ -21,8 +21,8 @@ export const ADMIN_PRIMARY_NAV = [
     section: "commerce",
   },
   {
-    key: "disputes",
-    href: "/disputes",
+    key: "contacts",
+    href: "/contact-inquiries",
     label: "Trust & Support",
     icon: "verified_user",
   },
@@ -75,6 +75,13 @@ export const ADMIN_PAGE_META = {
     title: "Disputes",
     description: "Customer and boutique dispute resolution workflows.",
     placeholderTicket: "A06",
+  },
+  "/contact-inquiries": {
+    key: "contacts",
+    title: "Contact Enquiries",
+    description:
+      "Review and resolve messages sent through the public contact form.",
+    placeholderTicket: "Launch",
   },
   "/settlements": {
     key: "settlements",

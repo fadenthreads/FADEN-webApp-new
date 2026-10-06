@@ -125,6 +125,27 @@
   color: #55433e;
   font-size: 14px;
 }
+.invoice-actions {
+  margin-top: 24px;
+}
+.invoice-print {
+  width: 100%;
+}
+@media print {
+  .invoice-page {
+    padding: 0;
+    background: white;
+  }
+  .invoice-page .checkout-header a,
+  .invoice-actions {
+    display: none;
+  }
+  .invoice-page .checkout-breakdown {
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+  }
+}
 @media (max-width: 760px) {
   .checkout-page {
     padding: 48px 20px;
