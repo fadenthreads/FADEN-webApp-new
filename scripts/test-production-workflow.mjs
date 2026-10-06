@@ -164,7 +164,7 @@ export async function testProduction({
     const retries = await Promise.all([post(owner, first), post(owner, first)]);
     ok(
       retries.every((r) => r.status === 200 && r.body.id === first.commandId),
-      "concurrent identical submissions idempotent",
+      `concurrent identical submissions idempotent: ${JSON.stringify(retries)}`,
     );
     ok(
       (
