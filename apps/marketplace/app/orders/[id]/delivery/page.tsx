@@ -1,12 +1,16 @@
 import Link from "next/link";
 import { getSupabaseServerClient } from "../../../../lib/supabase/server";
 import { MarketplaceHeader } from "../../../../components/marketplace-header";
+import { customerOrder } from "../../../../lib/orders";
 export default async function Delivery({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  // Resolve ownership first so unrelated users receive the normal private-order
+  // 404 instead of turning the RPC's audience rejection into a server error.
+  await customerOrder(id);
   const db = await getSupabaseServerClient();
   const { data, error } = await db.rpc("read_order_manual_shipment", {
     p_order_id: id,
