@@ -29,12 +29,10 @@ insert into public.boutique_members(boutique_id,user_id,role) values
 -- TEST: RLS - boutique_verification_submissions table access
 -- ============================================================================
 
--- Test anonymous denial (expect empty result due to RLS, not error)
-set local role anon;
-select set_config('request.jwt.claims','{}',true);
+-- Anonymous users have no table privilege at all; verification data is private.
 select is(
-  (select count(*)::integer from public.boutique_verification_submissions),
-  0,
+  has_table_privilege('anon', 'public.boutique_verification_submissions', 'select'),
+  false,
   'anonymous users cannot read verification submissions'
 );
 
