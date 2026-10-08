@@ -316,7 +316,7 @@ export async function testAftercare({
       events.length === 7 &&
         events.every((e) =>
           Object.keys(e.payload).every((k) =>
-            ["item_id", "order_id", "event_id"].includes(k),
+            ["item_id", "order_id", "event_id", "kind"].includes(k),
           ),
         ),
       "outbox has identifiers only",

@@ -17,7 +17,7 @@
     "@faden/server": "*",
     "@faden/supabase": "*",
     "@faden/ui": "*",
-    "next": "15.5.24",
+    "next": "16.4.0",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
