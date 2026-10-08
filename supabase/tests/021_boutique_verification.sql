@@ -31,6 +31,7 @@ insert into public.boutique_members(boutique_id,user_id,role) values
 
 -- Test anonymous denial (expect empty result due to RLS, not error)
 reset role;
+select set_config('request.jwt.claims','{}',true);
 select is(
   (select count(*)::integer from public.boutique_verification_submissions),
   0,
@@ -637,6 +638,7 @@ select is(
 );
 
 reset role;
+select set_config('request.jwt.claims','{}',true);
 select is(
   (select count(*)::integer from public.boutiques where id = 'a4000000-0000-4000-8000-000000000010'),
   0,
