@@ -22,6 +22,7 @@ export function StudioFrame({
     ["orders", "/orders", "Orders"],
     ["production", "/production", "Production"],
     ["appointments", "/appointments", "Appointments"],
+    ["storefront", "/storefront", "Public storefront"],
     ["portfolio", demo ? "/preview/portfolio" : "/portfolio", "Portfolio"],
     ["verification", "/verification", "Verification"],
   ];

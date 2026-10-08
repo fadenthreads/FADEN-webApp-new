@@ -78,7 +78,7 @@ export default async function RequestDetail({
           className="offer-btn"
           href={offer ? `/offers/${offer.id}` : `/offers/new?share=${id}`}
         >
-          {offer ? "View offer" : "Prepare offer →"}
+          {offer ? "View quotation" : "Accept & prepare quotation →"}
         </Link>
       </header>
       <div className="atelier-grid">
@@ -184,6 +184,11 @@ export default async function RequestDetail({
               Budget preference: {briefText(b, "budget").replaceAll("_", " ")}
             </p>
             <p>Shared {new Date(s.created_at).toLocaleDateString("en-IN")}</p>
+            <p className="offer-notice">
+              Preparing a quotation accepts this enquiry for consideration. The
+              customer is not charged and no order is created until they accept
+              your sent quotation.
+            </p>
           </section>
         </aside>
       </div>

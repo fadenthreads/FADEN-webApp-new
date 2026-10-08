@@ -25,9 +25,14 @@ export default async function OrderDetail({
         </p>
         <p className="request-reference">Order reference: {o.id}</p>
         <div className="offer-actions">
-          <Link className="offer-btn secondary" href={`/orders/${id}/messages`}>
-            Private messages
-          </Link>
+          {o.status !== "cancelled" && (
+            <Link
+              className="offer-btn secondary"
+              href={`/orders/${id}/messages`}
+            >
+              Chat with boutique
+            </Link>
+          )}
           <Link className="offer-btn secondary" href={`/orders/${id}/support`}>
             Get support
           </Link>

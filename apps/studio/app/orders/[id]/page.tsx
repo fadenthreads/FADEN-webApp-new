@@ -38,9 +38,11 @@ export default async function Order({
         is arranged manually by FADEN Admin and appears in the tracking view.
       </p>
       <div className="offer-actions">
-        <Link className="offer-btn secondary" href={`/orders/${id}/messages`}>
-          Private messages
-        </Link>
+        {order.status !== "cancelled" && (
+          <Link className="offer-btn secondary" href={`/orders/${id}/messages`}>
+            Chat with customer
+          </Link>
+        )}
         <Link className="offer-btn secondary" href={`/orders/${id}/aftercare`}>
           Aftercare
         </Link>

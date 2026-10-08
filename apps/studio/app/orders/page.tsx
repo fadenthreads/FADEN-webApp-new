@@ -13,6 +13,24 @@ export default async function Orders() {
     )
     .order("accepted_at", { ascending: false });
   if (error) throw new Error("Could not load orders.");
+  const orderIds = (orders ?? []).map((order) => order.id);
+  const [payments, progress] = orderIds.length
+    ? await Promise.all([
+        supabase
+          .from("order_payment_attempts")
+          .select("order_id,status")
+          .in("order_id", orderIds),
+        supabase
+          .from("order_production_summary")
+          .select("order_id,stage,created_at")
+          .in("order_id", orderIds),
+      ])
+    : [
+        { data: [], error: null },
+        { data: [], error: null },
+      ];
+  if (payments.error || progress.error)
+    throw new Error("Could not load order progress.");
   return (
     <AtelierShell
       active="orders"
@@ -29,17 +47,42 @@ export default async function Orders() {
         is shown on the order.
       </p>
       <div className="atelier-requests">
-        {orders?.map((o) => (
-          <Link key={o.id} className="atelier-request" href={`/orders/${o.id}`}>
-            <span className="offer-badge">{orderStatusLabel(o.status)}</span>
-            <h2>{briefText(o.quote, "title")}</h2>
-            <p>
-              {o.boutique_name} · {money(o.total_paise)}
-            </p>
-            <p>Quoted advance · {money(o.advance_paise)}</p>
-            <span>View order →</span>
-          </Link>
-        ))}
+        {orders?.map((o) => {
+          const payment = payments.data?.find((item) => item.order_id === o.id);
+          const production = progress.data?.find(
+            (item) => item.order_id === o.id,
+          );
+          return (
+            <Link
+              key={o.id}
+              className="atelier-request"
+              href={`/orders/${o.id}`}
+            >
+              <span className="offer-badge">{orderStatusLabel(o.status)}</span>
+              <h2>{briefText(o.quote, "title")}</h2>
+              <p>
+                {o.boutique_name} · {money(o.total_paise)}
+              </p>
+              <p>Quoted advance · {money(o.advance_paise)}</p>
+              <div className="order-tracking-summary">
+                <span>
+                  {payment?.status === "captured"
+                    ? "Payment confirmed"
+                    : "Payment pending"}
+                </span>
+                <span>
+                  {production
+                    ? `Production stage ${production.stage} of 5`
+                    : "Production not started"}
+                </span>
+                <span>
+                  {o.status === "cancelled" ? "Order closed" : "Order active"}
+                </span>
+              </div>
+              <span>Track and manage order →</span>
+            </Link>
+          );
+        })}
       </div>
       {!orders?.length && (
         <div className="offer-panel">

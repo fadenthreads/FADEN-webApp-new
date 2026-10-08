@@ -25,6 +25,7 @@ export function AtelierShell({
             ["orders", "/orders", "Orders"],
             ["production", "/production", "Production Board"],
             ["appointments", "/appointments", "Measurement sessions"],
+            ["storefront", "/storefront", "Public storefront"],
             ["portfolio", "/portfolio", "Portfolio"],
           ].map(([key, href, label]) => (
             <Link
