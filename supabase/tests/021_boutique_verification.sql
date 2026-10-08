@@ -636,6 +636,15 @@ select is(
   'boutique status updated to pending_verification'
 );
 
+reset role;
+select is(
+  (select count(*)::integer from public.boutiques where id = 'a4000000-0000-4000-8000-000000000010'),
+  0,
+  'pending boutique is not publicly visible'
+);
+set local role authenticated;
+select set_config('request.jwt.claims','{"sub":"a4000000-0000-4000-8000-000000000002","role":"authenticated","aal":"aal2"}',true);
+
 select ok(
   (select submitted_at is not null from public.boutique_verification_submissions where id = current_setting('tests.a04_submission_id')::uuid),
   'submission has submitted timestamp'
@@ -936,6 +945,21 @@ select is(
   'verified'::public.boutique_status,
   'boutique status updated to verified'
 );
+
+select is(
+  (select is_published from public.boutiques where id = 'a4000000-0000-4000-8000-000000000010'),
+  true,
+  'Admin approval publishes the verified boutique'
+);
+
+reset role;
+select is(
+  (select count(*)::integer from public.boutiques where id = 'a4000000-0000-4000-8000-000000000010'),
+  1,
+  'approved boutique is publicly visible'
+);
+set local role authenticated;
+select set_config('request.jwt.claims','{"sub":"a4000000-0000-4000-8000-000000000006","role":"authenticated","aal":"aal2"}',true);
 
 select ok(
   (select reviewed_at is not null from public.boutique_verification_submissions where id = current_setting('tests.a04_submission_id')::uuid),
