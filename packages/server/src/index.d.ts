@@ -172,6 +172,7 @@ export function sendTransactionalEmail(input: {
   to: string;
   eventType: string;
   payload: unknown;
+  canonicalUrl?: string;
   env?: NodeJS.ProcessEnv;
 }): Promise<{ skipped: boolean; messageId?: string }>;
 
