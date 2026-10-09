@@ -1,7 +1,7 @@
 /* Stitch project 6846067379333241152. Marketplace-only overrides.
    Shared Studio/Admin styling remains isolated from this parity pass. */
 body {
-  font-family: var(--font-karla), Karla, sans-serif;
+  font-family: var(--font-karla), Manrope, sans-serif;
 }
 .market-page {
   color: #1c1b1b;
@@ -12,7 +12,8 @@ body {
 .market-page h1,
 .market-page h2,
 .market-page h3 {
-  font-family: var(--font-syne), Syne, sans-serif;
+  font-family: var(--font-syne), "Bodoni Moda", serif;
+  font-weight: 600;
 }
 .market-page svg {
   width: 24px;
@@ -75,8 +76,9 @@ body {
   gap: 24px;
 }
 .market-header nav a {
-  font-size: 12px;
-  letter-spacing: 0.1em;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.045em;
   color: #55433e;
   text-transform: none;
   line-height: 1;
@@ -137,19 +139,20 @@ body {
   margin: 0 auto;
 }
 .stitch-hero h1 {
-  font-size: 64px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  font-size: clamp(64px, 6.2vw, 104px);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 0.96;
   margin: 0 0 32px;
-  width: 66.666%;
-  max-width: 896px;
+  width: 72%;
+  max-width: 980px;
   text-wrap: balance;
 }
 .stitch-hero__content > p {
-  font-size: 18px;
-  letter-spacing: 0.01em;
-  line-height: 1.6;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.7;
   max-width: min(672px, 66.666%);
   color: #55433e;
   margin: 0 0 32px;

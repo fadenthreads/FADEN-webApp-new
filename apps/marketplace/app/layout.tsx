@@ -11,16 +11,16 @@ import "@faden/ui/order-messages.css";
 import "@faden/ui/uploads.css";
 
 import type { Metadata } from "next";
-import { Karla, Syne } from "next/font/google";
+import { Bodoni_Moda, Manrope } from "next/font/google";
 import type { ReactNode } from "react";
 
-const karla = Karla({
+const manrope = Manrope({
   display: "swap",
   subsets: ["latin"],
   variable: "--font-karla",
 });
 
-const syne = Syne({
+const bodoni = Bodoni_Moda({
   display: "swap",
   subsets: ["latin"],
   variable: "--font-syne",
@@ -41,7 +41,9 @@ export default function RootLayout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${karla.variable} ${syne.variable}`}>{children}</body>
+      <body className={`${manrope.variable} ${bodoni.variable}`}>
+        {children}
+      </body>
     </html>
   );
 }
