@@ -34,11 +34,15 @@
   display: flex;
   gap: 24px;
   overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #dbc1ba transparent;
+  scrollbar-width: none;
+  scroll-behavior: auto;
+  overflow-anchor: none;
   padding-bottom: 16px;
   overscroll-behavior-x: contain;
   -webkit-overflow-scrolling: touch;
+}
+.showcase-rail::-webkit-scrollbar {
+  display: none;
 }
 .showcase-card {
   flex: 0 0 calc((100% - 48px) / 2.75);

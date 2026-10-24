@@ -2,6 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import {
+  normalizeShowcasePosition,
+  showcaseGroup,
+  showcaseGestureMoved,
+} from "../lib/showcase-motion.mjs";
+import { useQuickViewScrollLock } from "./use-quick-view-scroll-lock";
 
 export interface ShowcaseItem {
   id: string;
@@ -28,13 +34,22 @@ export function ShowcaseCarousel({
   const rail = useRef<HTMLDivElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement | null>(null);
+  const openedWithKeyboard = useRef(false);
   const resumeAt = useRef(0);
   const [selected, setSelected] = useState<ShowcaseItem | null>(null);
-  const [interacting, setInteracting] = useState(false);
+  const group = showcaseGroup(items);
+  const groupSize = group.length;
+  const geometry = useRef({ width: 0, step: 0 });
+  const touchActive = useRef(false);
+  const hovered = useRef(false);
+  const keyboardFocus = useRef(false);
+  const manualScroll = useRef(false);
+  const lastScroll = useRef(0);
+  const gesture = useRef({ x: 0, y: 0, moved: false });
+  useQuickViewScrollLock(Boolean(selected));
 
   function loopWidth() {
-    const card = rail.current?.querySelector<HTMLElement>(".showcase-card");
-    return card ? (card.offsetWidth + 24) * items.length : 0;
+    return geometry.current.width;
   }
 
   function normalizeLoop() {
@@ -42,29 +57,42 @@ export function ShowcaseCarousel({
     const width = loopWidth();
     if (!element || !width || items.length < 2) return;
     // All three sets are identical, so crossing into the middle set is invisible.
-    if (element.scrollLeft < width / 2) element.scrollLeft += width;
-    else if (element.scrollLeft >= width * 2) element.scrollLeft -= width;
+    if (element.scrollLeft < width || element.scrollLeft >= width * 2)
+      element.scrollLeft = normalizeShowcasePosition(element.scrollLeft, width);
   }
 
   useEffect(() => {
     const element = rail.current;
     if (!element || items.length < 2) return;
-    element.scrollLeft = loopWidth();
-    const observer = new ResizeObserver(() => {
-      element.scrollLeft = loopWidth();
-    });
+    const measure = () => {
+      const cards = element.querySelectorAll<HTMLElement>(".showcase-card");
+      if (!cards[groupSize] || !cards[1]) return;
+      const first = cards[0].getBoundingClientRect().left;
+      const width = cards[groupSize].getBoundingClientRect().left - first;
+      const step = cards[1].getBoundingClientRect().left - first;
+      const old = geometry.current;
+      const fraction = old.width
+        ? (normalizeShowcasePosition(element.scrollLeft, old.width) -
+            old.width) /
+          old.width
+        : 0;
+      geometry.current = { width, step };
+      element.scrollLeft = width * (1 + fraction);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
     observer.observe(element);
     return () => observer.disconnect();
     // The repeated sets change only when the catalogue changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items.length]);
+  }, [groupSize]);
 
   function move(direction: number) {
     resumeAt.current = performance.now() + 1400;
+    manualScroll.current = true;
     const element = rail.current;
     if (!element || items.length < 2) return;
-    const card = element.querySelector<HTMLElement>(".showcase-card");
-    const step = (card?.offsetWidth ?? 300) + 24;
+    const step = geometry.current.step;
     normalizeLoop();
     element.scrollTo({
       left: element.scrollLeft + direction * step,
@@ -75,53 +103,80 @@ export function ShowcaseCarousel({
   }
 
   useEffect(() => {
-    if (
-      interacting ||
-      selected ||
-      items.length < 2 ||
-      matchMedia("(prefers-reduced-motion: reduce)").matches
-    )
-      return;
+    if (selected || items.length < 2) return;
     let frame = 0;
     let previous = 0;
     let position = rail.current?.scrollLeft ?? 0;
+    let visible = false;
+    const motion = matchMedia("(prefers-reduced-motion: reduce)");
+    const stop = () => {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      previous = 0;
+    };
+    const start = () => {
+      stop();
+      if (visible && !document.hidden && !motion.matches)
+        frame = requestAnimationFrame(animate);
+    };
     function animate(time: number) {
       const element = rail.current;
-      if (element && time < resumeAt.current) {
+      if (
+        element &&
+        (touchActive.current ||
+          hovered.current ||
+          keyboardFocus.current ||
+          time < resumeAt.current ||
+          (manualScroll.current && time - lastScroll.current < 250))
+      ) {
         position = element.scrollLeft;
         previous = time;
         frame = requestAnimationFrame(animate);
         return;
       }
       if (element && !document.hidden && previous) {
+        if (manualScroll.current) {
+          normalizeLoop();
+          position = element.scrollLeft;
+          manualScroll.current = false;
+        }
         position += Math.min(time - previous, 50) * 0.028;
+        position = normalizeShowcasePosition(position, loopWidth());
         element.scrollLeft = position;
-        normalizeLoop();
         if (Math.abs(element.scrollLeft - position) > 2)
           position = element.scrollLeft;
       }
       previous = time;
       frame = requestAnimationFrame(animate);
     }
-    frame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frame);
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      position = rail.current?.scrollLeft ?? 0;
+      start();
+    });
+    if (rail.current) observer.observe(rail.current);
+    document.addEventListener("visibilitychange", start);
+    motion.addEventListener("change", start);
+    return () => {
+      stop();
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", start);
+      motion.removeEventListener("change", start);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [interacting, selected, items.length]);
+  }, [selected, groupSize]);
 
   useEffect(() => {
     if (!selected) return;
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
     dialog.current?.showModal();
-    return () => {
-      document.body.style.overflow = previous;
-    };
   }, [selected]);
 
   function close() {
     dialog.current?.close();
     setSelected(null);
-    trigger.current?.focus();
+    resumeAt.current = performance.now() + 1400;
+    trigger.current?.focus({ preventScroll: true });
+    keyboardFocus.current = openedWithKeyboard.current;
   }
 
   return (
@@ -145,42 +200,75 @@ export function ShowcaseCarousel({
           <div
             className="showcase-rail"
             ref={rail}
-            onScroll={normalizeLoop}
-            onTouchStart={() => setInteracting(true)}
+            onScroll={() => {
+              if (manualScroll.current) lastScroll.current = performance.now();
+            }}
+            onTouchStart={() => {
+              touchActive.current = true;
+              manualScroll.current = true;
+            }}
             onTouchEnd={() => {
               resumeAt.current = performance.now() + 1400;
-              setInteracting(false);
+              touchActive.current = false;
             }}
             onTouchCancel={() => {
               resumeAt.current = performance.now() + 1400;
-              setInteracting(false);
+              touchActive.current = false;
             }}
             onPointerEnter={(event) => {
-              if (event.pointerType === "mouse") setInteracting(true);
+              if (event.pointerType === "mouse") hovered.current = true;
             }}
             onPointerLeave={(event) => {
-              if (event.pointerType === "mouse") setInteracting(false);
+              if (event.pointerType === "mouse") hovered.current = false;
             }}
-            onFocusCapture={() => setInteracting(true)}
+            onPointerDown={(event) => {
+              gesture.current = {
+                x: event.clientX,
+                y: event.clientY,
+                moved: false,
+              };
+            }}
+            onPointerMove={(event) => {
+              if (event.buttons || touchActive.current)
+                gesture.current.moved ||= showcaseGestureMoved(
+                  gesture.current,
+                  { x: event.clientX, y: event.clientY },
+                );
+            }}
+            onPointerCancel={() => {
+              gesture.current.moved = true;
+            }}
+            onWheel={() => {
+              manualScroll.current = true;
+              resumeAt.current = performance.now() + 1400;
+            }}
+            onFocusCapture={(event) => {
+              keyboardFocus.current = event.target.matches(":focus-visible");
+            }}
             onBlurCapture={(e) => {
               if (!e.currentTarget.contains(e.relatedTarget))
-                setInteracting(false);
+                keyboardFocus.current = false;
             }}
             aria-label={`${eyebrow} cards`}
           >
-            {(items.length > 1 ? [...items, ...items, ...items] : items).map(
+            {(items.length > 1 ? [...group, ...group, ...group] : items).map(
               (item, index) => (
                 <button
                   className="showcase-card"
                   key={`${item.id}-${index}`}
                   tabIndex={
                     items.length > 1 &&
-                    (index < items.length || index >= items.length * 2)
+                    (index < groupSize || index >= groupSize * 2)
                       ? -1
                       : 0
                   }
                   onClick={(e) => {
+                    if (gesture.current.moved && e.detail !== 0) {
+                      e.preventDefault();
+                      return;
+                    }
                     trigger.current = e.currentTarget;
+                    openedWithKeyboard.current = e.detail === 0;
                     setSelected(item);
                   }}
                   aria-haspopup="dialog"
@@ -215,19 +303,12 @@ export function ShowcaseCarousel({
           {items.length > 1 && (
             <div className="showcase-controls">
               <button
-                onMouseEnter={() => setInteracting(true)}
-                onMouseLeave={() => setInteracting(false)}
                 onClick={() => move(-1)}
                 aria-label={`Previous ${eyebrow}`}
               >
                 ←
               </button>
-              <button
-                onMouseEnter={() => setInteracting(true)}
-                onMouseLeave={() => setInteracting(false)}
-                onClick={() => move(1)}
-                aria-label={`Next ${eyebrow}`}
-              >
+              <button onClick={() => move(1)} aria-label={`Next ${eyebrow}`}>
                 →
               </button>
             </div>

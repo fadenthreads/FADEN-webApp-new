@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { ShowcaseItem } from "./showcase-carousel";
+import { useQuickViewScrollLock } from "./use-quick-view-scroll-lock";
 
 /** Keep catalogue links usable without JavaScript and open their quick view when hydrated. */
 export function CatalogQuickViews({
@@ -15,21 +16,17 @@ export function CatalogQuickViews({
   const [selected, setSelected] = useState<ShowcaseItem | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLAnchorElement | null>(null);
+  useQuickViewScrollLock(Boolean(selected));
 
   useEffect(() => {
     if (!selected) return;
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
     dialog.current?.showModal();
-    return () => {
-      document.body.style.overflow = previous;
-    };
   }, [selected]);
 
   function close() {
     dialog.current?.close();
     setSelected(null);
-    trigger.current?.focus();
+    trigger.current?.focus({ preventScroll: true });
   }
 
   return (
