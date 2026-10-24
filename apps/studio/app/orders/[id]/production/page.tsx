@@ -62,6 +62,13 @@ export default async function ProductionOrder({
     <AtelierShell active="production" name={o.boutique_name}>
       <Link href="/production">← Production board</Link>
       <h1>{briefText(o.quote, "title")}</h1>
+      <p>
+        Customer updates:{" "}
+        {latest
+          ? `Last sent ${new Date(latest.created_at).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })} IST`
+          : "No updates sent yet."}{" "}
+        Post again at the same milestone whenever you have news to share.
+      </p>
       <p className="design-notice">
         Record verified production milestones after customer design approval and
         confirmed payment. Updates are visible to the customer.

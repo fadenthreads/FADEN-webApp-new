@@ -8,6 +8,7 @@ import { formatInr } from "../../lib/catalog";
 import { stitchImage } from "../../lib/stitch-assets";
 import { getSupabaseServerClient } from "../../lib/supabase/server";
 import { CatalogQuickViews } from "../../components/catalog-quick-views";
+import { BoutiqueLocationFilter } from "../../components/boutique-location-filter";
 
 export const dynamic = "force-dynamic";
 type Parameters = {
@@ -124,7 +125,7 @@ export default async function DiscoverPage({
       : Promise.resolve({ data: [], count: 0, error: null }),
     supabase
       .from("boutiques")
-      .select("name,slug")
+      .select("name,slug,city")
       .eq("is_published", true)
       .eq("status", "verified")
       .order("name"),
@@ -140,6 +141,18 @@ export default async function DiscoverPage({
     >
       <MarketplaceHeader active={type} />
       <main className="discovery-page">
+        {isBoutiques && (
+          <BoutiqueLocationFilter
+            city={p.city ?? ""}
+            cities={[
+              ...new Set(
+                (options.data ?? [])
+                  .map((b) => b.city)
+                  .filter((city): city is string => Boolean(city)),
+              ),
+            ]}
+          />
+        )}
         {isBoutiques || type === "materials" ? (
           <header className="discovery-heading">
             <h1>

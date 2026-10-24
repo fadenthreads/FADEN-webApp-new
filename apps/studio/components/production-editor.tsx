@@ -17,6 +17,8 @@ export function ProductionEditor({
     [error, setError] = useState(""),
     [commandId] = useState(() => crypto.randomUUID());
   const [uploaded, setUploaded] = useState<string | null>(null);
+  const [note, setNote] = useState("");
+  const [success, setSuccess] = useState("");
   return (
     <form
       className="offer-panel production-editor"
@@ -25,6 +27,7 @@ export function ProductionEditor({
         const form = new FormData(e.currentTarget);
         setBusy(true);
         setError("");
+        setSuccess("");
         try {
           const file = form.get("photo");
           let photo = uploaded;
@@ -59,6 +62,9 @@ export function ProductionEditor({
           });
           const body = await r.json();
           if (!r.ok) throw new Error(body.error);
+          setSuccess(
+            "Update published. Your customer can now see it in their outfit journey.",
+          );
           router.refresh();
         } catch (e) {
           setError(
@@ -69,10 +75,16 @@ export function ProductionEditor({
         }
       }}
     >
-      <h2>Record production progress</h2>
+      <h2>Send an order update to your customer</h2>
       <p>
-        Updates are immutable and visible to your customer. Do not include
-        private measurements, addresses or unrelated people in photos.
+        Post a short note whenever work progresses, even if the milestone has
+        not changed. Aim to update your customer every few days and explain any
+        delays. Published notes are visible in their outfit journey.
+      </p>
+      <p>
+        Include what you finished, what comes next and when they can expect
+        another update. Keep private measurements and addresses out of notes and
+        photos.
       </p>
       <fieldset disabled={busy}>
         <label>
@@ -89,17 +101,20 @@ export function ProductionEditor({
           </select>
         </label>
         <label>
-          Progress note
+          Customer update
           <textarea
             name="note"
             required
             minLength={10}
             maxLength={2000}
             rows={5}
+            value={note}
+            onChange={(event) => setNote(event.target.value)}
+            placeholder="We’ve completed… Next we’re working on… Your next update will be…"
           />
         </label>
         <label>
-          Private progress photo (optional, up to 8 MB)
+          Progress photo for your customer (optional, up to 8 MB)
           <input
             type="file"
             name="photo"
@@ -108,15 +123,16 @@ export function ProductionEditor({
           />
         </label>
         <label className="design-confirm">
-          <input type="checkbox" name="confirmed" required />I confirm this is a
-          production update is accurate and contains no private measurements,
-          delivery address or unrelated people.
+          <input type="checkbox" name="confirmed" required />I confirm this
+          update is accurate and contains no private measurements, delivery
+          address or unrelated people.
         </label>
         <button className="offer-btn" disabled={busy}>
-          {busy ? "Recording…" : "Publish production update"}
+          {busy ? "Sending…" : "Send customer update"}
         </button>
       </fieldset>
       {error && <p role="alert">{error}</p>}
+      {success && <p role="status">{success}</p>}
     </form>
   );
 }

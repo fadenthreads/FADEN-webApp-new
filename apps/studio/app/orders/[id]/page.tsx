@@ -50,7 +50,7 @@ export default async function Order({
           Delivery tracking →
         </Link>
         <Link className="offer-btn secondary" href={`/orders/${id}/production`}>
-          Production →
+          Send customer update →
         </Link>
         <Link className="offer-btn" href={`/orders/${id}/design`}>
           Design proposals & customer feedback →

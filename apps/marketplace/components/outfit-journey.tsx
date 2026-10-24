@@ -8,6 +8,7 @@ import {
 } from "@faden/ui";
 import { MarketplaceHeader } from "./marketplace-header";
 import { MarketplaceFooter } from "./marketplace-footer";
+import { OrderUpdateRefresh } from "./order-update-refresh";
 export function OutfitJourney({
   title,
   boutique,
@@ -64,7 +65,7 @@ export function OutfitJourney({
             {cancelled
               ? "Order cancelled"
               : progress.length
-                ? `Rehearsal · ${productionStages[progress[0].stage - 1]}`
+                ? `${demo ? "Preview · " : ""}${productionStages[progress[0].stage - 1]}`
                 : latest
                   ? reviewLabel(latest.status)
                   : "Waiting for your first design"}
@@ -73,8 +74,11 @@ export function OutfitJourney({
         <p className="design-notice">
           {cancelled
             ? "This journey is closed. Your order and design history remain available."
-            : "Production updates below are rehearsals, not evidence of real manufacturing. Live production, fitting bookings, delivery tracking and live payments are not enabled yet."}
+            : demo
+              ? "This is a sample journey with demonstration updates."
+              : "Your boutique posts notes and progress photos here as your outfit takes shape. FADEN manages your delivery separately."}
         </p>
+        {!demo && <OrderUpdateRefresh />}
         <ol className="journey-steps" aria-label="Order milestones">
           {steps.map(([label, state]) => (
             <li
@@ -105,12 +109,18 @@ export function OutfitJourney({
             {demo ? "Back to preview home" : "Order details"}
           </Link>
         </div>
-        <h2>Progress story</h2>
+        <h2>Updates from your boutique</h2>
+        {!progress.length && (
+          <p>
+            Your boutique’s progress notes will appear here once production
+            begins.
+          </p>
+        )}
         <div className="journey-story">
           {progress.map((p) => (
             <article key={p.id}>
               <span className="offer-kicker">
-                Rehearsal ·{" "}
+                {demo ? "Preview · " : "Update · "}
                 {new Date(p.created_at).toLocaleString("en-IN", {
                   timeZone: "Asia/Kolkata",
                 })}{" "}
@@ -148,8 +158,8 @@ export function OutfitJourney({
             </span>
             <h3>Your offer was accepted</h3>
             <p>
-              The boutique&apos;s quote was saved. No real money has been
-              collected and your original terms are unchanged.
+              The boutique&apos;s accepted quote and your original terms are
+              saved. View your order for payment and delivery details.
             </p>
           </article>
         </div>

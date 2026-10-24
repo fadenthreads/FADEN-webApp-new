@@ -4,6 +4,8 @@ import { MarketplaceHeader } from "../../../components/marketplace-header";
 import { customerOrder } from "../../../lib/orders";
 import { CancelOrder } from "../../../components/cancel-order";
 import { OrderUpdateRefresh } from "../../../components/order-update-refresh";
+import { getSupabaseServerClient } from "../../../lib/supabase/server";
+import { productionStages } from "@faden/ui";
 export default async function OrderDetail({
   params,
 }: {
@@ -11,6 +13,13 @@ export default async function OrderDetail({
 }) {
   const { id } = await params;
   const o = await customerOrder(id);
+  const db = await getSupabaseServerClient();
+  const { data: progress, error: progressError } = await db
+    .from("order_production_updates")
+    .select("id,note,stage,created_at")
+    .eq("order_id", id)
+    .order("sequence", { ascending: false })
+    .limit(3);
   return (
     <div className="market-page offer-page">
       <MarketplaceHeader active="atelier" />
@@ -26,6 +35,31 @@ export default async function OrderDetail({
         </p>
         <p className="request-reference">Order reference: {o.id}</p>
         <OrderUpdateRefresh />
+        <section className="offer-panel">
+          <h2>Latest updates from your boutique</h2>
+          {progressError ? (
+            <p>Updates could not be loaded. Refresh to try again.</p>
+          ) : progress?.length ? (
+            progress.map((update) => (
+              <article key={update.id}>
+                <h3>{productionStages[update.stage - 1]}</h3>
+                <time dateTime={update.created_at}>
+                  {new Date(update.created_at).toLocaleString("en-IN", {
+                    timeZone: "Asia/Kolkata",
+                  })}{" "}
+                  IST
+                </time>
+                <p>{update.note}</p>
+              </article>
+            ))
+          ) : (
+            <p>
+              Your boutique’s notes and progress updates will appear here once
+              production begins.
+            </p>
+          )}
+          <Link href={`/journey/${id}`}>View all updates and photos →</Link>
+        </section>
         <div className="offer-actions">
           {o.status !== "cancelled" && (
             <Link
@@ -57,7 +91,7 @@ export default async function OrderDetail({
             Review your design
           </Link>
           <Link className="offer-btn secondary" href={`/journey/${id}`}>
-            Your outfit journey
+            Boutique updates & outfit journey
           </Link>
           <Link className="offer-btn" href={`/orders/secure?id=${id}`}>
             View checkout →
