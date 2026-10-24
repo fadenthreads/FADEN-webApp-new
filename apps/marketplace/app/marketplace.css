@@ -690,7 +690,7 @@ body {
   position: absolute;
   top: calc(100% + 16px);
   left: 0;
-  width: min(360px, calc(100vw - 64px));
+  width: min(360px, calc(100vw - 104px));
   max-height: 320px;
   overflow-y: auto;
   overscroll-behavior: contain;
