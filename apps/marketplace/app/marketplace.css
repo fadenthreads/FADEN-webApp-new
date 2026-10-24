@@ -34,7 +34,6 @@
   display: flex;
   gap: 24px;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
   scrollbar-width: thin;
   scrollbar-color: #dbc1ba transparent;
   padding-bottom: 16px;
