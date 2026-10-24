@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
   try {
     const payload = body as Record<string, unknown>;
     const d = validateDraft({ measurements: payload.measurements });
+    delete d.measurements.reference;
     if (!d.measurements.chest || !d.measurements.waist || !d.measurements.hips)
       throw new Error("Enter chest, waist and hips before saving.");
     const { error } = await supabase

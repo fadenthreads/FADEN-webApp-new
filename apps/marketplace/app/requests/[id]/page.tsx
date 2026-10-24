@@ -23,6 +23,12 @@ export default async function RequestDetail({
   if (!r) notFound();
   if (r.status === "draft") redirect(`/create/review?id=${id}`);
   const d = validateDraft(r.draft);
+  const reference = d.measurements.reference;
+  const chart = reference?.startsWith(`${auth.user.id}/${id}/`)
+    ? await supabase.storage
+        .from("request-measurements")
+        .createSignedUrl(reference, 900)
+    : null;
   const [
     { data: boutiques, error: boutiqueError },
     { data: shares, error: shareError },
@@ -82,6 +88,17 @@ export default async function RequestDetail({
             <dd>
               {d.measurementMethod} — shared only with your explicit permission
               below
+              {chart?.data?.signedUrl && (
+                <p>
+                  <a
+                    href={chart.data.signedUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Open my measurement chart
+                  </a>
+                </p>
+              )}
             </dd>
           </div>
           <div>

@@ -70,8 +70,8 @@ export function RequestSharing({
                 setConfirmed(false);
               }}
             />
-            Include measurements saved in this request (not my reusable
-            profile).
+            Include measurements and any measurement chart saved in this request
+            (not my reusable profile).
           </label>
           <label className="offer-check">
             <input

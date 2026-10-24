@@ -34,6 +34,11 @@ const fabricOptions = [
   ["Sheer & Weightless", "Organza, Tulle, Chiffon", "077"],
 ];
 const methods = [
+  [
+    "reference",
+    "Upload my measurement chart",
+    "Send a photo or screenshot of your existing measurements.",
+  ],
   ["manual", "I know my measurements", "Enter them securely below."],
   [
     "saved",
@@ -242,6 +247,63 @@ export function RequestWizard({
       setMessage("Image removed.");
     });
   }
+  async function uploadMeasurementReference(
+    file: File,
+    context: { onProgress: (percent: number) => void; signal: AbortSignal },
+  ) {
+    const row = await save();
+    const form = new FormData();
+    form.set("file", file);
+    form.set("version", String(row.version));
+    const result = await sendWithProgress({
+      url: `/api/requests/${row.id}/measurement-reference`,
+      method: "POST",
+      body: form,
+      onProgress: context.onProgress,
+      signal: context.signal,
+    });
+    if (result.status >= 400)
+      throw new Error(
+        typeof result.json.error === "string"
+          ? result.json.error
+          : "Upload failed.",
+      );
+    const data = result.json as {
+      row: { draft: unknown; version: number };
+      key: string;
+      url?: string;
+    };
+    setDraft(validateDraft(data.row.draft));
+    setRevision(data.row.version);
+    setDirty(false);
+    if (data.url) setUrls((current) => ({ ...current, [data.key]: data.url! }));
+    setMessage("Measurement reference saved privately.");
+    return { key: data.key, displayUrl: data.url ?? "" };
+  }
+  async function removeMeasurementReference() {
+    if (confirmRemove !== "measurement") {
+      setConfirmRemove("measurement");
+      return;
+    }
+    await run(async () => {
+      const row = await save();
+      const form = new FormData();
+      form.set("action", "remove");
+      form.set("version", String(row.version));
+      const response = await fetch(
+        `/api/requests/${row.id}/measurement-reference`,
+        { method: "POST", body: form },
+      );
+      const data = await response.json();
+      if (!response.ok)
+        throw new Error(data.error ?? "Could not remove reference.");
+      setDraft(validateDraft(data.row.draft));
+      setRevision(data.row.version);
+      setDirty(false);
+      setConfirmRemove(null);
+      setMessage("Measurement reference removed.");
+    });
+  }
   function toggle(key: "colors" | "fabrics", value: string, max: number) {
     const values = draft[key];
     if (!values.includes(value) && values.length >= max) {
@@ -258,7 +320,10 @@ export function RequestWizard({
   function measurementMethod(value: string) {
     update("measurementMethod", value);
     if (value === "saved" && savedProfile) {
-      setDraft((d) => ({ ...d, measurements: savedProfile }));
+      setDraft((d) => ({
+        ...d,
+        measurements: { ...savedProfile, reference: d.measurements.reference },
+      }));
     }
   }
   const dateMin = new Date().toISOString().slice(0, 10);
@@ -658,6 +723,70 @@ export function RequestWizard({
                   </button>
                 ))}
               </fieldset>
+              <section
+                className="measurement-entry"
+                aria-label="Measurement chart upload"
+              >
+                <h2>Send a measurement chart / reference</h2>
+                <p>
+                  Upload a photo or screenshot of a tailor’s chart or your
+                  existing measurements. Include the units and clear labels.
+                  This is separate from your inspiration board and shared only
+                  when you choose to include measurements.
+                </p>
+                <MediaUploader
+                  label="Upload measurement chart"
+                  hint="JPG, PNG or WebP · up to 10 MB · one chart"
+                  maxFiles={1}
+                  takenCount={draft.measurements.reference ? 1 : 0}
+                  disabled={busy}
+                  retainReady={false}
+                  uploadFile={uploadMeasurementReference}
+                />
+                {draft.measurements.reference && (
+                  <div className="measurement-reference-preview">
+                    {urls[draft.measurements.reference] ? (
+                      <a
+                        href={urls[draft.measurements.reference]}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <Image
+                          src={urls[draft.measurements.reference]}
+                          alt="Your private measurement chart"
+                          width={480}
+                          height={560}
+                          unoptimized
+                        />
+                        Open full-size chart
+                      </a>
+                    ) : (
+                      <p>
+                        Chart attached. Reopen this draft to refresh its
+                        preview.
+                      </p>
+                    )}
+                    <button
+                      type="button"
+                      className="button button--ghost"
+                      disabled={busy}
+                      onClick={() => void removeMeasurementReference()}
+                    >
+                      {confirmRemove === "measurement"
+                        ? "Confirm remove chart"
+                        : "Remove chart"}
+                    </button>
+                    {confirmRemove === "measurement" && (
+                      <button
+                        type="button"
+                        onClick={() => setConfirmRemove(null)}
+                      >
+                        Keep chart
+                      </button>
+                    )}
+                  </div>
+                )}
+              </section>
               {["manual", "saved"].includes(draft.measurementMethod) && (
                 <section className="measurement-entry">
                   <h2>Your measurements</h2>
@@ -849,6 +978,12 @@ export function RequestWizard({
                 <div>
                   <dt>Measurements</dt>
                   <dd>
+                    {draft.measurements.reference && (
+                      <p>
+                        Measurement chart attached (private until you share
+                        measurements).
+                      </p>
+                    )}
                     {methods.find(
                       ([v]) => v === draft.measurementMethod,
                     )?.[1] ?? "Not selected"}

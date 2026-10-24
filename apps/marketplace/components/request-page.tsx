@@ -49,6 +49,13 @@ export async function RequestPage({
     .select("measurements")
     .eq("user_id", auth.user.id)
     .maybeSingle();
+  const reference = draft.measurements.reference;
+  if (reference && reference.startsWith(`${auth.user.id}/${row?.id}/`)) {
+    const signed = await supabase.storage
+      .from("request-measurements")
+      .createSignedUrl(reference, 900);
+    if (signed.data) urls[reference] = signed.data.signedUrl;
+  }
   let context = "";
   if (row?.design_id) {
     const { data } = await supabase

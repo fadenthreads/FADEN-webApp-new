@@ -38,6 +38,7 @@ export const BUDGETS = {
   custom: "Let’s discuss",
 };
 export type Measurements = {
+  reference?: string;
   unit: "cm" | "in";
   chest: string;
   waist: string;
@@ -120,12 +121,24 @@ export function validateDraft(raw: unknown, submit = false): OutfitDraft {
   if (!m || typeof m !== "object" || !["cm", "in"].includes(String(m.unit)))
     throw new Error("Choose centimetres or inches.");
   const measurements = {
+    reference: "",
     unit: m.unit as "cm" | "in",
     chest: "",
     waist: "",
     hips: "",
     height: "",
   };
+  if (m.reference !== undefined) {
+    if (
+      typeof m.reference !== "string" ||
+      (m.reference &&
+        !/^[0-9a-f-]{36}\/[0-9a-f-]{36}\/[0-9a-f-]{36}\.(jpg|png|webp)$/i.test(
+          m.reference,
+        ))
+    )
+      throw new Error("Invalid measurement reference.");
+    measurements.reference = m.reference as string;
+  }
   for (const key of ["chest", "waist", "hips", "height"] as const) {
     const v = m[key] ?? "";
     if (typeof v !== "string" || v.length > 10)
@@ -193,6 +206,7 @@ export function validateDraft(raw: unknown, submit = false): OutfitDraft {
     fabrics: list("fabrics", 3),
     measurementMethod: choice("measurementMethod", [
       "manual",
+      "reference",
       "saved",
       "boutique",
       "video",
@@ -222,6 +236,10 @@ export function validateDraft(raw: unknown, submit = false): OutfitDraft {
       throw new Error("Choose a silhouette or Expert Curation.");
     if (!d.measurementMethod)
       throw new Error("Choose a measurement method, including decide later.");
+    if (d.measurementMethod === "reference" && !d.measurements.reference)
+      throw new Error(
+        "Upload your measurement chart or choose another measurement method.",
+      );
     if (
       ["manual", "saved"].includes(d.measurementMethod) &&
       (!d.measurements.chest || !d.measurements.waist || !d.measurements.hips)

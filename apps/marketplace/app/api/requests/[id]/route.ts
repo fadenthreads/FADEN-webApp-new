@@ -31,6 +31,11 @@ export async function PATCH(
       throw new Error("Reload this draft before saving.");
     const draft = validateDraft(payload.draft);
     if (
+      draft.measurements.reference &&
+      !isOwnedInspirationKey(draft.measurements.reference, user.id, id)
+    )
+      throw new Error("Invalid measurement reference ownership.");
+    if (
       draft.inspirations.some((i) => !isOwnedInspirationKey(i.key, user.id, id))
     )
       throw new Error("Invalid inspiration ownership.");

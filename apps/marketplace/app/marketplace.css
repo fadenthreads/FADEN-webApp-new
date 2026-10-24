@@ -689,6 +689,20 @@ body {
   border-radius: 8px;
   line-height: 1.7;
 }
+.measurement-reference-preview {
+  display: grid;
+  gap: 16px;
+  margin: 24px 0;
+}
+.measurement-reference-preview img {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  max-height: 480px;
+  object-fit: contain;
+  margin-bottom: 12px;
+}
 .measurement-reference summary {
   cursor: pointer;
   min-height: 44px;

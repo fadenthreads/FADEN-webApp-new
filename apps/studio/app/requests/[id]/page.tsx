@@ -35,6 +35,14 @@ export default async function RequestDetail({
     .eq("share_id", id)
     .maybeSingle();
   const b = object(s.brief);
+  const reference = briefText(b.measurements, "reference");
+  const chart =
+    s.include_measurements &&
+    reference.startsWith(`${s.customer_id}/${s.request_id}/`)
+      ? await supabase.storage
+          .from("request-measurements")
+          .createSignedUrl(reference, 900)
+      : null;
   const inspirations = Array.isArray(b.inspirations)
     ? b.inspirations.map(object)
     : [];
@@ -156,6 +164,11 @@ export default async function RequestDetail({
         <aside>
           <section className="offer-panel">
             <h2>Measurements</h2>
+            {chart?.data?.signedUrl && (
+              <a href={chart.data.signedUrl} target="_blank" rel="noreferrer">
+                Open customer’s measurement chart
+              </a>
+            )}
             <p>
               Preference: {briefText(b, "measurementMethod") || "To discuss"}
             </p>
