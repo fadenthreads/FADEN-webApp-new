@@ -186,6 +186,32 @@
     sans-serif;
   min-width: 200px;
 }
+.occasion-more {
+  margin-top: 24px;
+}
+.custom-color-picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 16px;
+  margin: 24px 0;
+}
+.custom-color-picker label {
+  flex: 1 1 180px;
+  min-width: 0;
+}
+.custom-color-picker input[type="color"] {
+  display: block;
+  padding: 4px;
+  min-height: 48px;
+  max-width: 120px;
+}
+.measurement-entry {
+  scroll-margin-top: 110px;
+}
+.measurement-send-options {
+  margin-top: 32px;
+}
 .request-feedback:not(:empty) {
   position: fixed;
   bottom: 102px;
@@ -763,18 +789,24 @@
     padding: 16px 20px max(20px, env(safe-area-inset-bottom));
     gap: 12px;
     flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) minmax(0, 1.4fr);
   }
   .request-actions > span {
     font-size: 10px;
     order: -1;
     width: 100%;
     text-align: center;
+    grid-column: 1 / -1;
   }
   .request-actions .button {
     min-width: 0;
     font-size: 16px;
     min-height: 52px;
-    padding: 14px 24px;
+    padding: 12px 8px;
+    white-space: normal;
+    text-align: center;
+    font-size: 14px;
   }
   .request-actions > button:first-child {
     font-size: 12px;

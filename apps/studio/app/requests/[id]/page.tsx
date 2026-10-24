@@ -75,7 +75,10 @@ export default async function RequestDetail({
             ← Back to requests
           </Link>
           <h1>
-            {briefText(b, "occasion")} {briefText(b, "garment")}
+            {briefText(b, "occasion") === "Other"
+              ? briefText(b, "otherOccasion")
+              : briefText(b, "occasion")}{" "}
+            {briefText(b, "garment")}
           </h1>
           <p>
             {s.client_label} · Event {briefText(b, "eventDate")}
@@ -106,6 +109,9 @@ export default async function RequestDetail({
                   {b.expert === true
                     ? "Expert Curation"
                     : briefText(b, "silhouette")}
+                  {briefText(b, "customSilhouette") && (
+                    <span> · {briefText(b, "customSilhouette")}</span>
+                  )}
                 </p>
               </div>
             </div>
@@ -113,6 +119,8 @@ export default async function RequestDetail({
               {[
                 briefText(b, "neckline"),
                 briefText(b, "sleeves"),
+                briefText(b, "necklineNotes"),
+                briefText(b, "sleeveNotes"),
                 ...briefList(b, "fabrics"),
               ]
                 .filter(Boolean)
@@ -174,7 +182,21 @@ export default async function RequestDetail({
             </p>
             {s.include_measurements ? (
               <p>
-                {["chest", "waist", "hips", "height"]
+                {[
+                  "chest",
+                  "waist",
+                  "hips",
+                  "height",
+                  "shoulder",
+                  "sleeveLength",
+                  "upperArm",
+                  "armhole",
+                  "garmentLength",
+                  "skirtLength",
+                  "inseam",
+                  "neck",
+                ]
+                  .filter((k) => briefText(b.measurements, k))
                   .map((k) => `${k}: ${briefText(b.measurements, k) || "—"}`)
                   .join(" · ")}{" "}
                 ({briefText(b.measurements, "unit")})

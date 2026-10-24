@@ -31,6 +31,7 @@
     "test:catalog": "node scripts/test-local-catalog.mjs",
     "test:marketplace": "node --test scripts/test-marketplace-parity.mjs",
     "test:requests": "node scripts/test-local-requests.mjs",
+    "test:request-flow": "node --test scripts/test-request-flow.mjs scripts/test-showcase-motion.mjs && node scripts/test-measurement-reference.mjs",
     "test:offers": "node scripts/test-local-offers.mjs",
     "test:orders": "node scripts/test-local-orders.mjs",
     "test:payments": "node --test scripts/test-payments-core.mjs",

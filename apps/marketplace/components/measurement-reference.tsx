@@ -15,7 +15,8 @@ export function MeasurementReference() {
           <title id="measurement-guide-title">
             Measurement positions: chest across the fullest part, waist at the
             natural waistline, hips around the fullest part, and height from
-            head to floor.
+            head to floor. Sleeve length follows the arm; shoulder width runs
+            across the back between shoulder points.
           </title>
           <g
             fill="none"
@@ -27,13 +28,19 @@ export function MeasurementReference() {
             <circle cx="83" cy="26" r="17" />
             <path d="M72 43 70 55 49 64 28 131 39 135 57 87 62 117 56 153 63 270 78 270 83 179 88 270 103 270 110 153 104 117 109 87 127 135 138 131 117 64 96 55 94 43" />
             <path
-              d="M51 85H115M61 117H105M56 153H110"
+              d="M51 85H115M61 117H105M56 153H110M42 65 20 132M49 58H117"
               stroke="#a8513a"
               strokeDasharray="4 3"
             />
             <path d="M154 9V270M149 9H159M149 270H159" />
           </g>
           <g fill="#a8513a" fontSize="11">
+            <text x="12" y="99">
+              5
+            </text>
+            <text x="105" y="54">
+              6
+            </text>
             <text x="72" y="81">
               1
             </text>
@@ -65,6 +72,15 @@ export function MeasurementReference() {
             <li>
               <strong>Height (optional):</strong> Measure barefoot from the top
               of your head to the floor.
+            </li>
+            <li>
+              <strong>Sleeve length:</strong> Measure from your shoulder point
+              to where you want the sleeve to end, with your arm relaxed and
+              slightly bent.
+            </li>
+            <li>
+              <strong>Shoulder width:</strong> Ask a helper to measure across
+              your back, from one shoulder point to the other.
             </li>
           </ol>
           <p>

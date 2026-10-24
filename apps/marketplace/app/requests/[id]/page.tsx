@@ -64,7 +64,8 @@ export default async function RequestDetail({
           <div>
             <dt>Occasion & garment</dt>
             <dd>
-              {d.occasion} · {d.garment}
+              {d.occasion === "Other" ? d.otherOccasion : d.occasion} ·{" "}
+              {d.garment}
             </dd>
           </div>
           <div>

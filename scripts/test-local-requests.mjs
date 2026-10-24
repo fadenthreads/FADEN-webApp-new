@@ -144,8 +144,8 @@ try {
         { version: row.version, draft: row.draft },
         { method: "PATCH", who: other },
       )
-    ).status === 409,
-    "Other customer cannot edit",
+    ).status === 404,
+    "Other customer cannot discover or edit the request",
   );
   check(
     (await request(`${path}/submit`, { version: row.version }, { who: other }))

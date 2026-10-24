@@ -714,12 +714,14 @@ body {
 }
 .measurement-reference__layout {
   display: grid;
-  grid-template-columns: 160px minmax(0, 1fr);
+  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
   gap: 24px;
 }
-.measurement-reference svg {
+.market-page .measurement-reference svg {
   width: 100%;
-  max-width: 160px;
+  height: auto;
+  min-height: 320px;
+  max-width: 300px;
   color: #77645b;
 }
 .measurement-reference ol {

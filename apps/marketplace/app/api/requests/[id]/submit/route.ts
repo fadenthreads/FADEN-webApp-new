@@ -34,7 +34,12 @@ export async function POST(
     validateDraft(data.draft, true);
     if (payload.version !== data.version)
       return NextResponse.json(
-        { error: "Your draft changed. Reload and review it again." },
+        {
+          code: "review_updated",
+          current: data,
+          error:
+            "Your latest saved details are loaded. Please review and confirm them before submitting.",
+        },
         { status: 409 },
       );
     const { error } = await supabase.rpc("submit_outfit_request", {
@@ -43,7 +48,7 @@ export async function POST(
     });
     if (error)
       throw new Error(
-        "Submission could not be completed. Reload and check your details.",
+        "Please check your request details and try submitting again.",
       );
     return NextResponse.json({ id });
   } catch (error) {

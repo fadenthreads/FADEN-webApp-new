@@ -12,6 +12,18 @@ export const OCCASIONS = [
   "Reception",
   "Engagement",
   "Festival",
+  "Sangeet",
+  "Mehendi",
+  "Haldi",
+  "Cocktail",
+  "Party",
+  "Birthday",
+  "Anniversary",
+  "Baby Shower",
+  "Graduation",
+  "Formal Event",
+  "Religious Ceremony",
+  "Casual Outing",
   "Other",
 ];
 export const GARMENTS = [
@@ -29,6 +41,153 @@ export const SILHOUETTES = [
   "Relaxed Drape",
   "Custom Form",
 ];
+export const NECKLINES = [
+  "Round",
+  "V-Neck",
+  "Deep V",
+  "U-Neck",
+  "Square",
+  "Sweetheart",
+  "Boatneck",
+  "High Collar",
+  "Mandarin Collar",
+  "Halter",
+  "Off-Shoulder",
+  "One-Shoulder",
+  "Asymmetric",
+  "Scoop",
+  "Keyhole",
+  "Illusion",
+  "Cowl",
+  "Queen Anne",
+  "Plunging",
+  "Strapless",
+  "Custom / Other",
+  "Let the boutique suggest",
+];
+export const SLEEVES = [
+  "Sleeveless",
+  "Straps",
+  "Spaghetti Straps",
+  "Cap Sleeve",
+  "Short",
+  "Elbow Length",
+  "Three-Quarter",
+  "Fitted Long",
+  "Full Length",
+  "Puff",
+  "Bell",
+  "Bishop",
+  "Balloon",
+  "Flutter",
+  "Butterfly",
+  "Raglan",
+  "Kimono",
+  "Cape",
+  "Cold Shoulder",
+  "Juliet",
+  "Voluminous",
+  "Detachable",
+  "Custom / Other",
+  "Let the boutique suggest",
+];
+export const MEASUREMENT_LABELS = {
+  chest: "Chest / bust",
+  waist: "Waist",
+  hips: "Hips",
+  height: "Height",
+  shoulder: "Shoulder width",
+  sleeveLength: "Sleeve length",
+  upperArm: "Upper arm / bicep",
+  armhole: "Armhole circumference",
+  garmentLength: "Garment length",
+  skirtLength: "Skirt length",
+  inseam: "Inside leg / inseam",
+  neck: "Neck circumference",
+} as const;
+export type MeasurementKey = keyof typeof MEASUREMENT_LABELS;
+export function measurementFields(
+  garment: string,
+  sleeves = "",
+): MeasurementKey[] {
+  const fields: Record<string, MeasurementKey[]> = {
+    Blouse: [
+      "chest",
+      "waist",
+      "shoulder",
+      "sleeveLength",
+      "upperArm",
+      "armhole",
+      "garmentLength",
+    ],
+    Saree: [
+      "chest",
+      "waist",
+      "shoulder",
+      "sleeveLength",
+      "upperArm",
+      "armhole",
+      "garmentLength",
+      "height",
+    ],
+    Lehenga: [
+      "chest",
+      "waist",
+      "hips",
+      "shoulder",
+      "sleeveLength",
+      "upperArm",
+      "armhole",
+      "skirtLength",
+      "height",
+    ],
+    Dress: [
+      "chest",
+      "waist",
+      "hips",
+      "shoulder",
+      "sleeveLength",
+      "upperArm",
+      "armhole",
+      "garmentLength",
+      "height",
+    ],
+    Suit: [
+      "chest",
+      "waist",
+      "hips",
+      "shoulder",
+      "sleeveLength",
+      "upperArm",
+      "garmentLength",
+      "inseam",
+      "neck",
+      "height",
+    ],
+    Sherwani: [
+      "chest",
+      "waist",
+      "shoulder",
+      "sleeveLength",
+      "upperArm",
+      "garmentLength",
+      "neck",
+      "height",
+    ],
+  };
+  return (fields[garment] ?? ["chest", "waist", "hips", "height"]).filter(
+    (key) =>
+      !["Sleeveless", "Straps", "Spaghetti Straps"].includes(sleeves) ||
+      !["sleeveLength", "upperArm"].includes(key),
+  );
+}
+export function requiredMeasurements(garment: string): MeasurementKey[] {
+  return garment === "Blouse"
+    ? ["chest"]
+    : ["Saree", "Sherwani"].includes(garment)
+      ? ["chest", "waist"]
+      : ["chest", "waist", "hips"];
+}
 export const BUDGETS = {
   under_10k: "Under ₹10k",
   "10k_25k": "₹10k–25k",
@@ -38,6 +197,14 @@ export const BUDGETS = {
   custom: "Let’s discuss",
 };
 export type Measurements = {
+  shoulder?: string;
+  sleeveLength?: string;
+  upperArm?: string;
+  armhole?: string;
+  garmentLength?: string;
+  skirtLength?: string;
+  inseam?: string;
+  neck?: string;
   reference?: string;
   unit: "cm" | "in";
   chest: string;
@@ -47,6 +214,10 @@ export type Measurements = {
 };
 export type Inspiration = { key: string; note: string };
 export type OutfitDraft = {
+  otherOccasion: string;
+  customSilhouette: string;
+  necklineNotes: string;
+  sleeveNotes: string;
   occasion: string;
   garment: string;
   notes: string;
@@ -66,6 +237,10 @@ export type OutfitDraft = {
   consent: boolean;
 };
 export const EMPTY_DRAFT: OutfitDraft = {
+  otherOccasion: "",
+  customSilhouette: "",
+  necklineNotes: "",
+  sleeveNotes: "",
   occasion: "",
   garment: "",
   notes: "",
@@ -120,7 +295,7 @@ export function validateDraft(raw: unknown, submit = false): OutfitDraft {
   >;
   if (!m || typeof m !== "object" || !["cm", "in"].includes(String(m.unit)))
     throw new Error("Choose centimetres or inches.");
-  const measurements = {
+  const measurements: Measurements = {
     reference: "",
     unit: m.unit as "cm" | "in",
     chest: "",
@@ -139,7 +314,7 @@ export function validateDraft(raw: unknown, submit = false): OutfitDraft {
       throw new Error("Invalid measurement reference.");
     measurements.reference = m.reference as string;
   }
-  for (const key of ["chest", "waist", "hips", "height"] as const) {
+  for (const key of Object.keys(MEASUREMENT_LABELS) as MeasurementKey[]) {
     const v = m[key] ?? "";
     if (typeof v !== "string" || v.length > 10)
       throw new Error("Invalid measurement.");
@@ -183,6 +358,10 @@ export function validateDraft(raw: unknown, submit = false): OutfitDraft {
     }
   }
   const d: OutfitDraft = {
+    otherOccasion: str("otherOccasion", 120),
+    customSilhouette: str("customSilhouette", 1000),
+    necklineNotes: str("necklineNotes", 500),
+    sleeveNotes: str("sleeveNotes", 500),
     occasion: choice("occasion", OCCASIONS),
     garment: choice("garment", GARMENTS),
     notes: str("notes", 3000),
@@ -191,18 +370,8 @@ export function validateDraft(raw: unknown, submit = false): OutfitDraft {
     expert: flag("expert"),
     colors: list("colors", 3),
     silhouette: choice("silhouette", SILHOUETTES),
-    neckline: choice("neckline", [
-      "V-Neck",
-      "High Collar",
-      "Asymmetric",
-      "Boatneck",
-    ]),
-    sleeves: choice("sleeves", [
-      "Sleeveless",
-      "Fitted Long",
-      "Voluminous",
-      "Cap Sleeve",
-    ]),
+    neckline: choice("neckline", NECKLINES),
+    sleeves: choice("sleeves", SLEEVES),
     fabrics: list("fabrics", 3),
     measurementMethod: choice("measurementMethod", [
       "manual",
@@ -219,6 +388,11 @@ export function validateDraft(raw: unknown, submit = false): OutfitDraft {
     budget: choice("budget", Object.keys(BUDGETS)),
     consent: flag("consent"),
   };
+  if (d.garment) {
+    const relevant = measurementFields(d.garment, d.sleeves);
+    for (const key of Object.keys(MEASUREMENT_LABELS) as MeasurementKey[])
+      if (!relevant.includes(key)) d.measurements[key] = "";
+  }
   for (const date of [d.eventDate, d.deliveryDate])
     if (
       date &&
@@ -232,6 +406,14 @@ export function validateDraft(raw: unknown, submit = false): OutfitDraft {
   if (submit) {
     if (!d.occasion || !d.garment)
       throw new Error("Choose an occasion and garment.");
+    if (d.occasion === "Other" && !d.otherOccasion)
+      throw new Error("Tell us your occasion.");
+    if (d.silhouette === "Custom Form" && !d.customSilhouette && !d.expert)
+      throw new Error("Describe your custom silhouette.");
+    if (d.neckline === "Custom / Other" && !d.necklineNotes)
+      throw new Error("Describe your neckline.");
+    if (d.sleeves === "Custom / Other" && !d.sleeveNotes)
+      throw new Error("Describe your sleeves.");
     if (!d.expert && !d.silhouette)
       throw new Error("Choose a silhouette or Expert Curation.");
     if (!d.measurementMethod)
@@ -242,10 +424,12 @@ export function validateDraft(raw: unknown, submit = false): OutfitDraft {
       );
     if (
       ["manual", "saved"].includes(d.measurementMethod) &&
-      (!d.measurements.chest || !d.measurements.waist || !d.measurements.hips)
+      requiredMeasurements(d.garment).some((key) => !d.measurements[key])
     )
       throw new Error(
-        "Enter chest, waist and hips, or choose an assisted fitting.",
+        `Enter ${requiredMeasurements(d.garment)
+          .map((key) => MEASUREMENT_LABELS[key])
+          .join(", ")}, or choose an assisted fitting.`,
       );
     if (!d.budget || !d.eventDate || !d.deliveryDate)
       throw new Error("Choose a budget, event date and delivery date.");

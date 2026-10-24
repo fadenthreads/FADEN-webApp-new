@@ -6,7 +6,11 @@ import {
   requireUser,
   routeGuardError,
 } from "@faden/server";
-import { validateDraft } from "../../../lib/outfit-request";
+import {
+  validateDraft,
+  MEASUREMENT_LABELS,
+  type MeasurementKey,
+} from "../../../lib/outfit-request";
 import { getSupabaseServerClient } from "../../../lib/supabase/server";
 
 export async function POST(request: NextRequest) {
@@ -21,8 +25,12 @@ export async function POST(request: NextRequest) {
     const payload = body as Record<string, unknown>;
     const d = validateDraft({ measurements: payload.measurements });
     delete d.measurements.reference;
-    if (!d.measurements.chest || !d.measurements.waist || !d.measurements.hips)
-      throw new Error("Enter chest, waist and hips before saving.");
+    if (
+      !(Object.keys(MEASUREMENT_LABELS) as MeasurementKey[]).some(
+        (key) => d.measurements[key],
+      )
+    )
+      throw new Error("Enter at least one measurement before saving.");
     const { error } = await supabase
       .from("measurement_profiles")
       .upsert({ user_id: user.id, measurements: d.measurements });

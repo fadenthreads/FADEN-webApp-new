@@ -1,7 +1,13 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  useTransition,
+  type SetStateAction,
+} from "react";
 import { useRouter } from "next/navigation";
 import {
   STEPS,
@@ -9,6 +15,12 @@ import {
   GARMENTS,
   SILHOUETTES,
   BUDGETS,
+  NECKLINES,
+  SLEEVES,
+  MEASUREMENT_LABELS,
+  measurementFields,
+  requiredMeasurements,
+  type MeasurementKey,
   validateDraft,
   type OutfitDraft,
   type RequestStep,
@@ -16,6 +28,10 @@ import {
 } from "../lib/outfit-request";
 import { MarketIcon } from "./market-icon";
 import { MeasurementReference } from "./measurement-reference";
+import {
+  mergeRequestDraft,
+  createRequestQueue,
+} from "../lib/request-merge.mjs";
 import { MediaUploader, sendWithProgress } from "@faden/ui";
 
 const colorOptions = [
@@ -25,6 +41,20 @@ const colorOptions = [
   ["Burnished Olive", "#775a19"],
   ["Muted Rose", "#b75760"],
   ["Pale Ochre", "#fed488"],
+  ["Blush Pink", "#e8b4b8"],
+  ["Rose Gold", "#b76e79"],
+  ["Champagne", "#e8d5b7"],
+  ["Ruby Red", "#9b111e"],
+  ["Burgundy", "#650f30"],
+  ["Emerald", "#176b4d"],
+  ["Sage", "#a8b5a0"],
+  ["Royal Blue", "#334d9c"],
+  ["Navy", "#172944"],
+  ["Lavender", "#b7a0d4"],
+  ["Plum", "#6e385a"],
+  ["Peach", "#efb497"],
+  ["Silver", "#c1c4c7"],
+  ["Gold", "#c3a34a"],
 ];
 const occasionAssets = ["020", "075", "078", "023"];
 const silhouetteAssets = ["066", "043", "074"];
@@ -32,6 +62,15 @@ const fabricOptions = [
   ["Fluid & Silky", "Satin, Charmeuse, Silk", "030"],
   ["Crisp & Structured", "Linen, Poplin, Twill", "015"],
   ["Sheer & Weightless", "Organza, Tulle, Chiffon", "077"],
+  ["Velvety & Plush", "Silk velvet, velour", "030"],
+  ["Rich & Lustrous", "Duchess satin, silk satin", "030"],
+  ["Regal & Woven", "Banarasi silk, brocade, jacquard", "015"],
+  ["Airy & Delicate", "Silk georgette, fine chiffon", "077"],
+  ["Soft & Draped", "Crepe, modal silk", "030"],
+  ["Textured & Artisanal", "Raw silk, tussar, handloom", "015"],
+  ["Romantic & Lacy", "Chantilly lace, embroidered tulle", "077"],
+  ["Luminous & Embellished", "Sequins, zari, beadwork", "015"],
+  ["Warm & Tailored", "Fine wool, cashmere blends", "015"],
 ];
 const methods = [
   [
@@ -84,17 +123,86 @@ export function RequestWizard({
 }) {
   const router = useRouter();
   const index = STEPS.indexOf(step);
-  const [draft, setDraft] = useState(initial);
-  const [id, setId] = useState(requestId);
-  const [revision, setRevision] = useState(version);
+  const [draft, setDraftState] = useState(initial);
+  const draftRef = useRef(initial);
+  const baseline = useRef(initial);
+  function setDraft(value: SetStateAction<OutfitDraft>) {
+    const next = typeof value === "function" ? value(draftRef.current) : value;
+    draftRef.current = next;
+    setDraftState(next);
+  }
+  const [id, setIdState] = useState(requestId);
+  const idRef = useRef(requestId);
+  function setId(value: string) {
+    idRef.current = value;
+    setIdState(value);
+  }
+  const revision = useRef(version);
+  function setRevision(value: number) {
+    revision.current = value;
+  }
   const [urls, setUrls] = useState(initialUrls);
   const [savedProfile, setSavedProfile] = useState(savedMeasurements);
-  const [busy, setBusy] = useState(false);
+  const [working, setBusy] = useState(false);
+  const [loading, setLoading] = useState(Boolean(requestId));
+  const [pending, setPending] = useState(0);
+  const [navigating, startNavigation] = useTransition();
+  const busy = working || loading || pending > 0 || navigating;
+  const queue = useRef(createRequestQueue());
+  const action = useRef(false);
+  const [conflict, setConflict] = useState<{
+    draft: unknown;
+    version: number;
+  } | null>(null);
   const [dirty, setDirty] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [link, setLink] = useState("");
   const [confirmRemove, setConfirmRemove] = useState<string | null>(null);
+  const fields = measurementFields(draft.garment, draft.sleeves);
+  const required = requiredMeasurements(draft.garment);
+  const [customColor, setCustomColor] = useState("#d8a0af");
+  const [customColorName, setCustomColorName] = useState("");
+  const [customFabric, setCustomFabric] = useState("");
+  useEffect(() => {
+    if (!requestId) return;
+    const controller = new AbortController();
+    fetch(`/api/requests/${requestId}`, {
+      cache: "no-store",
+      signal: controller.signal,
+    })
+      .then(async (response) => {
+        if (!response.ok)
+          throw new Error("Unable to load your saved request. Please refresh.");
+        return response.json();
+      })
+      .then((row) => {
+        if (controller.signal.aborted) return;
+        if (row.status === "submitted") {
+          router.replace(`/requests/${row.id}`);
+          return;
+        }
+        const fresh = validateDraft(row.draft);
+        setDraft(fresh);
+        baseline.current = fresh;
+        setRevision(row.version);
+        setLoading(false);
+      })
+      .catch((error) => {
+        if (!controller.signal.aborted) {
+          setError(error.message);
+          setLoading(false);
+        }
+      });
+    return () => controller.abort();
+    // A cached previous step must fetch the latest row before editing.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [requestId, step]);
+  function exclusive<T>(task: () => Promise<T>): Promise<T> {
+    setPending((count) => count + 1);
+    const result = queue.current(task);
+    return result.finally(() => setPending((count) => count - 1));
+  }
   useEffect(() => {
     if (!dirty) return;
     const warn = (event: BeforeUnloadEvent) => {
@@ -114,41 +222,70 @@ export function RequestWizard({
     setMessage("");
     setError("");
   }
-  async function call(path: string, body: unknown, method = "POST") {
+  async function call(
+    path: string,
+    body: unknown,
+    method = "POST",
+    attempt = 0,
+  ): Promise<{ id: string; version: number; draft: unknown }> {
     const response = await fetch(path, {
       method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
     const result = await response.json();
-    if (!response.ok)
+    if (!response.ok) {
+      if (result.code === "review_updated") {
+        const fresh = validateDraft(result.current.draft);
+        baseline.current = fresh;
+        setRevision(result.current.version);
+        setDraft({ ...fresh, consent: false });
+        setDirty(true);
+      }
+      if (result.code === "retry_save" && attempt < 2)
+        return call(path, body, method, attempt + 1);
+      if (result.code === "already_submitted") {
+        router.replace(`/requests/${result.id}`);
+        throw new Error("Opening your submitted request…");
+      }
+      if (result.code === "draft_conflict") setConflict(result.current);
       throw new Error(result.error ?? "Unable to save. Please try again.");
+    }
     return result;
   }
-  async function save(complete = false, nextDraft = draft) {
+  async function saveUnlocked(complete = false, nextDraft = draftRef.current) {
     const cleaned = validateDraft(nextDraft, complete);
-    let key = id,
-      rev = revision;
+    let key = idRef.current,
+      rev = revision.current;
     if (!key) {
       const row = await call("/api/requests", sources);
       key = row.id;
       rev = row.version;
-      setId(key);
+      setId(row.id);
       setRevision(rev);
     }
     const row = await call(
       `/api/requests/${key}`,
-      { draft: cleaned, version: rev },
+      { draft: cleaned, version: rev, baseDraft: baseline.current },
       "PATCH",
     );
     setRevision(row.version);
-    setDraft(cleaned);
+    const saved = validateDraft(row.draft);
+    setDraft(saved);
+    baseline.current = saved;
     setDirty(false);
     setMessage("Draft saved");
     window.history.replaceState(null, "", `/create/${step}?id=${row.id}`);
     return row;
   }
+  function save(complete = false, nextDraft?: OutfitDraft) {
+    return exclusive(() =>
+      saveUnlocked(complete, nextDraft ?? draftRef.current),
+    );
+  }
   async function run(task: () => Promise<void>) {
+    if (action.current || loading || navigating) return;
+    action.current = true;
     setBusy(true);
     setError("");
     setMessage("");
@@ -157,6 +294,7 @@ export function RequestWizard({
     } catch (e) {
       setError(e instanceof Error ? e.message : "Please try again.");
     } finally {
+      action.current = false;
       setBusy(false);
     }
   }
@@ -165,57 +303,111 @@ export function RequestWizard({
       if (target > index) {
         if (step === "occasion" && (!draft.occasion || !draft.garment))
           throw new Error("Choose an occasion and garment to continue.");
+        if (
+          step === "occasion" &&
+          draft.occasion === "Other" &&
+          !draft.otherOccasion.trim()
+        )
+          throw new Error("Tell us your occasion to continue.");
         if (step === "style" && !draft.expert && !draft.silhouette)
           throw new Error("Choose a silhouette or Expert Curation.");
+        if (
+          step === "style" &&
+          !draft.expert &&
+          draft.silhouette === "Custom Form" &&
+          !draft.customSilhouette.trim()
+        )
+          throw new Error("Describe your custom silhouette to continue.");
+        if (
+          step === "style" &&
+          draft.neckline === "Custom / Other" &&
+          !draft.necklineNotes.trim()
+        )
+          throw new Error("Describe your neckline to continue.");
+        if (
+          step === "style" &&
+          draft.sleeves === "Custom / Other" &&
+          !draft.sleeveNotes.trim()
+        )
+          throw new Error("Describe your sleeves to continue.");
         if (step === "measurements" && !draft.measurementMethod)
           throw new Error("Choose how you would like to handle measurements.");
+        if (
+          step === "measurements" &&
+          draft.measurementMethod === "reference" &&
+          !draft.measurements.reference
+        )
+          throw new Error(
+            "Upload your chart or choose another measurement option.",
+          );
+        if (
+          step === "measurements" &&
+          ["manual", "saved"].includes(draft.measurementMethod) &&
+          required.some((key) => !draft.measurements[key])
+        )
+          throw new Error(
+            `Enter ${required.map((key) => MEASUREMENT_LABELS[key]).join(", ")}, or choose an assisted fitting.`,
+          );
+        if (
+          step === "budget" &&
+          (!draft.budget || !draft.deliveryDate || !draft.eventDate)
+        )
+          throw new Error(
+            "Choose your budget, event date, and requested delivery date.",
+          );
       }
-      const row = await save();
-      router.push(`/create/${STEPS[target]}?id=${row.id}`);
+      const row =
+        !dirty && idRef.current ? { id: idRef.current } : await save();
+      startNavigation(() =>
+        router.push(`/create/${STEPS[target]}?id=${row.id}`),
+      );
     });
   }
   async function submit() {
     await run(async () => {
       const row = await save(true);
       await call(`/api/requests/${row.id}/submit`, { version: row.version });
-      router.push(`/requests/${row.id}`);
+      startNavigation(() => router.push(`/requests/${row.id}`));
     });
   }
   async function uploadInspiration(
     file: File,
     context: { onProgress: (percent: number) => void; signal: AbortSignal },
   ) {
-    const row = await save();
-    const form = new FormData();
-    form.set("file", file);
-    form.set("version", String(row.version));
-    const result = await sendWithProgress({
-      url: `/api/requests/${row.id}/inspiration`,
-      method: "POST",
-      body: form,
-      onProgress: context.onProgress,
-      signal: context.signal,
+    return exclusive(async () => {
+      const row = await saveUnlocked();
+      const form = new FormData();
+      form.set("file", file);
+      form.set("version", String(row.version));
+      const result = await sendWithProgress({
+        url: `/api/requests/${row.id}/inspiration`,
+        method: "POST",
+        body: form,
+        onProgress: context.onProgress,
+        signal: context.signal,
+      });
+      if (result.status >= 400) {
+        throw new Error(
+          typeof result.json.error === "string"
+            ? result.json.error
+            : "Upload failed.",
+        );
+      }
+      const data = result.json as {
+        row: { draft: unknown; version: number };
+        key: string;
+        url?: string;
+      };
+      setDraft(validateDraft(data.row.draft));
+      baseline.current = validateDraft(data.row.draft);
+      setRevision(data.row.version);
+      if (data.url) {
+        setUrls((current) => ({ ...current, [data.key]: data.url as string }));
+      }
+      setDirty(false);
+      setMessage("Image saved privately.");
+      return { key: data.key, displayUrl: data.url ?? "" };
     });
-    if (result.status >= 400) {
-      throw new Error(
-        typeof result.json.error === "string"
-          ? result.json.error
-          : "Upload failed.",
-      );
-    }
-    const data = result.json as {
-      row: { draft: unknown; version: number };
-      key: string;
-      url?: string;
-    };
-    setDraft(validateDraft(data.row.draft));
-    setRevision(data.row.version);
-    if (data.url) {
-      setUrls((current) => ({ ...current, [data.key]: data.url as string }));
-    }
-    setDirty(false);
-    setMessage("Image saved privately.");
-    return { key: data.key, displayUrl: data.url ?? "" };
   }
   async function removeInspiration(key: string) {
     if (confirmRemove !== key) {
@@ -251,34 +443,38 @@ export function RequestWizard({
     file: File,
     context: { onProgress: (percent: number) => void; signal: AbortSignal },
   ) {
-    const row = await save();
-    const form = new FormData();
-    form.set("file", file);
-    form.set("version", String(row.version));
-    const result = await sendWithProgress({
-      url: `/api/requests/${row.id}/measurement-reference`,
-      method: "POST",
-      body: form,
-      onProgress: context.onProgress,
-      signal: context.signal,
+    return exclusive(async () => {
+      const row = await saveUnlocked();
+      const form = new FormData();
+      form.set("file", file);
+      form.set("version", String(row.version));
+      const result = await sendWithProgress({
+        url: `/api/requests/${row.id}/measurement-reference`,
+        method: "POST",
+        body: form,
+        onProgress: context.onProgress,
+        signal: context.signal,
+      });
+      if (result.status >= 400)
+        throw new Error(
+          typeof result.json.error === "string"
+            ? result.json.error
+            : "Upload failed.",
+        );
+      const data = result.json as {
+        row: { draft: unknown; version: number };
+        key: string;
+        url?: string;
+      };
+      setDraft(validateDraft(data.row.draft));
+      baseline.current = validateDraft(data.row.draft);
+      setRevision(data.row.version);
+      setDirty(false);
+      if (data.url)
+        setUrls((current) => ({ ...current, [data.key]: data.url! }));
+      setMessage("Measurement reference saved privately.");
+      return { key: data.key, displayUrl: data.url ?? "" };
     });
-    if (result.status >= 400)
-      throw new Error(
-        typeof result.json.error === "string"
-          ? result.json.error
-          : "Upload failed.",
-      );
-    const data = result.json as {
-      row: { draft: unknown; version: number };
-      key: string;
-      url?: string;
-    };
-    setDraft(validateDraft(data.row.draft));
-    setRevision(data.row.version);
-    setDirty(false);
-    if (data.url) setUrls((current) => ({ ...current, [data.key]: data.url! }));
-    setMessage("Measurement reference saved privately.");
-    return { key: data.key, displayUrl: data.url ?? "" };
   }
   async function removeMeasurementReference() {
     if (confirmRemove !== "measurement") {
@@ -298,6 +494,7 @@ export function RequestWizard({
       if (!response.ok)
         throw new Error(data.error ?? "Could not remove reference.");
       setDraft(validateDraft(data.row.draft));
+      baseline.current = validateDraft(data.row.draft);
       setRevision(data.row.version);
       setDirty(false);
       setConfirmRemove(null);
@@ -325,6 +522,19 @@ export function RequestWizard({
         measurements: { ...savedProfile, reference: d.measurements.reference },
       }));
     }
+    if (["manual", "saved", "reference"].includes(value))
+      requestAnimationFrame(() =>
+        document
+          .getElementById(
+            value === "reference" ? "measurement-upload" : "measurement-manual",
+          )
+          ?.scrollIntoView({
+            behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+              ? "instant"
+              : "smooth",
+            block: "start",
+          }),
+      );
   }
   const dateMin = new Date().toISOString().slice(0, 10);
   return (
@@ -336,7 +546,7 @@ export function RequestWizard({
           onClick={() =>
             run(async () => {
               await save();
-              router.push("/requests");
+              startNavigation(() => router.push("/requests"));
             })
           }
         >
@@ -377,7 +587,7 @@ export function RequestWizard({
                     onClick={() => update("occasion", option)}
                   >
                     <Image
-                      src={`/stitch-assets/asset-${occasionAssets[i]}.jpg`}
+                      src={`/stitch-assets/asset-${occasionAssets[i % occasionAssets.length]}.jpg`}
                       alt=""
                       fill
                       sizes="(max-width:760px) 50vw, 25vw"
@@ -388,6 +598,23 @@ export function RequestWizard({
                   </button>
                 ))}
               </fieldset>
+              <div
+                className="request-chips occasion-more"
+                aria-label="More occasions"
+              >
+                {OCCASIONS.slice(4)
+                  .filter((option) => option !== "Other")
+                  .map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      aria-pressed={draft.occasion === option}
+                      onClick={() => update("occasion", option)}
+                    >
+                      {option}
+                    </button>
+                  ))}
+              </div>
               <button
                 className="other-occasion"
                 aria-pressed={draft.occasion === "Other"}
@@ -395,6 +622,21 @@ export function RequestWizard({
               >
                 Another occasion
               </button>
+              {draft.occasion === "Other" && (
+                <label className="request-section">
+                  Your occasion
+                  <input
+                    type="text"
+                    maxLength={120}
+                    value={draft.otherOccasion}
+                    onChange={(event) =>
+                      update("otherOccasion", event.target.value)
+                    }
+                    placeholder="For example, housewarming or a family celebration"
+                    required
+                  />
+                </label>
+              )}
               <fieldset className="request-section">
                 <legend>What would you like to create?</legend>
                 <div className="request-chips">
@@ -597,6 +839,55 @@ export function RequestWizard({
                     </button>
                   ))}
                 </div>
+                <div className="custom-color-picker">
+                  <label>
+                    Choose any colour
+                    <input
+                      type="color"
+                      value={customColor}
+                      onChange={(event) => setCustomColor(event.target.value)}
+                    />
+                  </label>
+                  <label>
+                    Colour name (optional)
+                    <input
+                      type="text"
+                      maxLength={80}
+                      value={customColorName}
+                      onChange={(event) =>
+                        setCustomColorName(event.target.value)
+                      }
+                      placeholder="For example, dusty rose"
+                    />
+                  </label>
+                  <button
+                    type="button"
+                    className="button button--ghost"
+                    onClick={() =>
+                      toggle(
+                        "colors",
+                        `${customColorName.trim() || "Custom colour"} (${customColor})`,
+                        3,
+                      )
+                    }
+                  >
+                    Add colour
+                  </button>
+                </div>
+                {draft.colors.length > 0 && (
+                  <div className="request-chips" aria-label="Selected colours">
+                    {draft.colors.map((color) => (
+                      <button
+                        type="button"
+                        key={color}
+                        onClick={() => toggle("colors", color, 3)}
+                        aria-label={`Remove ${color}`}
+                      >
+                        {color} ×
+                      </button>
+                    ))}
+                  </div>
+                )}
               </fieldset>
               <fieldset className="request-section">
                 <legend>
@@ -612,7 +903,22 @@ export function RequestWizard({
                     <button
                       key={name}
                       aria-pressed={draft.silhouette === name}
-                      onClick={() => update("silhouette", name)}
+                      onClick={() => {
+                        update("silhouette", name);
+                        if (name === "Custom Form")
+                          requestAnimationFrame(() =>
+                            document
+                              .getElementById("custom-silhouette-entry")
+                              ?.scrollIntoView({
+                                behavior: matchMedia(
+                                  "(prefers-reduced-motion: reduce)",
+                                ).matches
+                                  ? "instant"
+                                  : "smooth",
+                                block: "center",
+                              }),
+                          );
+                      }}
                     >
                       <div>
                         {i < 3 ? (
@@ -631,20 +937,29 @@ export function RequestWizard({
                     </button>
                   ))}
                 </div>
+                {draft.silhouette === "Custom Form" && (
+                  <label
+                    className="request-section"
+                    id="custom-silhouette-entry"
+                  >
+                    Describe your custom silhouette
+                    <textarea
+                      rows={3}
+                      maxLength={1000}
+                      value={draft.customSilhouette}
+                      onChange={(event) =>
+                        update("customSilhouette", event.target.value)
+                      }
+                      placeholder="Tell us about the shape, cut, fit, layers, or details you want."
+                    />
+                  </label>
+                )}
               </fieldset>
               <div className="style-details">
                 {(
                   [
-                    [
-                      "neckline",
-                      "Neckline",
-                      ["V-Neck", "High Collar", "Asymmetric", "Boatneck"],
-                    ],
-                    [
-                      "sleeves",
-                      "Sleeves",
-                      ["Sleeveless", "Fitted Long", "Voluminous", "Cap Sleeve"],
-                    ],
+                    ["neckline", "Neckline", NECKLINES],
+                    ["sleeves", "Sleeves", SLEEVES],
                   ] as const
                 ).map(([key, label, options]) => (
                   <fieldset className="request-section" key={key}>
@@ -660,12 +975,34 @@ export function RequestWizard({
                         </button>
                       ))}
                     </div>
+                    {draft[key] === "Custom / Other" && (
+                      <label>
+                        Describe your {label.toLowerCase()}
+                        <textarea
+                          maxLength={500}
+                          rows={2}
+                          value={
+                            key === "neckline"
+                              ? draft.necklineNotes
+                              : draft.sleeveNotes
+                          }
+                          onChange={(event) =>
+                            update(
+                              key === "neckline"
+                                ? "necklineNotes"
+                                : "sleeveNotes",
+                              event.target.value,
+                            )
+                          }
+                        />
+                      </label>
+                    )}
                   </fieldset>
                 ))}
               </div>
               <fieldset className="request-section">
                 <legend>
-                  Fabric Feeling <small>Optional</small>
+                  Fabric Feeling <small>Optional · choose up to 3</small>
                 </legend>
                 <div className="fabric-options">
                   {fabricOptions.map(([name, description, asset]) => (
@@ -688,6 +1025,46 @@ export function RequestWizard({
                     </button>
                   ))}
                 </div>
+                <div className="custom-color-picker">
+                  <label>
+                    Another fabric feeling
+                    <input
+                      type="text"
+                      value={customFabric}
+                      maxLength={120}
+                      placeholder="For example, matte silk or pearl-embellished tulle"
+                      onChange={(event) => setCustomFabric(event.target.value)}
+                    />
+                  </label>
+                  <button
+                    type="button"
+                    className="button button--ghost"
+                    disabled={!customFabric.trim()}
+                    onClick={() => {
+                      toggle("fabrics", customFabric.trim(), 3);
+                      setCustomFabric("");
+                    }}
+                  >
+                    Add preference
+                  </button>
+                </div>
+                {draft.fabrics.length > 0 && (
+                  <div
+                    className="request-chips"
+                    aria-label="Selected fabric feelings"
+                  >
+                    {draft.fabrics.map((fabric) => (
+                      <button
+                        key={fabric}
+                        type="button"
+                        onClick={() => toggle("fabrics", fabric, 3)}
+                        aria-label={`Remove ${fabric}`}
+                      >
+                        {fabric} ×
+                      </button>
+                    ))}
+                  </div>
+                )}
               </fieldset>
             </>
           )}
@@ -697,8 +1074,7 @@ export function RequestWizard({
                 How would you like to handle measurements?
               </h1>
               <p className="measurement-privacy">
-                Your measurements stay private. This phase does not share them
-                with boutiques.
+                Your measurements stay private until you choose to share them.
               </p>
               <MeasurementReference />
               <fieldset className="measurement-methods">
@@ -723,76 +1099,103 @@ export function RequestWizard({
                   </button>
                 ))}
               </fieldset>
-              <section
-                className="measurement-entry"
-                aria-label="Measurement chart upload"
-              >
-                <h2>Send a measurement chart / reference</h2>
-                <p>
-                  Upload a photo or screenshot of a tailor’s chart or your
-                  existing measurements. Include the units and clear labels.
-                  This is separate from your inspiration board and shared only
-                  when you choose to include measurements.
-                </p>
-                <MediaUploader
-                  label="Upload measurement chart"
-                  hint="JPG, PNG or WebP · up to 10 MB · one chart"
-                  maxFiles={1}
-                  takenCount={draft.measurements.reference ? 1 : 0}
-                  disabled={busy}
-                  retainReady={false}
-                  uploadFile={uploadMeasurementReference}
-                />
-                {draft.measurements.reference && (
-                  <div className="measurement-reference-preview">
-                    {urls[draft.measurements.reference] ? (
-                      <a
-                        href={urls[draft.measurements.reference]}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <Image
-                          src={urls[draft.measurements.reference]}
-                          alt="Your private measurement chart"
-                          width={480}
-                          height={560}
-                          unoptimized
-                        />
-                        Open full-size chart
-                      </a>
-                    ) : (
-                      <p>
-                        Chart attached. Reopen this draft to refresh its
-                        preview.
-                      </p>
+              <div className="request-section measurement-send-options">
+                <h2>Send your measurements</h2>
+                <div className="request-chips">
+                  <button
+                    type="button"
+                    aria-pressed={["manual", "saved"].includes(
+                      draft.measurementMethod,
                     )}
-                    <button
-                      type="button"
-                      className="button button--ghost"
-                      disabled={busy}
-                      onClick={() => void removeMeasurementReference()}
-                    >
-                      {confirmRemove === "measurement"
-                        ? "Confirm remove chart"
-                        : "Remove chart"}
-                    </button>
-                    {confirmRemove === "measurement" && (
+                    onClick={() => measurementMethod("manual")}
+                  >
+                    Enter measurements
+                  </button>
+                  <button
+                    type="button"
+                    aria-pressed={draft.measurementMethod === "reference"}
+                    onClick={() => measurementMethod("reference")}
+                  >
+                    Upload a picture / chart
+                  </button>
+                </div>
+              </div>
+              {draft.measurementMethod === "reference" && (
+                <section
+                  id="measurement-upload"
+                  className="measurement-entry"
+                  aria-label="Measurement chart upload"
+                >
+                  <h2>Send a measurement chart / reference</h2>
+                  <p>
+                    Upload a photo or screenshot of a tailor’s chart or your
+                    existing measurements. Include the units and clear labels.
+                    This is separate from your inspiration board and shared only
+                    when you choose to include measurements.
+                  </p>
+                  <MediaUploader
+                    label="Upload measurement chart"
+                    hint="JPG, PNG or WebP · up to 10 MB · one chart"
+                    maxFiles={1}
+                    takenCount={draft.measurements.reference ? 1 : 0}
+                    disabled={busy}
+                    retainReady={false}
+                    uploadFile={uploadMeasurementReference}
+                  />
+                  {draft.measurements.reference && (
+                    <div className="measurement-reference-preview">
+                      {urls[draft.measurements.reference] ? (
+                        <a
+                          href={urls[draft.measurements.reference]}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <Image
+                            src={urls[draft.measurements.reference]}
+                            alt="Your private measurement chart"
+                            width={480}
+                            height={560}
+                            unoptimized
+                          />
+                          Open full-size chart
+                        </a>
+                      ) : (
+                        <p>
+                          Chart attached. Reopen this draft to refresh its
+                          preview.
+                        </p>
+                      )}
                       <button
                         type="button"
-                        onClick={() => setConfirmRemove(null)}
+                        className="button button--ghost"
+                        disabled={busy}
+                        onClick={() => void removeMeasurementReference()}
                       >
-                        Keep chart
+                        {confirmRemove === "measurement"
+                          ? "Confirm remove chart"
+                          : "Remove chart"}
                       </button>
-                    )}
-                  </div>
-                )}
-              </section>
+                      {confirmRemove === "measurement" && (
+                        <button
+                          type="button"
+                          onClick={() => setConfirmRemove(null)}
+                        >
+                          Keep chart
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </section>
+              )}
               {["manual", "saved"].includes(draft.measurementMethod) && (
-                <section className="measurement-entry">
-                  <h2>Your measurements</h2>
+                <section className="measurement-entry" id="measurement-manual">
+                  <h2>
+                    Your {draft.garment.toLowerCase() || "outfit"} measurements
+                  </h2>
                   <p>
-                    Measure with a soft tape. These are starting details; your
-                    boutique will confirm the fit.
+                    Only measurements relevant to your selected garment are
+                    shown. Optional fit details can be confirmed by your
+                    boutique. Measure with a soft tape.
                   </p>
                   <label>
                     Unit
@@ -802,12 +1205,9 @@ export function RequestWizard({
                         const unit = e.target.value as "cm" | "in";
                         const ratio = unit === "cm" ? 2.54 : 1 / 2.54;
                         const m = { ...draft.measurements, unit };
-                        for (const k of [
-                          "chest",
-                          "waist",
-                          "hips",
-                          "height",
-                        ] as const)
+                        for (const k of Object.keys(
+                          MEASUREMENT_LABELS,
+                        ) as MeasurementKey[])
                           if (m[k]) m[k] = (Number(m[k]) * ratio).toFixed(1);
                         update("measurements", m);
                       }}
@@ -817,28 +1217,26 @@ export function RequestWizard({
                     </select>
                   </label>
                   <div className="measurement-fields">
-                    {(["chest", "waist", "hips", "height"] as const).map(
-                      (key) => (
-                        <label key={key}>
-                          {key}
-                          {key === "height" ? " (optional)" : ""}
-                          <input
-                            aria-label={key}
-                            type="number"
-                            min=".1"
-                            max={draft.measurements.unit === "cm" ? 300 : 120}
-                            step=".1"
-                            value={draft.measurements[key]}
-                            onChange={(e) =>
-                              update("measurements", {
-                                ...draft.measurements,
-                                [key]: e.target.value,
-                              })
-                            }
-                          />
-                        </label>
-                      ),
-                    )}
+                    {fields.map((key) => (
+                      <label key={key}>
+                        {MEASUREMENT_LABELS[key]}
+                        {!required.includes(key) ? " (optional)" : " *"}
+                        <input
+                          aria-label={MEASUREMENT_LABELS[key]}
+                          type="number"
+                          min=".1"
+                          max={draft.measurements.unit === "cm" ? 300 : 120}
+                          step=".1"
+                          value={draft.measurements[key] ?? ""}
+                          onChange={(e) =>
+                            update("measurements", {
+                              ...draft.measurements,
+                              [key]: e.target.value,
+                            })
+                          }
+                        />
+                      </label>
+                    ))}
                   </div>
                   <button
                     className="button button--ghost"
@@ -895,7 +1293,7 @@ export function RequestWizard({
                       />
                     </label>
                     <label>
-                      When would you like your outfit?
+                      When would you like to get your outfit?
                       <input
                         type="date"
                         min={dateMin}
@@ -946,8 +1344,10 @@ export function RequestWizard({
                 <div>
                   <dt>Occasion & garment</dt>
                   <dd>
-                    {draft.occasion || "Not selected"} ·{" "}
-                    {draft.garment || "Not selected"}
+                    {(draft.occasion === "Other"
+                      ? draft.otherOccasion
+                      : draft.occasion) || "Not selected"}{" "}
+                    · {draft.garment || "Not selected"}
                   </dd>
                   <button onClick={() => navigate(0)}>Edit</button>
                 </div>
@@ -971,6 +1371,11 @@ export function RequestWizard({
                       {draft.neckline} {draft.sleeves}
                       <br />
                       {draft.fabrics.join(", ")}
+                      <br />
+                      {draft.customSilhouette &&
+                        `Custom shape: ${draft.customSilhouette}`}
+                      <br />
+                      {draft.necklineNotes} {draft.sleeveNotes}
                     </p>
                   </dd>
                   <button onClick={() => navigate(2)}>Edit</button>
@@ -989,9 +1394,14 @@ export function RequestWizard({
                     )?.[1] ?? "Not selected"}
                     {["manual", "saved"].includes(draft.measurementMethod) && (
                       <p>
-                        Chest {draft.measurements.chest} · Waist{" "}
-                        {draft.measurements.waist} · Hips{" "}
-                        {draft.measurements.hips} ({draft.measurements.unit})
+                        {fields
+                          .filter((key) => draft.measurements[key])
+                          .map(
+                            (key) =>
+                              `${MEASUREMENT_LABELS[key]}: ${draft.measurements[key]}`,
+                          )
+                          .join(" · ")}{" "}
+                        ({draft.measurements.unit})
                       </p>
                     )}
                   </dd>
@@ -1030,6 +1440,55 @@ export function RequestWizard({
             {message && <p>{message}</p>}
           </div>
         </fieldset>
+        {conflict && (
+          <section className="request-notice" role="alert">
+            <h2>Your changes are still here</h2>
+            <p>
+              Another version was saved while this page was open. Keep your
+              edits or use the saved version.
+            </p>
+            <button
+              type="button"
+              className="button button--primary"
+              disabled={busy}
+              onClick={() =>
+                void run(async () => {
+                  const remote = validateDraft(conflict.draft);
+                  const result = mergeRequestDraft(
+                    baseline.current,
+                    draftRef.current,
+                    remote,
+                  );
+                  const resolved = { ...result.merged };
+                  for (const key of result.conflicts as (keyof OutfitDraft)[])
+                    Object.assign(resolved, { [key]: draftRef.current[key] });
+                  baseline.current = remote;
+                  setRevision(conflict.version);
+                  setConflict(null);
+                  await save(false, resolved);
+                })
+              }
+            >
+              Keep my edits
+            </button>
+            <button
+              type="button"
+              className="button button--ghost"
+              disabled={busy}
+              onClick={() => {
+                const remote = validateDraft(conflict.draft);
+                setDraft(remote);
+                baseline.current = remote;
+                setRevision(conflict.version);
+                setConflict(null);
+                setDirty(false);
+                setError("");
+              }}
+            >
+              Use saved version
+            </button>
+          </section>
+        )}
       </main>
       <footer className="request-actions">
         <button
@@ -1040,24 +1499,38 @@ export function RequestWizard({
           Back
         </button>
         <span role="status">
-          {busy
-            ? "Saving…"
-            : dirty
-              ? "Unsaved changes"
-              : id
-                ? "Saved privately"
-                : "New request"}
+          {loading
+            ? "Loading saved request…"
+            : busy
+              ? "Saving…"
+              : dirty
+                ? "Unsaved changes"
+                : id
+                  ? "Saved privately"
+                  : "New request"}
         </span>
         <button
+          type="button"
+          className="button button--ghost"
+          disabled={busy || Boolean(conflict)}
+          onClick={() =>
+            void run(async () => {
+              await save();
+            })
+          }
+        >
+          Save draft
+        </button>
+        <button
           className="button button--primary"
-          disabled={busy}
+          disabled={busy || Boolean(conflict)}
           onClick={() => (step === "review" ? submit() : navigate(index + 1))}
         >
           {busy
             ? "Please wait…"
             : step === "review"
               ? "Submit request"
-              : "Continue"}
+              : "Save and continue"}
           <MarketIcon name="arrow" />
         </button>
       </footer>
