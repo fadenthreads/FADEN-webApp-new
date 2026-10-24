@@ -1,5 +1,15 @@
 "use client";
 import { useState } from "react";
+import { deliveryStatusLabel } from "@faden/ui";
+const nextStatuses: Record<string, string[]> = {
+  awaiting_arrangement: ["awaiting_arrangement", "booked", "cancelled"],
+  booked: ["booked", "picked_up", "exception", "cancelled"],
+  picked_up: ["picked_up", "in_transit", "exception"],
+  in_transit: ["in_transit", "out_for_delivery", "exception"],
+  out_for_delivery: ["out_for_delivery", "delivered", "exception"],
+  delivered: [],
+  cancelled: [],
+};
 const statuses = [
   "awaiting_arrangement",
   "booked",
@@ -23,6 +33,14 @@ export function OrderOperations({
     Record<string, string>
   >;
   const [message, setMessage] = useState("");
+  const [saving, setSaving] = useState(false);
+  const currentStatus = String(shipment.status ?? "awaiting_arrangement");
+  const allowedStatuses = shipment.id
+    ? (nextStatuses[currentStatus] ?? statuses)
+    : ["awaiting_arrangement", "booked"];
+  const paid = ((detail.payments ?? []) as Array<Record<string, unknown>>).some(
+    (payment) => payment.status === "captured",
+  );
   const [address, setAddress] = useState<Record<string, string> | null>(null);
   const [note, setNote] = useState("");
   const [refundAmount, setRefundAmount] = useState("");
@@ -46,12 +64,16 @@ export function OrderOperations({
     return json.data;
   }
   async function act(body: Record<string, unknown>) {
+    if (saving) return;
+    setSaving(true);
     try {
       await send(body);
       setMessage("Saved. Reloading current order…");
       location.reload();
     } catch (e) {
       setMessage(e instanceof Error ? e.message : "Unable to save");
+    } finally {
+      setSaving(false);
     }
   }
   async function reveal() {
@@ -101,8 +123,22 @@ export function OrderOperations({
   }
   return (
     <div className="admin-order-grid">
-      <section>
-        <h2>Fulfilment</h2>
+      {message && (
+        <p role="status" className="admin-order-message">
+          {message}
+        </p>
+      )}
+      <section id="delivery">
+        <h2>Arrange delivery</h2>
+        <p>
+          FADEN manages delivery directly. Confirm the boutique has finished
+          packing, reveal the delivery address, then arrange collection with
+          your preferred courier.
+        </p>
+        <p>
+          Current delivery status:{" "}
+          <strong>{deliveryStatusLabel(currentStatus)}</strong>
+        </p>
         <p>
           {shipment.id
             ? "Manual shipment recorded."
@@ -127,18 +163,55 @@ export function OrderOperations({
           Reveal delivery address
         </button>
         {address && (
-          <address className="admin-address">
-            {Object.values(address).map((x) => (
-              <div key={x}>{x}</div>
-            ))}
-          </address>
+          <>
+            <address className="admin-address">
+              {Object.values(address).map((x) => (
+                <div key={x}>{x}</div>
+              ))}
+            </address>
+            <button
+              type="button"
+              className="button button--secondary"
+              onClick={async () => {
+                try {
+                  await navigator.clipboard.writeText(
+                    Object.values(address).filter(Boolean).join("\n"),
+                  );
+                  setMessage("Delivery address copied.");
+                } catch {
+                  setMessage(
+                    "Could not copy. Select and copy the address above.",
+                  );
+                }
+              }}
+            >
+              Copy address for courier
+            </button>
+          </>
         )}
       </section>
       <section>
-        <h2>Manual shipment</h2>
+        <h2>Delivery details & customer updates</h2>
+        <p>
+          Carrier, tracking and status updates appear on the customer’s delivery
+          page. Private notes stay visible only to admins. Delivery emails use
+          the existing notification queue.
+        </p>
+        {!paid && (
+          <p role="status">
+            Payment must be captured before recording a shipment.
+          </p>
+        )}
+        {!allowedStatuses.length && (
+          <p>
+            This shipment is {deliveryStatusLabel(currentStatus).toLowerCase()}{" "}
+            and cannot be changed here.
+          </p>
+        )}
         <form
           onSubmit={(e) => {
             e.preventDefault();
+            if (!paid || saving || !allowedStatuses.length) return;
             act({
               action: "shipment",
               expected_version: shipment.version ?? 0,
@@ -171,6 +244,7 @@ export function OrderOperations({
             Tracking URL{" "}
             <input
               type="url"
+              pattern="https://.*"
               placeholder="https://"
               value={form.tracking_url}
               onChange={(e) =>
@@ -184,9 +258,13 @@ export function OrderOperations({
               value={form.status}
               onChange={(e) => setForm({ ...form, status: e.target.value })}
             >
-              {statuses.map((s) => (
-                <option key={s}>{s}</option>
-              ))}
+              {(allowedStatuses.length ? allowedStatuses : [currentStatus]).map(
+                (s) => (
+                  <option value={s} key={s}>
+                    {deliveryStatusLabel(s)}
+                  </option>
+                ),
+              )}
             </select>
           </label>
           <label>
@@ -208,8 +286,17 @@ export function OrderOperations({
               I confirm delivery was verified.
             </label>
           )}
-          <button className="button" type="submit">
-            Save shipment
+          <button
+            className="button"
+            type="submit"
+            disabled={
+              saving ||
+              !paid ||
+              !allowedStatuses.length ||
+              (form.status === "delivered" && !form.confirm_delivered)
+            }
+          >
+            {saving ? "Saving update…" : "Save delivery update"}
           </button>
         </form>
       </section>
@@ -320,11 +407,6 @@ export function OrderOperations({
           )
         )}
       </section>
-      {message && (
-        <p role="status" className="admin-order-message">
-          {message}
-        </p>
-      )}
     </div>
   );
 }

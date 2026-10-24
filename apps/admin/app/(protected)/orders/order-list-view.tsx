@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { deliveryLabels, deliveryStatusLabel } from "@faden/ui";
 type Row = {
   id: string;
   boutique_name: string;
@@ -29,27 +30,31 @@ export function OrderListView({
   const router = useRouter(),
     params = useSearchParams(),
     [search, setSearch] = useState((current.search as string) ?? "");
+  const isDelivery = usePathname() === "/deliveries";
+  const base = isDelivery ? "/deliveries" : "/orders";
   function set(values: Record<string, string | null>) {
     const q = new URLSearchParams(params);
     Object.entries(values).forEach(([k, v]) => (v ? q.set(k, v) : q.delete(k)));
     q.delete("cursor");
     q.delete("cursor_id");
-    router.push(`/orders?${q}`);
+    router.push(`${base}?${q}`);
   }
   return (
     <div className="admin-orders">
       <div className="admin-page-header">
         <div>
-          <h1>Order Operations</h1>
+          <h1>{isDelivery ? "Delivery management" : "Order Operations"}</h1>
           <p>
-            Review commerce activity and arrange courier fulfilment manually.
+            {isDelivery
+              ? "Paid orders ready for your team to arrange delivery. Open an order, confirm its address, book a courier, and update the shipment as it moves."
+              : "Review orders and arrange delivery with your preferred courier."}
           </p>
         </div>
         <Link
           className="button button--secondary"
-          href="/orders?queue=shipping"
+          href={isDelivery ? "/orders" : "/deliveries"}
         >
-          Manual shipping queue
+          {isDelivery ? "All orders" : "Manage deliveries"}
         </Link>
       </div>
       <div className="admin-orders__filters">
@@ -84,11 +89,12 @@ export function OrderListView({
           value={(current.shipmentStatus as string) ?? ""}
           onChange={(e) => set({ shipment_status: e.target.value || null })}
         >
-          <option value="">All shipping</option>
-          <option value="awaiting_arrangement">Awaiting arrangement</option>
-          <option value="in_transit">In transit</option>
-          <option value="delivered">Delivered</option>
-          <option value="exception">Exception</option>
+          <option value="">All delivery statuses</option>
+          {Object.entries(deliveryLabels).map(([value, label]) => (
+            <option value={value} key={value}>
+              {label}
+            </option>
+          ))}
         </select>
       </div>
       {orders.length === 0 ? (
@@ -127,12 +133,18 @@ export function OrderListView({
                   </td>
                   <td>
                     {o.captured
-                      ? (o.shipment_status ?? "awaiting arrangement")
+                      ? deliveryStatusLabel(
+                          o.shipment_status ?? "awaiting_arrangement",
+                        )
                       : "Not eligible"}
                   </td>
                   <td>₹{(o.total_paise / 100).toLocaleString("en-IN")}</td>
                   <td>
-                    <Link href={`/orders/${o.id}`}>Open</Link>
+                    <Link
+                      href={`/orders/${o.id}${isDelivery ? "#delivery" : ""}`}
+                    >
+                      {isDelivery ? "Manage delivery" : "Open"}
+                    </Link>
                   </td>
                 </tr>
               ))}
@@ -145,7 +157,7 @@ export function OrderListView({
           className="button button--secondary"
           onClick={() =>
             router.push(
-              `/orders?${new URLSearchParams({ ...Object.fromEntries(params), cursor: nextCursor, cursor_id: nextCursorId ?? "" })}`,
+              `${base}?${new URLSearchParams({ ...Object.fromEntries(params), cursor: nextCursor, cursor_id: nextCursorId ?? "" })}`,
             )
           }
         >

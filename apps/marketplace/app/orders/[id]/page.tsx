@@ -3,6 +3,7 @@ import { briefText, QuoteSummary, orderStatusLabel } from "@faden/ui";
 import { MarketplaceHeader } from "../../../components/marketplace-header";
 import { customerOrder } from "../../../lib/orders";
 import { CancelOrder } from "../../../components/cancel-order";
+import { OrderUpdateRefresh } from "../../../components/order-update-refresh";
 export default async function OrderDetail({
   params,
 }: {
@@ -24,6 +25,7 @@ export default async function OrderDetail({
           {new Date(o.accepted_at).toLocaleDateString("en-IN")}
         </p>
         <p className="request-reference">Order reference: {o.id}</p>
+        <OrderUpdateRefresh />
         <div className="offer-actions">
           {o.status !== "cancelled" && (
             <Link

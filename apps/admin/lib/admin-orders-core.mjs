@@ -79,7 +79,9 @@ export function validateOrderCommand(body) {
       carrierName: body.carrier_name,
       trackingNumber: body.tracking_number,
       trackingUrl:
-        typeof body.tracking_url === "string" ? body.tracking_url : null,
+        typeof body.tracking_url === "string"
+          ? body.tracking_url.trim() || null
+          : null,
       status: body.status,
       adminNote: typeof body.admin_note === "string" ? body.admin_note : null,
       confirmDelivered: body.confirm_delivered === true,

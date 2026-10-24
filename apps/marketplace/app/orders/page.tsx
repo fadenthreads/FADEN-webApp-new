@@ -33,18 +33,19 @@ export default async function Orders() {
         </div>
         <div className="atelier-requests">
           {orders?.map((o) => (
-            <Link
-              key={o.id}
-              className="atelier-request"
-              href={`/orders/${o.id}`}
-            >
+            <article key={o.id} className="atelier-request">
               <span className="offer-badge">{orderStatusLabel(o.status)}</span>
               <h2>{briefText(o.quote, "title")}</h2>
               <p>
                 {o.boutique_name} · {money(o.total_paise)}
               </p>
-              <span>View your order →</span>
-            </Link>
+              <div className="offer-actions">
+                <Link href={`/orders/${o.id}`}>View your order →</Link>
+                <Link href={`/orders/${o.id}/delivery`}>
+                  Delivery updates →
+                </Link>
+              </div>
+            </article>
           ))}
         </div>
         {!orders?.length && (

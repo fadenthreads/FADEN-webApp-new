@@ -2,6 +2,7 @@ export type AdminNavKey =
   | "overview"
   | "boutiques"
   | "orders"
+  | "deliveries"
   | "settlements"
   | "disputes"
   | "contacts"

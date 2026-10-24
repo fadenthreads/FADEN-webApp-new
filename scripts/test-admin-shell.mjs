@@ -5,6 +5,35 @@ import { createClient } from "@supabase/supabase-js";
 import { test } from "node:test";
 
 import { getAdminAccessRedirect } from "../apps/admin/lib/admin-shell-core.mjs";
+import { validateOrderCommand } from "../apps/admin/lib/admin-orders-core.mjs";
+
+test("delivery navigation and optional tracking link remain usable", () => {
+  assert.equal(
+    isAdminNavActive("/deliveries", { key: "deliveries", href: "/deliveries" }),
+    true,
+  );
+  assert.equal(ADMIN_PAGE_META["/deliveries"].key, "deliveries");
+  const body = {
+    action: "shipment",
+    order_id: "order",
+    expected_version: 0,
+    carrier_name: "Courier",
+    tracking_number: "AWB123",
+    status: "booked",
+  };
+  assert.equal(
+    validateOrderCommand({ ...body, tracking_url: "  " }).trackingUrl,
+    null,
+  );
+  assert.equal(
+    validateOrderCommand({
+      ...body,
+      tracking_url: " https://courier.example/track ",
+    }).trackingUrl,
+    "https://courier.example/track",
+  );
+  assert.equal(validateOrderCommand({ ...body, status: "unknown" }), null);
+});
 import {
   parseBoutiqueListParams,
   parseCursorHistory,

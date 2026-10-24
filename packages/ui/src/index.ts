@@ -34,3 +34,4 @@ export {
 } from "./uploads/process";
 export { catalogImageSrc, portfolioDisplayUrl } from "./uploads/media";
 export { sendWithProgress } from "./uploads/progress";
+export { fadenContact, deliveryLabels, deliveryStatusLabel } from "./delivery";

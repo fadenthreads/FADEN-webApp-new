@@ -8,6 +8,12 @@ export function getAdminAccessRedirect(state) {
 export const ADMIN_PRIMARY_NAV = [
   { key: "overview", href: "/", label: "Overview", icon: "dashboard" },
   {
+    key: "deliveries",
+    href: "/deliveries",
+    label: "Delivery",
+    icon: "local_shipping",
+  },
+  {
     key: "boutiques",
     href: "/boutiques",
     label: "Marketplace",
@@ -51,6 +57,13 @@ export const ADMIN_COMMERCE_NAV = [
 ];
 
 export const ADMIN_PAGE_META = {
+  "/deliveries": {
+    key: "deliveries",
+    title: "Delivery management",
+    description:
+      "Arrange couriers, manage dispatch and keep customers updated.",
+    placeholderTicket: "Launch",
+  },
   "/": {
     key: "overview",
     title: "Platform Overview",
