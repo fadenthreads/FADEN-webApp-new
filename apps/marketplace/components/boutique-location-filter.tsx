@@ -27,6 +27,13 @@ export function BoutiqueLocationFilter({
   const map = useRef<HTMLDivElement>(null);
   const drag = useRef<{ x: number; y: number } | null>(null);
   useEffect(() => {
+    setChosenCity(city);
+    setQuery(city);
+    if (open && city) void lookup({ query: city });
+    // Recenter the map when navigation changes the city filter.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [city, open]);
+  useEffect(() => {
     if (!open || !map.current) return;
     const observer = new ResizeObserver((entries) =>
       setWidth(entries[0].contentRect.width),
