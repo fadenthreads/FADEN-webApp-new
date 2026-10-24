@@ -212,8 +212,9 @@ export function BoutiqueLocationFilter({
             </button>
           </form>
           <p>
-            Click to move the pin, drag to pan, or use the arrow keys. Then
-            select “Search this map location”.
+            Tap to move the pin, drag sideways to pan, or use the arrow keys.
+            Swipe up or down to scroll the page on your phone. Then select
+            “Search this map location”.
           </p>
           <div
             className="boutique-map"

@@ -37,6 +37,8 @@
   scrollbar-width: thin;
   scrollbar-color: #dbc1ba transparent;
   padding-bottom: 16px;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
 }
 .showcase-card {
   flex: 0 0 calc((100% - 48px) / 2.75);
@@ -125,6 +127,8 @@
   width: min(880px, calc(100vw - 32px));
   max-height: 90dvh;
   overflow: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 .showcase-dialog::backdrop {
   background: #211a17a6;
@@ -238,7 +242,7 @@ body {
   overflow: hidden;
   background: #e7e4dd;
   cursor: crosshair;
-  touch-action: none;
+  touch-action: pan-y;
 }
 .boutique-map img {
   max-width: none;
@@ -1360,7 +1364,7 @@ body {
 @media (max-width: 760px) {
   .market-header {
     min-height: 88px;
-    padding: 24px 20px;
+    padding: 22px 20px;
   }
   .market-logo img {
     width: 40px;
@@ -1381,6 +1385,31 @@ body {
     padding: 24px 20px;
     align-items: stretch;
     gap: 24px;
+    max-height: calc(100dvh - 88px);
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+    -webkit-overflow-scrolling: touch;
+  }
+  .market-header .mobile-navigation a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .market-header .mobile-register-link {
+    color: #94452e;
+    border-top: 1px solid #dbc1ba;
+    padding-top: 16px;
+    font-weight: 600;
+  }
+  .market-action {
+    width: 44px;
+    height: 44px;
+  }
+  .market-page input,
+  .market-page select,
+  .market-page textarea {
+    font-size: 16px;
   }
   .market-menu {
     display: flex;
@@ -1510,8 +1539,8 @@ body {
   .detail-mobile-header {
     height: 64px;
     position: sticky;
-    top: 0;
-    z-index: 45;
+    top: 88px;
+    z-index: 35;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1550,7 +1579,7 @@ body {
   }
   .stitch-profile > .market-header,
   .stitch-product > .market-header {
-    display: none;
+    display: flex;
   }
   .stitch-profile,
   .stitch-product {

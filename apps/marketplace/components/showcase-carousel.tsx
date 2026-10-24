@@ -28,6 +28,7 @@ export function ShowcaseCarousel({
   const rail = useRef<HTMLDivElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement | null>(null);
+  const resumeAt = useRef(0);
   const [selected, setSelected] = useState<ShowcaseItem | null>(null);
   const [interacting, setInteracting] = useState(false);
 
@@ -59,6 +60,7 @@ export function ShowcaseCarousel({
   }, [items.length]);
 
   function move(direction: number) {
+    resumeAt.current = performance.now() + 1400;
     const element = rail.current;
     if (!element || items.length < 2) return;
     const card = element.querySelector<HTMLElement>(".showcase-card");
@@ -85,6 +87,12 @@ export function ShowcaseCarousel({
     let position = rail.current?.scrollLeft ?? 0;
     function animate(time: number) {
       const element = rail.current;
+      if (element && time < resumeAt.current) {
+        position = element.scrollLeft;
+        previous = time;
+        frame = requestAnimationFrame(animate);
+        return;
+      }
       if (element && !document.hidden && previous) {
         position += Math.min(time - previous, 50) * 0.028;
         element.scrollLeft = position;
@@ -134,9 +142,20 @@ export function ShowcaseCarousel({
             ref={rail}
             onScroll={normalizeLoop}
             onTouchStart={() => setInteracting(true)}
-            onTouchEnd={() => setInteracting(false)}
-            onMouseEnter={() => setInteracting(true)}
-            onMouseLeave={() => setInteracting(false)}
+            onTouchEnd={() => {
+              resumeAt.current = performance.now() + 1400;
+              setInteracting(false);
+            }}
+            onTouchCancel={() => {
+              resumeAt.current = performance.now() + 1400;
+              setInteracting(false);
+            }}
+            onPointerEnter={(event) => {
+              if (event.pointerType === "mouse") setInteracting(true);
+            }}
+            onPointerLeave={(event) => {
+              if (event.pointerType === "mouse") setInteracting(false);
+            }}
             onFocusCapture={() => setInteracting(true)}
             onBlurCapture={(e) => {
               if (!e.currentTarget.contains(e.relatedTarget))

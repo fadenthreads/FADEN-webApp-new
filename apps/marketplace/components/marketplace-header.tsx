@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MarketIcon } from "./market-icon";
 
 const links = [
@@ -13,11 +13,33 @@ const links = [
 
 export function MarketplaceHeader({ active }: { active?: string }) {
   const [open, setOpen] = useState(false);
+  const header = useRef<HTMLElement>(null);
+  const toggle = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const outside = (event: PointerEvent) => {
+      if (!header.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const desktop = window.matchMedia("(min-width: 761px)");
+    const resize = () => {
+      if (desktop.matches) setOpen(false);
+    };
+    document.addEventListener("pointerdown", outside);
+    desktop.addEventListener("change", resize);
+    return () => {
+      document.removeEventListener("pointerdown", outside);
+      desktop.removeEventListener("change", resize);
+    };
+  }, [open]);
   return (
     <header
       className="market-header"
+      ref={header}
       onKeyDown={(event) => {
-        if (event.key === "Escape") setOpen(false);
+        if (event.key === "Escape") {
+          setOpen(false);
+          toggle.current?.focus();
+        }
       }}
     >
       <nav aria-label="Marketplace navigation">
@@ -57,6 +79,7 @@ export function MarketplaceHeader({ active }: { active?: string }) {
           <MarketIcon name="person" />
         </Link>
         <button
+          ref={toggle}
           aria-label={open ? "Close navigation" : "Open navigation"}
           aria-expanded={open}
           aria-controls="mobile-navigation"
@@ -83,6 +106,22 @@ export function MarketplaceHeader({ active }: { active?: string }) {
           </Link>
           <Link href="/account" onClick={() => setOpen(false)}>
             Your account
+          </Link>
+          <Link href="/orders" onClick={() => setOpen(false)}>
+            My orders & updates
+          </Link>
+          <Link href="/auth/sign-in" onClick={() => setOpen(false)}>
+            Sign in
+          </Link>
+          <Link
+            className="mobile-register-link"
+            href="/auth/sign-in?action=sign-up"
+            onClick={() => setOpen(false)}
+          >
+            Register
+          </Link>
+          <Link href="/contact" onClick={() => setOpen(false)}>
+            Contact & help
           </Link>
         </nav>
       )}
