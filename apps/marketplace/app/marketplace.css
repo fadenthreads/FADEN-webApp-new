@@ -933,11 +933,16 @@ body {
   font-weight: 400;
 }
 .design-filter-row {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 16px;
   overflow-x: auto;
   padding: 4px 0 12px;
+}
+.design-filter-row label {
+  position: relative;
+  flex-shrink: 0;
 }
 .design-filter-row select {
   border: 1px solid #dbc1ba;
@@ -1347,6 +1352,12 @@ body {
   }
   .category-row > span {
     display: none;
+  }
+  .category-row nav {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
   }
   .design-summary {
     padding-left: 16px;
