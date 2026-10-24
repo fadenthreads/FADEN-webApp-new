@@ -132,7 +132,12 @@ export function ShowcaseCarousel({
           <h2>{title}</h2>
         </div>
         <a href={href}>
-          Explore all <span aria-hidden="true">↗</span>
+          {href.includes("boutiques")
+            ? "View all boutiques"
+            : href.includes("materials")
+              ? "View all materials"
+              : "View all clothing"}{" "}
+          <span aria-hidden="true">↗</span>
         </a>
       </div>
       {items.length ? (

@@ -1,12 +1,12 @@
 /* Stitch project 6846067379333241152. Marketplace-only overrides.
    Shared Studio/Admin styling remains isolated from this parity pass. */
 .home-showcases {
-  padding: 32px 0 72px;
+  padding: 0 0 48px;
 }
 .home-showcase {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 48px 64px;
+  padding: 40px var(--market-gutter, 64px);
 }
 .home-showcase__heading {
   display: flex;
@@ -209,7 +209,73 @@
   }
 }
 body {
+  --market-gutter: clamp(20px, 4vw, 64px);
   font-family: var(--font-karla), Manrope, sans-serif;
+}
+.explore-paths {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 64px var(--market-gutter);
+  scroll-margin-top: 112px;
+}
+.explore-paths__heading {
+  max-width: 650px;
+  margin-bottom: 28px;
+}
+.explore-paths__heading .eyebrow {
+  color: #94452e;
+  margin: 0 0 12px;
+}
+.explore-paths__heading h2 {
+  font-size: clamp(32px, 3.4vw, 48px);
+  line-height: 1.15;
+  margin: 0 0 16px;
+}
+.explore-paths__heading > p:last-child {
+  color: #675750;
+  margin: 0;
+}
+.explore-paths__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.explore-path {
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
+  border: 1px solid #dbc1ba;
+  background: #f8f2ee;
+  color: #1c1b1b;
+  text-decoration: none;
+}
+.explore-path:hover {
+  background: #efe2da;
+  border-color: #94452e;
+}
+.explore-path__number {
+  color: #94452e;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+.explore-path h3 {
+  font-size: 34px;
+  line-height: 1.1;
+  margin: 20px 0 12px;
+}
+.explore-path > p {
+  color: #675750;
+  font-size: 14px;
+  margin: 0 0 24px;
+}
+.explore-path__action {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #dbc1ba;
+  font-size: 13px;
 }
 .boutique-location {
   margin: 24px 0 40px;
@@ -368,7 +434,7 @@ body {
   min-height: 85vh;
   display: flex;
   align-items: flex-end;
-  padding: 128px 64px 120px;
+  padding: 104px var(--market-gutter) 64px;
   overflow: hidden;
 }
 .stitch-hero__image {
@@ -423,7 +489,7 @@ body {
   border: 0.5px solid #dbc1ba;
   box-shadow: 0 4px 20px #1a1a1a0a;
   padding: 24px;
-  margin-top: 80px;
+  margin-top: 40px;
   display: flex;
   gap: 24px;
 }
@@ -563,7 +629,7 @@ body {
 }
 .discovery-page {
   max-width: 1440px;
-  padding: 48px 64px 120px;
+  padding: 48px var(--market-gutter) 80px;
 }
 .discovery-loading {
   min-height: 70vh;
@@ -604,7 +670,7 @@ body {
 }
 .discovery-heading {
   max-width: 896px;
-  margin: 0 auto 120px;
+  margin: 0 auto 40px;
 }
 .discovery-heading h1 {
   font-size: 48px;
@@ -897,7 +963,7 @@ body {
   font-size: 12px;
 }
 .design-discovery-controls {
-  margin-bottom: 96px;
+  margin-bottom: 32px;
 }
 .category-row {
   display: flex;
@@ -1429,21 +1495,25 @@ body {
     display: none;
   }
   .stitch-hero {
-    min-height: 90vh;
-    padding: 128px 20px 120px;
+    min-height: auto;
+    padding: 64px 20px 48px;
   }
   .stitch-hero h1 {
-    font-size: 48px;
+    font-size: clamp(40px, 11vw, 48px);
     line-height: 1.1;
     width: 100%;
+    margin-bottom: 24px;
   }
   .stitch-hero__content > p {
     max-width: 100%;
+    font-size: 16px;
+    margin-bottom: 24px;
   }
   .stitch-hero__search {
     width: 100%;
     flex-direction: column;
-    margin-top: 80px;
+    margin-top: 32px;
+    padding: 20px;
   }
   .stitch-hero__search label:last-child {
     flex: 1;
@@ -1451,13 +1521,62 @@ body {
   .stitch-hero .hero-actions {
     flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
+  }
+  .stitch-hero .hero-actions .button {
+    width: 100%;
+  }
+  .explore-paths {
+    padding-top: 40px;
+    padding-bottom: 24px;
+  }
+  .explore-paths__grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .explore-path {
+    padding: 20px;
+  }
+  .explore-path h3 {
+    margin: 12px 0 8px;
+    font-size: 28px;
+  }
+  .explore-path > p {
+    margin-bottom: 16px;
+  }
+  .home-showcase__heading {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .home-showcase__heading > a {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    font-size: 13px;
+    padding-top: 0;
+  }
+  .home-showcase__heading h2 {
+    font-size: 32px;
+  }
+  .showcase-card__image {
+    aspect-ratio: 4 / 5;
+  }
+  .showcase-card__copy h3 {
+    font-size: 24px;
+  }
+  .showcase-card__copy > span {
+    font-size: 13px;
   }
   .market-footer__inner {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 80px 20px 48px;
-    gap: 64px;
+    padding: 48px 20px 32px;
+    gap: 32px;
   }
   .market-footer nav {
     flex-direction: row;
@@ -1469,7 +1588,7 @@ body {
     padding: 40px 20px 80px;
   }
   .discovery-heading {
-    margin-bottom: 64px;
+    margin-bottom: 32px;
   }
   .discovery-heading h1 {
     font-size: 36px;
@@ -1479,7 +1598,20 @@ body {
     gap: 24px;
   }
   .discovery-tabs {
-    gap: 32px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .discovery-tabs a {
+    min-height: 44px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    display: inline-flex;
+    align-items: center;
+  }
+  .boutique-location {
+    margin-top: 0;
+    margin-bottom: 32px;
+    padding: 20px;
   }
   .discovery-layout {
     display: block;
@@ -1542,7 +1674,7 @@ body {
     display: none;
   }
   .design-discovery-controls {
-    margin-bottom: 48px;
+    margin-bottom: 24px;
   }
   .design-masonry {
     column-count: 1;

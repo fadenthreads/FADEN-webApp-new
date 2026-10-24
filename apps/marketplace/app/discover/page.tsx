@@ -141,6 +141,61 @@ export default async function DiscoverPage({
     >
       <MarketplaceHeader active={type} />
       <main className="discovery-page">
+        <header className="discovery-heading">
+          <h1>
+            {isBoutiques
+              ? "Explore boutiques"
+              : type === "materials"
+                ? "Explore materials"
+                : "Explore clothing"}
+          </h1>
+          <form action="/discover" className="discovery-search" method="get">
+            {hidden(["q", "city", "type"])}
+            <input type="hidden" name="type" value={type} />
+            <label>
+              <span>Search</span>
+              <div className="search-line">
+                <input
+                  defaultValue={p.q}
+                  name="q"
+                  placeholder={
+                    isBoutiques
+                      ? "Search boutique names"
+                      : type === "materials"
+                        ? "Search fabrics and textures"
+                        : "Search clothing and designs"
+                  }
+                />
+                <button aria-label="Search" type="submit">
+                  <MarketIcon name="search" />
+                </button>
+              </div>
+            </label>
+            <label>
+              <span>Location</span>
+              <div className="search-line">
+                <MarketIcon name="pin" />
+                <input
+                  defaultValue={p.city}
+                  name="city"
+                  placeholder="Hyderabad"
+                />
+              </div>
+            </label>
+          </form>
+          <nav className="discovery-tabs" aria-label="Discovery type">
+            {["boutiques", "designs", "materials"].map((item) => (
+              <Link
+                aria-current={type === item ? "page" : undefined}
+                className={type === item ? "is-active" : ""}
+                href={`/discover?type=${item}`}
+                key={item}
+              >
+                {item === "designs" ? "Clothing" : item}
+              </Link>
+            ))}
+          </nav>
+        </header>
         {isBoutiques && (
           <BoutiqueLocationFilter
             city={p.city ?? ""}
@@ -153,55 +208,6 @@ export default async function DiscoverPage({
             ]}
           />
         )}
-        {isBoutiques || type === "materials" ? (
-          <header className="discovery-heading">
-            <h1>
-              {type === "materials"
-                ? "Discover the Materials"
-                : "Discover the Atelier"}
-            </h1>
-            <form action="/discover" className="discovery-search" method="get">
-              {hidden(["q", "city", "type"])}
-              <input type="hidden" name="type" value={type} />
-              <label>
-                <span>Search</span>
-                <div className="search-line">
-                  <input
-                    defaultValue={p.q}
-                    name="q"
-                    placeholder="Search across Boutiques, Designs, Materials"
-                  />
-                  <button aria-label="Search" type="submit">
-                    <MarketIcon name="search" />
-                  </button>
-                </div>
-              </label>
-              <label>
-                <span>Location</span>
-                <div className="search-line">
-                  <MarketIcon name="pin" />
-                  <input
-                    defaultValue={p.city}
-                    name="city"
-                    placeholder="Hyderabad"
-                  />
-                </div>
-              </label>
-            </form>
-            <nav className="discovery-tabs" aria-label="Discovery type">
-              {["boutiques", "designs", "materials"].map((item) => (
-                <Link
-                  aria-current={type === item ? "page" : undefined}
-                  className={type === item ? "is-active" : ""}
-                  href={`/discover?type=${item}`}
-                  key={item}
-                >
-                  {item}
-                </Link>
-              ))}
-            </nav>
-          </header>
-        ) : null}
         {!isBoutiques && (
           <section
             className="design-discovery-controls"

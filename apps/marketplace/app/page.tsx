@@ -37,11 +37,8 @@ export default function MarketplaceHome() {
               <a className="button button--primary" href="/create">
                 Create My Outfit <MarketIcon name="arrow" />
               </a>
-              <a
-                className="button button--ghost"
-                href="/discover?type=boutiques"
-              >
-                Explore Boutiques
+              <a className="button button--ghost" href="#explore">
+                Explore FADEN
               </a>
             </div>
             <form action="/discover" className="stitch-hero__search">
@@ -67,6 +64,58 @@ export default function MarketplaceHome() {
               </label>
             </form>
           </div>
+        </section>
+        <section
+          className="explore-paths"
+          id="explore"
+          aria-labelledby="explore-heading"
+        >
+          <div className="explore-paths__heading">
+            <p className="eyebrow">Explore FADEN</p>
+            <h2 id="explore-heading">
+              A little inspiration. Something entirely you.
+            </h2>
+            <p>
+              Find an atelier, discover a design, or begin with a beautiful
+              fabric.
+            </p>
+          </div>
+          <nav className="explore-paths__grid" aria-label="Explore collections">
+            {[
+              {
+                type: "boutiques",
+                title: "Boutiques",
+                text: "Meet independent ateliers and find your creative match.",
+                action: "Find your atelier",
+              },
+              {
+                type: "designs",
+                title: "Clothing",
+                text: "Discover silhouettes to inspire your next made-for-you piece.",
+                action: "Browse clothing",
+              },
+              {
+                type: "materials",
+                title: "Materials",
+                text: "Explore fabrics and textures through boutique designs.",
+                action: "Discover materials",
+              },
+            ].map((category, index) => (
+              <a
+                key={category.type}
+                href={`/discover?type=${category.type}`}
+                className="explore-path"
+              >
+                <span className="explore-path__number">0{index + 1}</span>
+                <h3>{category.title}</h3>
+                <p>{category.text}</p>
+                <span className="explore-path__action">
+                  {category.action}
+                  <span aria-hidden="true">↗</span>
+                </span>
+              </a>
+            ))}
+          </nav>
         </section>
         <Suspense
           fallback={
