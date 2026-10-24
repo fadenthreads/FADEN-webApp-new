@@ -1,7 +1,11 @@
 import Image from "next/image";
+import { Suspense } from "react";
 import { MarketplaceFooter } from "../components/marketplace-footer";
 import { MarketplaceHeader } from "../components/marketplace-header";
 import { MarketIcon } from "../components/market-icon";
+import { HomeShowcases } from "../components/home-showcases";
+
+export const dynamic = "force-dynamic";
 
 export default function MarketplaceHome() {
   return (
@@ -64,6 +68,15 @@ export default function MarketplaceHome() {
             </form>
           </div>
         </section>
+        <Suspense
+          fallback={
+            <section className="home-showcase" aria-label="Loading collections">
+              <p>Discover our boutiques, fabrics and clothing…</p>
+            </section>
+          }
+        >
+          <HomeShowcases />
+        </Suspense>
       </main>
       <MarketplaceFooter />
     </div>
