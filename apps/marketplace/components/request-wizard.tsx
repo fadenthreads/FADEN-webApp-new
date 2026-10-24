@@ -15,6 +15,7 @@ import {
   type Measurements,
 } from "../lib/outfit-request";
 import { MarketIcon } from "./market-icon";
+import { MeasurementReference } from "./measurement-reference";
 import { MediaUploader, sendWithProgress } from "@faden/ui";
 
 const colorOptions = [
@@ -634,6 +635,7 @@ export function RequestWizard({
                 Your measurements stay private. This phase does not share them
                 with boutiques.
               </p>
+              <MeasurementReference />
               <fieldset className="measurement-methods">
                 <legend className="sr-only">Measurement method</legend>
                 {methods.map(([value, title, description]) => (

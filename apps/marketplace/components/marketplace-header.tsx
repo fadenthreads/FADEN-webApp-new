@@ -104,6 +104,9 @@ export function MarketplaceHeader({ active }: { active?: string }) {
           <Link href="/saved" onClick={() => setOpen(false)}>
             Saved pieces
           </Link>
+          <Link href="/style-assistance" onClick={() => setOpen(false)}>
+            Find shoppers or stylists
+          </Link>
           <Link href="/account" onClick={() => setOpen(false)}>
             Your account
           </Link>
