@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { MarketIcon } from "./market-icon";
 
 const links = [
+  ["home", "Home", "/"],
   ["boutiques", "Boutiques", "/discover?type=boutiques"],
   ["designs", "Designs", "/discover?type=designs"],
   ["materials", "Materials", "/discover?type=materials"],
@@ -97,7 +98,12 @@ export function MarketplaceHeader({ active }: { active?: string }) {
           aria-label="Mobile navigation"
         >
           {links.map(([key, label, href]) => (
-            <Link href={href} key={key} onClick={() => setOpen(false)}>
+            <Link
+              href={href}
+              key={key}
+              aria-current={active === key ? "page" : undefined}
+              onClick={() => setOpen(false)}
+            >
               {label}
             </Link>
           ))}

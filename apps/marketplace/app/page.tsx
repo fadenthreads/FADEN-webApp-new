@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export default function MarketplaceHome() {
   return (
     <div className="market-page stitch-home">
-      <MarketplaceHeader />
+      <MarketplaceHeader active="home" />
       <main>
         <section className="stitch-hero">
           <Image
