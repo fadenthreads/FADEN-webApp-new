@@ -7,6 +7,7 @@ import { MarketIcon } from "../../components/market-icon";
 import { formatInr } from "../../lib/catalog";
 import { stitchImage } from "../../lib/stitch-assets";
 import { getSupabaseServerClient } from "../../lib/supabase/server";
+import { CatalogQuickViews } from "../../components/catalog-quick-views";
 
 export const dynamic = "force-dynamic";
 type Parameters = {
@@ -86,10 +87,12 @@ export default async function DiscoverPage({
   let dq = supabase
     .from("designs")
     .select(
-      "id,slug,title,primary_image_url,base_price_paise,materials,occasions,tags,boutiques!inner(name,slug,city)",
+      "id,slug,title,description,primary_image_url,base_price_paise,materials,occasions,tags,boutiques!inner(name,slug,city,status,is_published)",
       { count: "exact" },
     )
-    .eq("status", "published");
+    .eq("status", "published")
+    .eq("boutiques.status", "verified")
+    .eq("boutiques.is_published", true);
   if (p.q)
     dq = dq.ilike(
       type === "materials" ? "description" : "title",
@@ -394,103 +397,133 @@ export default async function DiscoverPage({
                 </a>
               </div>
             ) : isBoutiques ? (
-              <div className="boutique-results-grid">
-                {boutiques.map((b) => (
-                  <article className="boutique-result" key={b.id}>
-                    <div className="boutique-result__image">
-                      <a href={`/boutiques/${b.slug}`}>
-                        <Image
-                          src={stitchImage(b.boutique_profiles.hero_image_url)}
-                          alt={`${b.name} atelier`}
-                          fill
-                          sizes="(max-width: 760px) 100vw, 40vw"
-                          unoptimized
+              <CatalogQuickViews
+                items={boutiques.map((b) => ({
+                  id: b.id,
+                  title: b.name,
+                  subtitle: b.city || "Independent atelier",
+                  image: stitchImage(b.boutique_profiles.hero_image_url),
+                  description:
+                    b.description ||
+                    "Discover this boutique and its collection.",
+                  detail: b.boutique_profiles.minimum_price_paise
+                    ? `From ${formatInr(b.boutique_profiles.minimum_price_paise)}`
+                    : "Price on request",
+                  href: `/boutiques/${b.slug}`,
+                  action: "Visit boutique",
+                }))}
+              >
+                <div className="boutique-results-grid">
+                  {boutiques.map((b) => (
+                    <article className="boutique-result" key={b.id}>
+                      <div className="boutique-result__image">
+                        <a href={`/boutiques/${b.slug}`}>
+                          <Image
+                            src={stitchImage(
+                              b.boutique_profiles.hero_image_url,
+                            )}
+                            alt={`${b.name} atelier`}
+                            fill
+                            sizes="(max-width: 760px) 100vw, 40vw"
+                            unoptimized
+                          />
+                        </a>
+                        <span className="catalog-badge">✓ Verified</span>
+                        <SaveButton
+                          entityId={b.id}
+                          kind="boutique"
+                          initialSaved={savedIds.has(b.id)}
+                          returnPath={href({})}
+                          compact
                         />
-                      </a>
-                      <span className="catalog-badge">✓ Verified</span>
-                      <SaveButton
-                        entityId={b.id}
-                        kind="boutique"
-                        initialSaved={savedIds.has(b.id)}
-                        returnPath={href({})}
-                        compact
-                      />
-                    </div>
-                    <a href={`/boutiques/${b.slug}`}>
-                      <div className="boutique-result__heading">
-                        <h2>{b.name}</h2>
-                        <span>★ {b.boutique_profiles.rating}</span>
                       </div>
-                      <p>{b.description}</p>
-                    </a>
-                    <div className="tag-row">
-                      {b.boutique_profiles.services.map((x) => (
-                        <span key={x}>{x}</span>
-                      ))}
-                    </div>
-                    <div className="boutique-result__footer">
-                      <div>
-                        <strong>
-                          {b.boutique_profiles.minimum_price_paise
-                            ? `${formatInr(b.boutique_profiles.minimum_price_paise)} onwards`
-                            : "Price on request"}
-                        </strong>
-                        <small>
-                          {b.boutique_profiles.lead_time_min_weeks}–
-                          {b.boutique_profiles.lead_time_max_weeks} weeks
-                        </small>
+                      <a href={`/boutiques/${b.slug}`}>
+                        <div className="boutique-result__heading">
+                          <h2>{b.name}</h2>
+                          <span>★ {b.boutique_profiles.rating}</span>
+                        </div>
+                        <p>{b.description}</p>
+                      </a>
+                      <div className="tag-row">
+                        {b.boutique_profiles.services.map((x) => (
+                          <span key={x}>{x}</span>
+                        ))}
+                      </div>
+                      <div className="boutique-result__footer">
+                        <div>
+                          <strong>
+                            {b.boutique_profiles.minimum_price_paise
+                              ? `${formatInr(b.boutique_profiles.minimum_price_paise)} onwards`
+                              : "Price on request"}
+                          </strong>
+                          <small>
+                            {b.boutique_profiles.lead_time_min_weeks}–
+                            {b.boutique_profiles.lead_time_max_weeks} weeks
+                          </small>
+                        </div>
+                        <a
+                          className="button button--primary"
+                          href={`/boutiques/${b.slug}`}
+                        >
+                          View Atelier
+                        </a>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </CatalogQuickViews>
+            ) : (
+              <CatalogQuickViews
+                items={designs.map((d) => ({
+                  id: d.id,
+                  title: d.title,
+                  subtitle: d.boutiques.name,
+                  image: stitchImage(d.primary_image_url),
+                  description: `${d.description || "Discover this design and make it your own."}${type === "materials" && d.materials.length ? ` Materials: ${d.materials.join(", ")}. Ask the boutique about fabric options and availability.` : ""}`,
+                  detail: `From ${formatInr(d.base_price_paise)}`,
+                  href: `/designs/${d.slug}`,
+                  action: "View design",
+                }))}
+              >
+                <div className="design-masonry">
+                  {designs.map((d, index) => (
+                    <article
+                      className={`masonry-card masonry-card--${index % 4}`}
+                      key={d.id}
+                    >
+                      <div className="masonry-card__image">
+                        <a href={`/designs/${d.slug}`}>
+                          <Image
+                            src={stitchImage(d.primary_image_url)}
+                            alt={d.title}
+                            fill
+                            sizes="(max-width: 760px) 100vw, (max-width: 1023px) 50vw, 33vw"
+                            unoptimized
+                          />
+                          <span className="masonry-card__cta">Quick view</span>
+                        </a>
+                        <SaveButton
+                          entityId={d.id}
+                          kind="design"
+                          initialSaved={savedIds.has(d.id)}
+                          returnPath={href({})}
+                          compact
+                        />
                       </div>
                       <a
-                        className="button button--primary"
-                        href={`/boutiques/${b.slug}`}
+                        className="masonry-card__copy"
+                        href={`/designs/${d.slug}`}
                       >
-                        View Atelier
+                        <div>
+                          <h2>{d.title}</h2>
+                          <p>{d.boutiques.name}</p>
+                        </div>
+                        <span>From {formatInr(d.base_price_paise)}</span>
                       </a>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <div className="design-masonry">
-                {designs.map((d, index) => (
-                  <article
-                    className={`masonry-card masonry-card--${index % 4}`}
-                    key={d.id}
-                  >
-                    <div className="masonry-card__image">
-                      <a href={`/designs/${d.slug}`}>
-                        <Image
-                          src={stitchImage(d.primary_image_url)}
-                          alt={d.title}
-                          fill
-                          sizes="(max-width: 760px) 100vw, (max-width: 1023px) 50vw, 33vw"
-                          unoptimized
-                        />
-                        <span className="masonry-card__cta">
-                          Customize This Design
-                        </span>
-                      </a>
-                      <SaveButton
-                        entityId={d.id}
-                        kind="design"
-                        initialSaved={savedIds.has(d.id)}
-                        returnPath={href({})}
-                        compact
-                      />
-                    </div>
-                    <a
-                      className="masonry-card__copy"
-                      href={`/designs/${d.slug}`}
-                    >
-                      <div>
-                        <h2>{d.title}</h2>
-                        <p>{d.boutiques.name}</p>
-                      </div>
-                      <span>From {formatInr(d.base_price_paise)}</span>
-                    </a>
-                  </article>
-                ))}
-              </div>
+                    </article>
+                  ))}
+                </div>
+              </CatalogQuickViews>
             )}
             {!error && count === 0 && (
               <div className="empty-state">
