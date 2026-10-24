@@ -9,6 +9,7 @@ import { stitchImage } from "../../lib/stitch-assets";
 import { getSupabaseServerClient } from "../../lib/supabase/server";
 import { CatalogQuickViews } from "../../components/catalog-quick-views";
 import { BoutiqueLocationFilter } from "../../components/boutique-location-filter";
+import { CatalogSearchInput } from "../../components/catalog-search-input";
 
 export const dynamic = "force-dynamic";
 type Parameters = {
@@ -94,11 +95,16 @@ export default async function DiscoverPage({
     .eq("status", "published")
     .eq("boutiques.status", "verified")
     .eq("boutiques.is_published", true);
-  if (p.q)
-    dq = dq.ilike(
-      type === "materials" ? "description" : "title",
-      `%${p.q.slice(0, 100)}%`,
-    );
+  if (p.q) {
+    const term = p.q
+      .slice(0, 100)
+      .replace(/[^\p{L}\p{N} \-]/gu, " ")
+      .trim();
+    if (term)
+      dq = dq.or(
+        `title.ilike.%${term}%,description.ilike.%${term}%,materials.cs.{${term}}`,
+      );
+  }
   if (p.city) dq = dq.ilike("boutiques.city", `%${p.city.slice(0, 100)}%`);
   if (p.occasion) dq = dq.contains("occasions", [p.occasion]);
   if (p.fabric) dq = dq.contains("materials", [p.fabric]);
@@ -155,9 +161,9 @@ export default async function DiscoverPage({
             <label>
               <span>Search</span>
               <div className="search-line">
-                <input
-                  defaultValue={p.q}
-                  name="q"
+                <CatalogSearchInput
+                  type={type}
+                  initialValue={p.q}
                   placeholder={
                     isBoutiques
                       ? "Search boutique names"
@@ -175,8 +181,9 @@ export default async function DiscoverPage({
               <span>Location</span>
               <div className="search-line">
                 <MarketIcon name="pin" />
-                <input
-                  defaultValue={p.city}
+                <CatalogSearchInput
+                  type="cities"
+                  initialValue={p.city}
                   name="city"
                   placeholder="Hyderabad"
                 />

@@ -4,6 +4,7 @@ import { MarketplaceFooter } from "../components/marketplace-footer";
 import { MarketplaceHeader } from "../components/marketplace-header";
 import { MarketIcon } from "../components/market-icon";
 import { HomeShowcases } from "../components/home-showcases";
+import { CatalogSearchInput } from "../components/catalog-search-input";
 
 export const dynamic = "force-dynamic";
 
@@ -45,9 +46,8 @@ export default function MarketplaceHome() {
               <input type="hidden" name="type" value="designs" />
               <label>
                 <MarketIcon name="search" />
-                <input
-                  name="q"
-                  aria-label="Search designs"
+                <CatalogSearchInput
+                  type="designs"
                   placeholder="Wedding lehenga, Custom suit, Sherwani..."
                 />
                 <button type="submit" aria-label="Search">
@@ -56,9 +56,9 @@ export default function MarketplaceHome() {
               </label>
               <label>
                 <MarketIcon name="pin" />
-                <input
+                <CatalogSearchInput
+                  type="cities"
                   name="city"
-                  aria-label="Location"
                   placeholder="Near Hyderabad"
                 />
               </label>
