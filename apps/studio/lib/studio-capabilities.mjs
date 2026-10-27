@@ -2,7 +2,8 @@ export const studioApprovalRules = [
   {
     change: "Boutique registration and business documents",
     approval: "Admin approval required",
-    effect: "Your boutique stays private until verification is approved.",
+    effect:
+      "Your boutique stays private until Admin approval. During early launch, Admin may explicitly approve without official documents.",
   },
   {
     change: "Public name, city, introduction, story and cover",
@@ -48,5 +49,5 @@ export function studioVisibility(status, published) {
       label: "Verified but currently hidden — contact FADEN",
       live: false,
     };
-  return { label: "Private — complete business verification", live: false };
+  return { label: "Private — awaiting Admin approval", live: false };
 }

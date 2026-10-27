@@ -31,6 +31,7 @@ const service = createClient(
 );
 const anonymous = createClient(api, key, options);
 const run = randomUUID().slice(0, 8);
+const documentFree = process.argv.includes("--without-documents");
 const date = (days) =>
   new Date(Date.now() + days * 86400000).toISOString().slice(0, 10);
 let checks = 0;
@@ -186,22 +187,33 @@ const details = {
   contact_email: `journey-${run}-owner@faden.local`,
   contact_phone: "+919876543210",
 };
-const application = await post(3001, "/api/verification", owner, {
-  action: "create_draft",
-  boutique_id: boutiqueId,
-  details,
-});
+const application = documentFree
+  ? {}
+  : await post(3001, "/api/verification", owner, {
+      action: "create_draft",
+      boutique_id: boutiqueId,
+      details,
+    });
 const submissionId = application.submission_id;
-check(
-  !!submissionId,
-  "Newly registered owner can start verification without a status workaround",
-);
-const approval = {
-  action: "approve",
-  submission_id: submissionId,
-  reason: "ISOLATED AUTOMATED FIXTURE ONLY, not genuine business approval.",
-};
-await post(3002, "/api/verification", admin, approval, "POST", 403);
+if (!documentFree)
+  check(
+    !!submissionId,
+    "Newly registered owner can start verification without a status workaround",
+  );
+const approval = documentFree
+  ? {
+      action: "approve_without_documents",
+      boutique_id: boutiqueId,
+      reason: "ISOLATED explicit early-launch document waiver",
+      confirmed: true,
+    }
+  : {
+      action: "approve",
+      submission_id: submissionId,
+      reason: "ISOLATED AUTOMATED FIXTURE ONLY, not genuine business approval.",
+    };
+const approvalEndpoint = documentFree ? "/api/boutiques" : "/api/verification";
+await post(3002, approvalEndpoint, admin, approval, "POST", 403);
 check(true, "AAL1 admin cannot approve boutiques");
 const factor = await result(
   admin.client.auth.mfa.enroll({
@@ -222,77 +234,109 @@ await result(
   }),
   "Verify fixture MFA",
 );
-await post(3002, "/api/verification", admin, approval, "POST", 409);
-check(true, "AAL2 admin cannot approve an unsubmitted draft");
-let submission = await row(
-  owner.client,
-  "boutique_verification_submissions",
-  submissionId,
-);
-await post(
-  3001,
-  "/api/verification",
-  owner,
-  {
+if (documentFree) {
+  await post(3002, approvalEndpoint, owner, approval, "POST", 403);
+  await post(
+    3002,
+    approvalEndpoint,
+    admin,
+    { ...approval, confirmed: false },
+    "POST",
+    400,
+  );
+  await post(3002, approvalEndpoint, admin, approval);
+  await post(3002, approvalEndpoint, admin, approval);
+  check(
+    (
+      await result(
+        owner.client
+          .from("boutique_verification_submissions")
+          .select("id")
+          .eq("boutique_id", boutiqueId),
+        "Check no fabricated verification",
+      )
+    ).length === 0,
+    "Admin approves without any official details, uploaded documents or fabricated submission",
+  );
+  check(
+    (await page(3001, "/verification", owner)).includes(
+      "Your boutique has Admin approval",
+    ),
+    "Studio reflects document-free approval without requiring a PAN form",
+  );
+} else {
+  await post(3002, "/api/verification", admin, approval, "POST", 409);
+  check(true, "AAL2 admin cannot approve an unsubmitted draft");
+  let submission = await row(
+    owner.client,
+    "boutique_verification_submissions",
+    submissionId,
+  );
+  await post(
+    3001,
+    "/api/verification",
+    owner,
+    {
+      action: "submit",
+      submission_id: submissionId,
+      version: submission.version,
+    },
+    "POST",
+    400,
+  );
+  check(true, "Documents required before submission");
+  // Tiny synthetic image, explicitly named TEST-ONLY. Never forge or upload real
+  // PAN/business/address documents to test systems.
+  const bytes = Buffer.from(
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jR3sAAAAASUVORK5CYII=",
+    "base64",
+  );
+  for (const category of [
+    "business_registration",
+    "pan_document",
+    "address_proof",
+  ]) {
+    const grant = await post(3001, "/api/storage", owner, {
+      action: "sign-upload",
+      bucket: "verification-documents",
+      subjectId: boutiqueId,
+      mimeType: "image/png",
+      byteSize: bytes.length,
+    });
+    assert.ok(
+      ["localhost", "127.0.0.1"].includes(new URL(grant.signedUrl).hostname),
+      "Local upload only",
+    );
+    const upload = await fetch(grant.signedUrl, {
+      method: "PUT",
+      headers: { "Content-Type": "image/png" },
+      body: bytes,
+      signal: AbortSignal.timeout(30000),
+    });
+    assert.ok(upload.ok, `Upload ${category}: ${upload.status}`);
+    await post(3001, "/api/verification", owner, {
+      action: "attach_document",
+      submission_id: submissionId,
+      category,
+      storage_object_key: grant.path,
+      file_name: `TEST-ONLY-${category}.png`,
+      mime_type: "image/png",
+      file_size_bytes: bytes.length,
+    });
+  }
+  submission = await row(
+    owner.client,
+    "boutique_verification_submissions",
+    submissionId,
+  );
+  await post(3001, "/api/verification", owner, {
     action: "submit",
     submission_id: submissionId,
     version: submission.version,
-  },
-  "POST",
-  400,
-);
-check(true, "Documents required before submission");
-// Tiny synthetic image, explicitly named TEST-ONLY. Never forge or upload real
-// PAN/business/address documents to test systems.
-const bytes = Buffer.from(
-  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jR3sAAAAASUVORK5CYII=",
-  "base64",
-);
-for (const category of [
-  "business_registration",
-  "pan_document",
-  "address_proof",
-]) {
-  const grant = await post(3001, "/api/storage", owner, {
-    action: "sign-upload",
-    bucket: "verification-documents",
-    subjectId: boutiqueId,
-    mimeType: "image/png",
-    byteSize: bytes.length,
   });
-  assert.ok(
-    ["localhost", "127.0.0.1"].includes(new URL(grant.signedUrl).hostname),
-    "Local upload only",
-  );
-  const upload = await fetch(grant.signedUrl, {
-    method: "PUT",
-    headers: { "Content-Type": "image/png" },
-    body: bytes,
-    signal: AbortSignal.timeout(30000),
-  });
-  assert.ok(upload.ok, `Upload ${category}: ${upload.status}`);
-  await post(3001, "/api/verification", owner, {
-    action: "attach_document",
-    submission_id: submissionId,
-    category,
-    storage_object_key: grant.path,
-    file_name: `TEST-ONLY-${category}.png`,
-    mime_type: "image/png",
-    file_size_bytes: bytes.length,
-  });
+  await page(3002, "/boutiques", admin);
+  await post(3002, "/api/verification", admin, approval);
 }
-submission = await row(
-  owner.client,
-  "boutique_verification_submissions",
-  submissionId,
-);
-await post(3001, "/api/verification", owner, {
-  action: "submit",
-  submission_id: submissionId,
-  version: submission.version,
-});
-await page(3002, "/boutiques", admin);
-await post(3002, "/api/verification", admin, approval);
 const approved = await row(owner.client, "boutiques", boutiqueId);
 check(
   approved.status === "verified" && approved.is_published,
@@ -585,6 +629,9 @@ check(true, "Simulated delivery unlocks completion and customer review");
 console.log(
   JSON.stringify({
     result: "PASS",
+    approvalMode: documentFree
+      ? "admin_document_waiver"
+      : "standard_document_review",
     checks,
     boutiqueId,
     requestId: request.id,

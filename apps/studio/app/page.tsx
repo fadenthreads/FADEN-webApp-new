@@ -59,11 +59,12 @@ export default async function StudioHome() {
               </p>
             </li>
             <li>
-              <strong>Submit verification</strong>
+              <strong>Admin review</strong>
               <p>
-                Save legal/contact details, upload the required documents, and
-                click Submit for review. Read Admin feedback here if changes are
-                requested.
+                For our early launch, official documents are optional when FADEN
+                Admin approves your boutique directly. Complete your storefront
+                and contact details, then contact FADEN for review. The document
+                verification route remains available if requested.
               </p>
             </li>
             <li>

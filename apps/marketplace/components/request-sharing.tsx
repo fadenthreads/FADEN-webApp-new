@@ -38,9 +38,9 @@ export function RequestSharing({
     <section className="offer-form">
       <h2>Invite your boutiques</h2>
       <p>
-        Choose up to three verified boutiques. They receive your display name,
-        occasion, style, notes, budget and dates. Check your notes for personal
-        information before sharing.
+        Choose up to three FADEN-approved boutiques. They receive your display
+        name, occasion, style, notes, budget and dates. Check your notes for
+        personal information before sharing.
       </p>
       <div className="offer-panel">
         <fieldset disabled={busy}>

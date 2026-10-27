@@ -45,7 +45,7 @@ export function BoutiqueListView({
   const [actionDialog, setActionDialog] = useState<{
     boutiqueId: string;
     boutiqueName: string;
-    action: "suspend" | "restore";
+    action: "suspend" | "restore" | "approve_without_documents";
   } | null>(null);
 
   function updateParams(updates: Record<string, string | null>) {
@@ -262,6 +262,23 @@ export function BoutiqueListView({
                       </td>
                       <td>
                         <div className="boutique-actions">
+                          {["draft", "pending_verification"].includes(
+                            boutique.status,
+                          ) && (
+                            <button
+                              type="button"
+                              className="boutique-action-button"
+                              onClick={() =>
+                                setActionDialog({
+                                  boutiqueId: boutique.id,
+                                  boutiqueName: boutique.name,
+                                  action: "approve_without_documents",
+                                })
+                              }
+                            >
+                              Approve without documents
+                            </button>
+                          )}
                           {(boutique.status === "pending_verification" ||
                             boutique.status === "verified" ||
                             boutique.status === "rejected") && (
@@ -376,6 +393,23 @@ export function BoutiqueListView({
                           ? "Review Verification"
                           : "View Verification"}
                       </Link>
+                    )}
+                    {["draft", "pending_verification"].includes(
+                      boutique.status,
+                    ) && (
+                      <button
+                        type="button"
+                        className="boutique-action-button"
+                        onClick={() =>
+                          setActionDialog({
+                            boutiqueId: boutique.id,
+                            boutiqueName: boutique.name,
+                            action: "approve_without_documents",
+                          })
+                        }
+                      >
+                        Approve without documents
+                      </button>
                     )}
                     {boutique.status === "suspended" ? (
                       <button

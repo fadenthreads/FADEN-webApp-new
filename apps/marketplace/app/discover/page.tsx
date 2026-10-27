@@ -454,7 +454,7 @@ export default async function DiscoverPage({
                             unoptimized
                           />
                         </a>
-                        <span className="catalog-badge">✓ Verified</span>
+                        <span className="catalog-badge">✓ FADEN approved</span>
                         <SaveButton
                           entityId={b.id}
                           kind="boutique"

@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 import { StudioFrame } from "../../components/studio-frame";
 import { getSupabaseServerClient } from "../../lib/supabase/server";
@@ -37,6 +38,29 @@ export default async function VerificationPage() {
         .eq("submission_id", submission.id)
         .order("uploaded_at")
     : { data: [] };
+
+  if (boutique.status === "verified" && submission?.status !== "approved") {
+    return (
+      <StudioFrame active="verification" name={boutique.name}>
+        <section className="studio-empty">
+          <h1>Your boutique has Admin approval</h1>
+          <p>
+            You can operate on FADEN without official documents at this
+            early-launch stage. This is marketplace approval, not confirmation
+            that official documents were verified.
+          </p>
+          <div className="studio-actions">
+            <Link className="studio-button" href="/storefront">
+              Manage storefront
+            </Link>
+            <Link className="studio-button ghost" href="/portfolio">
+              Manage portfolio
+            </Link>
+          </div>
+        </section>
+      </StudioFrame>
+    );
+  }
 
   return (
     <StudioFrame active="verification" name={boutique.name}>

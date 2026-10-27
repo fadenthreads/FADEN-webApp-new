@@ -81,6 +81,7 @@ jobs:
           done
           curl --fail --silent http://localhost:3002/api/health > /dev/null
           npm run test:complete-order
+          npm run test:complete-order -- --without-documents
           npm run test:marketplace
           npm run test:requests
           npm run test:offers

@@ -8,7 +8,7 @@ export function parseBoutiqueListParams(input?: Record<string, unknown>): {
 };
 export function parseCursorHistory(value: unknown): string[];
 export function validateBoutiqueAction(body: unknown): {
-  action: "suspend" | "restore";
+  action: "suspend" | "restore" | "approve_without_documents";
   boutiqueId: string;
   reason: string;
 } | null;

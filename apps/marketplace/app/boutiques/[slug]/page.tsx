@@ -83,8 +83,8 @@ export default async function BoutiqueProfilePage({
                 {boutique.description}
               </p>
               <p className="eyebrow">
-                ✓ Verified boutique · ★ {profile.rating} ({profile.review_count}{" "}
-                reviews) · {boutique.city}
+                ✓ FADEN approved boutique · ★ {profile.rating} (
+                {profile.review_count} reviews) · {boutique.city}
               </p>
               <div className="tag-row tag-row--inverse">
                 {profile.specialties.map((specialty) => (

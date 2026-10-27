@@ -39,7 +39,22 @@ export async function POST(request: NextRequest) {
     const { action, boutiqueId, reason } = command;
 
     // Execute action based on type
-    if (action === "suspend") {
+    if (action === "approve_without_documents") {
+      const { error } = await supabase.rpc(
+        "admin_approve_boutique_without_documents",
+        {
+          p_boutique_id: boutiqueId,
+          p_reason: reason,
+          p_confirmed: true,
+        },
+      );
+      if (error)
+        return jsonError(
+          "This boutique could not be approved. Check its profile and reload before retrying.",
+          409,
+          "approval_failed",
+        );
+    } else if (action === "suspend") {
       const { error } = await supabase.rpc("admin_suspend_boutique", {
         p_boutique_id: boutiqueId,
         p_reason: reason,

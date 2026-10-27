@@ -40,6 +40,26 @@ import {
   validateBoutiqueAction,
 } from "../apps/admin/lib/boutique-management-core.mjs";
 import { getReadinessPresentation } from "../apps/admin/lib/admin-overview-core.mjs";
+
+test("document-free approval requires a selected boutique, explicit confirmation and reason", () => {
+  const command = {
+    action: "approve_without_documents",
+    boutique_id: "f4500000-0000-4000-8000-000000000010",
+    reason: "Manual early-launch owner review",
+    confirmed: true,
+  };
+  assert.equal(
+    validateBoutiqueAction(command)?.action,
+    "approve_without_documents",
+  );
+  assert.equal(validateBoutiqueAction({ ...command, confirmed: false }), null);
+  assert.equal(validateBoutiqueAction({ ...command, reason: " " }), null);
+  assert.equal(validateBoutiqueAction({ ...command, reason: "x" }), null);
+  assert.equal(
+    validateBoutiqueAction({ ...command, boutique_id: "all" }),
+    null,
+  );
+});
 import {
   formatCount,
   formatCurrency,

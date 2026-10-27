@@ -2679,6 +2679,10 @@ export type Database = {
         Args: { p_reason: string; p_submission_id: string }
         Returns: Json
       }
+      admin_approve_boutique_without_documents: {
+        Args: { p_boutique_id: string; p_reason: string; p_confirmed?: boolean }
+        Returns: Json
+      }
       admin_restore_boutique: {
         Args: { p_boutique_id: string; p_reason: string }
         Returns: Json

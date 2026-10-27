@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 type BoutiqueActionDialogProps = {
   boutiqueId: string;
   boutiqueName: string;
-  action: "suspend" | "restore";
+  action: "suspend" | "restore" | "approve_without_documents";
   onClose: () => void;
   onSuccess: () => void;
 };
@@ -23,9 +23,14 @@ export function BoutiqueActionDialog({
   const [confirmed, setConfirmed] = useState(false);
 
   const isSuspend = action === "suspend";
-  const title = isSuspend ? "Suspend Boutique" : "Restore Boutique";
-  const verb = isSuspend ? "suspend" : "restore";
-  const requiresConfirmation = isSuspend;
+  const isApproval = action === "approve_without_documents";
+  const title = isApproval
+    ? "Approve without official documents"
+    : isSuspend
+      ? "Suspend Boutique"
+      : "Restore Boutique";
+  const verb = isApproval ? "approve" : isSuspend ? "suspend" : "restore";
+  const requiresConfirmation = isSuspend || isApproval;
 
   useEffect(() => {
     function handleEscape(e: KeyboardEvent) {
@@ -61,6 +66,7 @@ export function BoutiqueActionDialog({
           action,
           boutique_id: boutiqueId,
           reason: reason.trim(),
+          confirmed,
         }),
       });
 
@@ -93,6 +99,14 @@ export function BoutiqueActionDialog({
               <span className="material-symbols-outlined boutique-dialog__icon boutique-dialog__icon--warning">
                 warning
               </span>
+            )}
+            {isApproval && (
+              <p>
+                This publishes the boutique so customers can discover it and
+                place orders. Official documents have not been verified. Review
+                the owner and storefront details before approving; your reason
+                is recorded in the audit log.
+              </p>
             )}
             {title}
           </h2>
@@ -132,6 +146,8 @@ export function BoutiqueActionDialog({
               disabled={isSubmitting}
               className="boutique-dialog__textarea"
               rows={4}
+              minLength={isApproval ? 3 : 1}
+              maxLength={1000}
               placeholder={
                 isSuspend
                   ? "e.g., Policy violation, customer complaints, pending investigation..."
@@ -162,8 +178,9 @@ export function BoutiqueActionDialog({
                   className="boutique-dialog__checkbox"
                 />
                 <span>
-                  I confirm that I want to suspend this boutique. This action
-                  will be audited.
+                  {isApproval
+                    ? "I approve this boutique for marketplace access without official document verification."
+                    : "I confirm that I want to suspend this boutique. This action will be audited."}
                 </span>
               </label>
             </div>
@@ -194,7 +211,11 @@ export function BoutiqueActionDialog({
                       progress_activity
                     </span>
                   </span>
-                  {isSuspend ? "Suspending..." : "Restoring..."}
+                  {isApproval
+                    ? "Approving..."
+                    : isSuspend
+                      ? "Suspending..."
+                      : "Restoring..."}
                 </>
               ) : (
                 <>

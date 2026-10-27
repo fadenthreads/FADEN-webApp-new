@@ -45,7 +45,10 @@ export function parseCursorHistory(value) {
 export function validateBoutiqueAction(body) {
   if (!body || typeof body !== "object") return null;
   const { action, boutique_id: boutiqueId, reason } = body;
-  if (action !== "suspend" && action !== "restore") return null;
+  if (!["suspend", "restore", "approve_without_documents"].includes(action))
+    return null;
+  if (action === "approve_without_documents" && body.confirmed !== true)
+    return null;
   if (
     typeof boutiqueId !== "string" ||
     !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(
@@ -56,6 +59,11 @@ export function validateBoutiqueAction(body) {
   }
   if (typeof reason !== "string") return null;
   const cleanReason = reason.trim();
-  if (!cleanReason || cleanReason.length > 1000) return null;
+  if (
+    !cleanReason ||
+    cleanReason.length > 1000 ||
+    (action === "approve_without_documents" && cleanReason.length < 3)
+  )
+    return null;
   return { action, boutiqueId, reason: cleanReason };
 }
