@@ -53,7 +53,7 @@ Fixture references recorded by that run (CI-only; not production links):
 - No real money, courier, genuine business documents, email send or Daily room. This is not proof of those providers working.
 - HTTP/server rendering and RLS are covered, not every browser click, responsive layout, swipe or upload interaction. Completion/rehearsal copy and the broader 42-flow matrix are not all certified by this run.
 - CI fixtures belong to the disposable runner database. They are not usable accounts/orders on `faden.in`.
-- Migrations **043 and 044 have not been applied to hosted Supabase**. A separately authorized hosted rollout is required for the registration fix and manual-shipment address lock to take effect there. A Git push/Vercel build does not apply SQL migrations.
+- Subsequent rollout update: after explicit user confirmation on 27 October 2026, migrations **043–045 were applied to hosted Supabase**, with history/function/permission checks and 36 live anonymous smoke checks passing. This later rollout is separate from the isolated test evidence above; it did not approve a production boutique. See `DOCUMENT_FREE_APPROVAL.md`.
 - Before public launch, resolve the dependency audit and run controlled provider/browser acceptance tests. Do not present this isolated pass as complete production readiness.
 
 ## Repeat
