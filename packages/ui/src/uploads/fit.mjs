@@ -87,6 +87,7 @@ export function looksLikeSignedUrl(value) {
  * @param {number} [width]
  */
 export function publicPortfolioUrl(supabaseUrl, key, _width) {
+  void _width; // Retain the shared width argument without requiring paid transforms.
   const base = String(supabaseUrl ?? "").replace(/\/$/, "");
   if (!base || !isImageObjectKey(key)) return "";
   const encoded = key.split("/").map(encodeURIComponent).join("/");

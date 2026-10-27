@@ -359,6 +359,7 @@ export function isOwnedInspirationKey(path, userId, requestId) {
  * @param {number} [width]
  */
 export function portfolioPublicUrl(supabaseUrl, path, _width) {
+  void _width; // Keep callers compatible; uploaded originals are already bounded.
   const base = String(supabaseUrl ?? "").replace(/\/$/, "");
   if (!base || !isSafeObjectPath(path, STORAGE_BUCKETS.portfolioImages)) {
     return "";
