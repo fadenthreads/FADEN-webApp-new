@@ -100,14 +100,6 @@ export function BoutiqueActionDialog({
                 warning
               </span>
             )}
-            {isApproval && (
-              <p>
-                This publishes the boutique so customers can discover it and
-                place orders. Official documents have not been verified. Review
-                the owner and storefront details before approving; your reason
-                is recorded in the audit log.
-              </p>
-            )}
             {title}
           </h2>
           <button
@@ -123,6 +115,14 @@ export function BoutiqueActionDialog({
 
         <form onSubmit={handleSubmit} className="boutique-dialog__body">
           <div className="boutique-dialog__notice">
+            {isApproval && (
+              <p>
+                This publishes the boutique so customers can discover it and
+                place orders. Official documents have not been verified. Review
+                the owner and storefront details before approving; your reason
+                is recorded in the audit log.
+              </p>
+            )}
             <p>
               You are about to {verb}{" "}
               <strong>&ldquo;{boutiqueName}&rdquo;</strong>.
@@ -149,9 +149,11 @@ export function BoutiqueActionDialog({
               minLength={isApproval ? 3 : 1}
               maxLength={1000}
               placeholder={
-                isSuspend
-                  ? "e.g., Policy violation, customer complaints, pending investigation..."
-                  : "e.g., Appeal approved, investigation complete, misunderstanding resolved..."
+                isApproval
+                  ? "Why is this boutique approved without official documents?"
+                  : isSuspend
+                    ? "e.g., Policy violation, customer complaints, pending investigation..."
+                    : "e.g., Appeal approved, investigation complete, misunderstanding resolved..."
               }
               required
               aria-describedby={error ? "action-error" : undefined}
@@ -220,7 +222,7 @@ export function BoutiqueActionDialog({
               ) : (
                 <>
                   <span className="material-symbols-outlined">
-                    {isSuspend ? "block" : "restore"}
+                    {isApproval ? "check" : isSuspend ? "block" : "restore"}
                   </span>
                   {title}
                 </>
