@@ -38,6 +38,7 @@
     "test:designs": "node scripts/test-local-design-reviews.mjs",
     "test:studio": "node scripts/test-local-studio.mjs",
     "test:studio-storefront": "node --test scripts/test-studio-storefront.mjs scripts/test-upload-processing.mjs",
+    "test:flow-regressions": "node --test scripts/test-flow-regressions.mjs",
     "demo:offers": "node scripts/seed-local-offer-demo.mjs"
   },
   "devDependencies": {

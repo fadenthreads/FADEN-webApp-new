@@ -87,7 +87,7 @@ export default async function SavedPage() {
                       aria-label={boutique.name}
                       role="img"
                       style={{
-                        backgroundImage: `url(${boutique.boutique_profiles?.hero_image_url ?? ""})`,
+                        backgroundImage: `url(${stitchImage(boutique.boutique_profiles?.hero_image_url)})`,
                       }}
                     />
                     <span>

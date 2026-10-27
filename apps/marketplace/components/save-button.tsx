@@ -2,8 +2,9 @@
 
 import { createFadenBrowserClient } from "@faden/supabase";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MarketIcon } from "./market-icon";
+import { readSavedItem, insertSavedItem } from "../lib/saved-items.mjs";
 
 interface SaveButtonProps {
   compact?: boolean;
@@ -25,9 +26,43 @@ export function SaveButton({
   const [saved, setSaved] = useState(initialSaved);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const revision = useRef(0);
   useEffect(() => setSaved(initialSaved), [initialSaved]);
+  useEffect(() => {
+    let active = true;
+    async function restore() {
+      const version = revision.current;
+      try {
+        // Local session is for UI hydration only; Storage/database RLS still
+        // authorizes every query. Do not add blocking auth to discovery SSR.
+        const { data } = await supabase.auth.getSession();
+        const result = await readSavedItem(
+          supabase,
+          kind,
+          entityId,
+          data.session?.user.id,
+        );
+        if (active && version === revision.current && !result.error)
+          setSaved(result.saved);
+      } catch {
+        // Browsing remains usable when the optional saved-state read fails.
+      }
+    }
+    void restore();
+    const { data } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN" || event === "SIGNED_OUT")
+        queueMicrotask(() => {
+          if (active) void restore();
+        });
+    });
+    return () => {
+      active = false;
+      data.subscription.unsubscribe();
+    };
+  }, [supabase, kind, entityId]);
 
   async function toggleSaved() {
+    revision.current++;
     setBusy(true);
     setError("");
     try {
@@ -45,18 +80,14 @@ export function SaveButton({
                 .delete()
                 .eq("user_id", data.user.id)
                 .eq("design_id", entityId)
-            : await supabase
-                .from("saved_designs")
-                .insert({ design_id: entityId, user_id: data.user.id })
+            : await insertSavedItem(supabase, kind, entityId, data.user.id)
           : saved
             ? await supabase
                 .from("saved_boutiques")
                 .delete()
                 .eq("user_id", data.user.id)
                 .eq("boutique_id", entityId)
-            : await supabase
-                .from("saved_boutiques")
-                .insert({ boutique_id: entityId, user_id: data.user.id });
+            : await insertSavedItem(supabase, kind, entityId, data.user.id);
 
       if (!result.error) {
         setSaved(!saved);

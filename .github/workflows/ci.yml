@@ -25,6 +25,7 @@ jobs:
       - run: npm run test:payments
       - run: npm run test:request-flow
       - run: npm run test:studio-storefront
+      - run: npm run test:flow-regressions
       - run: npm run build
         env:
           NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321

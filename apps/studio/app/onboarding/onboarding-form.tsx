@@ -27,17 +27,29 @@ export function OnboardingForm() {
     event.preventDefault();
     setBusy(true);
     setMessage("");
-    const { error } = await supabase.rpc("create_boutique_application", {
-      boutique_city: city,
-      boutique_description: description || undefined,
-      boutique_name: name,
-      boutique_slug: slug,
-    });
-    setBusy(false);
-    if (error) setMessage(error.message);
-    else {
+    try {
+      const { error } = await supabase.rpc("create_boutique_application", {
+        boutique_city: city.trim(),
+        boutique_description: description.trim() || undefined,
+        boutique_name: name.trim(),
+        boutique_slug: slug,
+      });
+      if (error) {
+        setMessage(
+          error.code === "23505"
+            ? "That public handle is already taken. Please choose another."
+            : "Your boutique could not be saved. Check your details and try again. If you already registered, open Overview.",
+        );
+        return;
+      }
       router.push("/verification");
       router.refresh();
+    } catch {
+      setMessage(
+        "We could not connect. Your entered details are still here; please retry.",
+      );
+    } finally {
+      setBusy(false);
     }
   }
 
@@ -84,6 +96,8 @@ export function OnboardingForm() {
         <label>
           City
           <input
+            minLength={2}
+            maxLength={120}
             onChange={(event) => setCity(event.target.value)}
             required
             value={city}

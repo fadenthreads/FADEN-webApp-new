@@ -6,6 +6,7 @@ import { CancelOrder } from "../../../components/cancel-order";
 import { OrderUpdateRefresh } from "../../../components/order-update-refresh";
 import { getSupabaseServerClient } from "../../../lib/supabase/server";
 import { productionStages } from "@faden/ui";
+import { orderProgressSummary } from "../../../lib/order-progress.mjs";
 export default async function OrderDetail({
   params,
 }: {
@@ -20,6 +21,11 @@ export default async function OrderDetail({
     .eq("order_id", id)
     .order("sequence", { ascending: false })
     .limit(3);
+  const production = orderProgressSummary(
+    progress,
+    Boolean(progressError),
+    productionStages,
+  );
   return (
     <div className="market-page offer-page">
       <MarketplaceHeader active="atelier" />
@@ -124,11 +130,8 @@ export default async function OrderDetail({
                 </span>
               </li>
               <li>
-                <strong>Production not started</strong>
-                <span>
-                  Design review, production updates and delivery tracking appear
-                  here as the order progresses.
-                </span>
+                <strong>{production.title}</strong>
+                <span>{production.detail}</span>
               </li>
             </ol>
             <p className="offer-notice">

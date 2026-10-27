@@ -1,6 +1,5 @@
-import { SignOutButton } from "@faden/auth";
-import { FadenShell } from "@faden/ui";
 import { redirect } from "next/navigation";
+import { AtelierShell } from "../../components/atelier-shell";
 
 import { getSupabaseServerClient } from "../../lib/supabase/server";
 import { OnboardingForm } from "./onboarding-form";
@@ -19,17 +18,16 @@ export default async function StudioOnboardingPage() {
     redirect("/");
 
   return (
-    <FadenShell kind="studio">
+    <AtelierShell active="onboarding" name="Boutique registration">
       <section className="workspace onboarding-workspace">
         <div className="workspace-header">
           <div>
             <p className="eyebrow">FADEN Studio</p>
             <h1>Bring your boutique online.</h1>
           </div>
-          <SignOutButton redirectTo="/auth/sign-in" />
         </div>
         <OnboardingForm />
       </section>
-    </FadenShell>
+    </AtelierShell>
   );
 }
