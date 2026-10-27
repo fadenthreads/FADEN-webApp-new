@@ -2,6 +2,8 @@
 
 Scope: `APPLICATION_FLOW_TEST_PLAN.md`. This is an evidence report, not a declaration that all 42 flows passed.
 
+Update: the user subsequently selected an isolated test environment. The connected registration → Admin approval → quotation → simulated payment → production → manual delivery → review journey now passes. See [the isolated journey report](ISOLATED_ORDER_JOURNEY_RESULTS.md) for 31 checks, 479 SQL/RLS tests, fixes and hosted-rollout limitations. The matrix below records the earlier live audit, not that later isolated result.
+
 ## Completed checks
 
 - `node scripts/test-public-flow-smoke.mjs --live`: **36 anonymous production smoke checks passed**. Public customer pages, canonical `/designs` redirect, protected C/S/A redirects, safe callback-error returns and pending/approved boutique visibility. No account/order/provider mutations in this script.
