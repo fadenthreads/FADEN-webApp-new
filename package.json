@@ -34,6 +34,7 @@
     "test:request-flow": "node --test scripts/test-request-flow.mjs scripts/test-showcase-motion.mjs && node scripts/test-measurement-reference.mjs",
     "test:offers": "node scripts/test-local-offers.mjs",
     "test:orders": "node scripts/test-local-orders.mjs",
+    "test:complete-order": "node scripts/test-complete-order-journey.mjs",
     "test:payments": "node --test scripts/test-payments-core.mjs",
     "test:designs": "node scripts/test-local-design-reviews.mjs",
     "test:studio": "node scripts/test-local-studio.mjs",
