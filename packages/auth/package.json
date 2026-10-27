@@ -7,7 +7,7 @@
   "scripts": {
     "lint": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
-    "test": "node -e \"console.log('auth: UI smoke test ready')\"",
+    "test": "node --test ../../scripts/test-oauth-callback.mjs",
     "build": "tsc --noEmit"
   },
   "dependencies": {

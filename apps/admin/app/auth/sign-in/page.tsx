@@ -1,12 +1,12 @@
-import { AuthPanel } from "@faden/auth";
+import { AuthPanel, safeNextPath } from "@faden/auth";
 
 export default async function AdminSignIn({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string }>;
+  searchParams: Promise<{ next?: string; auth_error?: string }>;
 }) {
   const parameters = await searchParams;
-  const nextPath = parameters.next?.startsWith("/") ? parameters.next : "/";
+  const nextPath = safeNextPath(parameters.next, "/");
 
   return (
     <main className="auth-page auth-page--admin">
@@ -14,6 +14,7 @@ export default async function AdminSignIn({
         FADEN / ADMIN
       </a>
       <AuthPanel
+        oauthError={parameters.auth_error === "oauth_callback_failed"}
         appName="Platform Admin"
         googleEnabled={process.env.NEXT_PUBLIC_GOOGLE_AUTH_ENABLED === "true"}
         localDemo={false}

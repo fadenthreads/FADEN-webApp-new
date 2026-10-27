@@ -7,6 +7,7 @@ import { FormEvent, useMemo, useState } from "react";
 type AuthMode = "email" | "phone";
 
 interface AuthPanelProps {
+  oauthError?: boolean;
   appName: string;
   googleEnabled?: boolean;
   initialAction?: "sign-in" | "sign-up";
@@ -17,6 +18,7 @@ interface AuthPanelProps {
 }
 
 export function AuthPanel({
+  oauthError = false,
   appName,
   googleEnabled = false,
   initialAction = "sign-in",
@@ -35,7 +37,11 @@ export function AuthPanel({
   const [phone, setPhone] = useState(localDemo ? "+919999999999" : "+91");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(
+    oauthError
+      ? "Google sign-in could not be completed. Please try again from this page. If it continues, contact FADEN support to check the sign-in callback configuration."
+      : "",
+  );
   const [busy, setBusy] = useState(false);
 
   function continueToApp() {
