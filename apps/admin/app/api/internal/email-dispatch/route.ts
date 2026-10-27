@@ -108,6 +108,19 @@ async function resolveRecipients(db: Db, event: Event) {
     add(offer.data?.customer_id, marketplace);
     return recipients;
   }
+  if (
+    event.event_type === "boutique.approved_without_documents" &&
+    event.aggregate_type === "boutique"
+  ) {
+    const boutique = await db
+      .from("boutiques")
+      .select("owner_id")
+      .eq("id", event.aggregate_id)
+      .maybeSingle();
+    if (boutique.error) throw boutique.error;
+    add(boutique.data?.owner_id, studio);
+    return recipients;
+  }
   if (event.event_type.startsWith("verification_")) {
     const submission = await db
       .from("boutique_verification_submissions")

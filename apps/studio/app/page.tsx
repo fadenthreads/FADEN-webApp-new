@@ -82,7 +82,7 @@ export default async function StudioHome() {
               href={owned ? "/verification" : "/onboarding"}
             >
               {owned
-                ? "Continue verification / view feedback"
+                ? "View approval status / feedback"
                 : "Register your boutique"}
             </Link>
             {owned && (

@@ -23,7 +23,7 @@ begin
    p_reason=>btrim(p_reason),p_after_json=>jsonb_build_object('status','verified','is_published',true,'approval_basis','document_waiver')
  );
  insert into public.outbox_events(event_type,aggregate_type,aggregate_id,payload)
- values('verification_approved','boutique',b.id::text,jsonb_build_object('boutique_id',b.id,'boutique_name',b.name,'owner_id',b.owner_id,'approval_basis','document_waiver'));
+ values('boutique.approved_without_documents','boutique',b.id::text,jsonb_build_object('boutique_id',b.id,'boutique_name',b.name,'owner_id',b.owner_id,'approval_basis','document_waiver'));
  return jsonb_build_object('success',true,'boutique_id',b.id,'approval_basis','document_waiver');
 end; $$;
 revoke all on function public.admin_approve_boutique_without_documents(uuid,text,boolean) from public, anon;

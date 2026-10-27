@@ -23,7 +23,7 @@ reset role;
 select is((select is_published from public.boutiques where id='f4500000-0000-4000-8000-000000000010'),true,'approval publishes selected boutique');
 select is((select count(*)::integer from public.boutique_verification_submissions where boutique_id='f4500000-0000-4000-8000-000000000010'),0,'no fabricated verification or documents');
 select is((select count(*)::integer from public.audit_events where entity_id='f4500000-0000-4000-8000-000000000010' and action='boutique.approved_without_documents'),1,'one explicit waiver audit');
-select is((select count(*)::integer from public.outbox_events where aggregate_id='f4500000-0000-4000-8000-000000000010' and event_type='verification_approved'),1,'one owner approval notification queued');
+select is((select count(*)::integer from public.outbox_events where aggregate_id='f4500000-0000-4000-8000-000000000010' and event_type='boutique.approved_without_documents'),1,'one owner approval notification queued');
 set local role anon;
 select is((select count(*)::integer from public.boutiques where id='f4500000-0000-4000-8000-000000000010'),1,'approved boutique visible to customers');
 select is((select count(*)::integer from public.boutiques where id='f4500000-0000-4000-8000-000000000011'),0,'suspended boutique remains hidden');

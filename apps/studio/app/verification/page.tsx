@@ -64,15 +64,40 @@ export default async function VerificationPage() {
 
   return (
     <StudioFrame active="verification" name={boutique.name}>
-      <VerificationForm
-        boutique={{
-          id: boutique.id,
-          name: boutique.name,
-          status: boutique.status,
-        }}
-        initialSubmission={submission as VerificationSubmission | null}
-        initialDocuments={documents ?? []}
-      />
+      <section className="verification-notice">
+        <h1>Boutique approval</h1>
+        <p>
+          For early launch, FADEN Admin can approve your registered boutique
+          without official documents. Your boutique stays private until that
+          review is complete. Registration already sends your application to
+          Admin.
+        </p>
+        <p>
+          Complete your storefront and account contact details so our team can
+          review your profile. Use the optional document route below only if
+          requested or if you want to provide business documents.
+        </p>
+        <div className="studio-actions">
+          <Link className="studio-button" href="/storefront">
+            Complete storefront
+          </Link>
+          <Link className="studio-button ghost" href="/account">
+            Account &amp; contact details
+          </Link>
+        </div>
+      </section>
+      <details open={Boolean(submission)}>
+        <summary>Optional official document verification</summary>
+        <VerificationForm
+          boutique={{
+            id: boutique.id,
+            name: boutique.name,
+            status: boutique.status,
+          }}
+          initialSubmission={submission as VerificationSubmission | null}
+          initialDocuments={documents ?? []}
+        />
+      </details>
     </StudioFrame>
   );
 }

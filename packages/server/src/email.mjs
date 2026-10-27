@@ -4,6 +4,8 @@ const EVENT_SUBJECTS = {
   "request.shared": "A customer shared a new request with your boutique",
   "outfit_request.submitted": "We received your FADEN request",
   "boutique.application.created": "A new boutique application needs review",
+  "boutique.approved_without_documents":
+    "Your boutique is approved to join FADEN",
   "offer.sent": "You received a new FADEN quotation",
   "order.accepted": "Your FADEN order has been created",
   "order.cancelled": "A FADEN order was cancelled",
