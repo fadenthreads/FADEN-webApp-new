@@ -262,7 +262,8 @@ export function PortfolioManager({
         <h2>{editing ? "Edit your design" : "New portfolio piece"}</h2>
         <p className="studio-muted">
           Drafts stay out of public discovery. Publishing makes this piece
-          visible in the staging marketplace. Collections are not connected yet.
+          visible in the customer marketplace. Collections are not connected
+          yet.
         </p>
         <form key={editing?.id || "new"} onSubmit={save}>
           <fieldset
@@ -390,8 +391,8 @@ export function PortfolioManager({
                   />
                 )}
                 <small>
-                  Uploads are stored as private object keys and shown with
-                  on-demand display URLs. A draft may be saved without a photo.
+                  Images are stored as reusable object keys. Draft designs stay
+                  out of public discovery and may be saved without a photo.
                 </small>
               </div>
               <label>
@@ -440,7 +441,7 @@ export function PortfolioManager({
                   onChange={(e) => setConfirmed(e.target.checked)}
                 />
                 If Published is selected, I confirm this design and its price
-                may appear publicly in the staging catalog.
+                may appear publicly in the customer catalog.
               </label>
             </div>
             <div className="studio-actions">

@@ -167,10 +167,8 @@ test("display widths are allowlisted and object keys are not signed URLs", () =>
     true,
   );
   assert.equal(
-    portfolioPublicUrl("https://example.test", portfolioPath, 800).includes(
-      "width=800",
-    ),
-    true,
+    portfolioPublicUrl("https://example.test", portfolioPath, 800),
+    `https://example.test/storage/v1/object/public/portfolio-images/${portfolioPath}`,
   );
 });
 

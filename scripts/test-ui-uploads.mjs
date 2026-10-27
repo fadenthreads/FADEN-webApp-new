@@ -53,8 +53,8 @@ test("catalog rendering uses object keys, never persisted signed URLs", () => {
   );
   assert.equal(
     publicPortfolioUrl("https://example.supabase.co", key, 1200),
-    "https://example.supabase.co/storage/v1/render/image/public/portfolio-images/" +
-      `${key}?width=1200&resize=contain`,
+    "https://example.supabase.co/storage/v1/object/public/portfolio-images/" +
+      key,
   );
   assert.equal(
     publicPortfolioUrl("https://example.supabase.co", key, 13),

@@ -358,16 +358,14 @@ export function isOwnedInspirationKey(path, userId, requestId) {
  * @param {string} path
  * @param {number} [width]
  */
-export function portfolioPublicUrl(supabaseUrl, path, width) {
+export function portfolioPublicUrl(supabaseUrl, path, _width) {
   const base = String(supabaseUrl ?? "").replace(/\/$/, "");
   if (!base || !isSafeObjectPath(path, STORAGE_BUCKETS.portfolioImages)) {
     return "";
   }
   const encoded = path.split("/").map(encodeURIComponent).join("/");
-  const chosen = displayWidthFor(width);
-  if (chosen) {
-    return `${base}/storage/v1/render/image/public/${STORAGE_BUCKETS.portfolioImages}/${encoded}?width=${chosen}&resize=contain`;
-  }
+  // Public originals work on Free; requesting render/image requires a paid
+  // image-transformation feature even though signing that URL may succeed.
   return `${base}/storage/v1/object/public/${STORAGE_BUCKETS.portfolioImages}/${encoded}`;
 }
 

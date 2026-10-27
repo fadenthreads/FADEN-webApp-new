@@ -112,7 +112,11 @@ export default async function BoutiqueProfilePage({
         <section className="boutique-facts">
           <div>
             <span>Response time</span>
-            <strong>Within {profile.response_time_hours} hours</strong>
+            <strong>
+              {profile.response_time_hours
+                ? `Within ${profile.response_time_hours} hours`
+                : "Contact boutique for timings"}
+            </strong>
           </div>
           <div>
             <span>Next available</span>
@@ -121,8 +125,9 @@ export default async function BoutiqueProfilePage({
           <div>
             <span>Creation time</span>
             <strong>
-              {profile.lead_time_min_weeks}-{profile.lead_time_max_weeks} weeks
-              average
+              {profile.lead_time_min_weeks && profile.lead_time_max_weeks
+                ? `${profile.lead_time_min_weeks}-${profile.lead_time_max_weeks} weeks average`
+                : "Confirmed with your quotation"}
             </strong>
           </div>
         </section>
@@ -130,19 +135,25 @@ export default async function BoutiqueProfilePage({
         <section className="boutique-story">
           <div>
             <h2>The Atelier Story</h2>
-            <p>{profile.story}</p>
+            <p>
+              {profile.story || "This boutique has not added its story yet."}
+            </p>
             <dl>
               <div>
                 <dt>Specialties</dt>
-                <dd>{profile.specialties.join(" & ")}</dd>
+                <dd>{profile.specialties.join(" & ") || "Not listed yet"}</dd>
               </div>
               <div>
                 <dt>Experience</dt>
-                <dd>{profile.years_experience} years of craftsmanship</dd>
+                <dd>
+                  {profile.years_experience != null
+                    ? `${profile.years_experience} years of craftsmanship`
+                    : "Details on request"}
+                </dd>
               </div>
               <div>
                 <dt>Services</dt>
-                <dd>{profile.services.join(" · ")}</dd>
+                <dd>{profile.services.join(" · ") || "Not listed yet"}</dd>
               </div>
             </dl>
           </div>

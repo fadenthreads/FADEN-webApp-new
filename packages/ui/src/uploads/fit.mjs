@@ -86,12 +86,11 @@ export function looksLikeSignedUrl(value) {
  * @param {string} key
  * @param {number} [width]
  */
-export function publicPortfolioUrl(supabaseUrl, key, width) {
+export function publicPortfolioUrl(supabaseUrl, key, _width) {
   const base = String(supabaseUrl ?? "").replace(/\/$/, "");
   if (!base || !isImageObjectKey(key)) return "";
   const encoded = key.split("/").map(encodeURIComponent).join("/");
-  if (width && DISPLAY_WIDTHS.includes(width)) {
-    return `${base}/storage/v1/render/image/public/portfolio-images/${encoded}?width=${width}&resize=contain`;
-  }
+  // Uploads are already resized client-side. Supabase transformations are not
+  // available on the free project; a render URL returns FeatureNotEnabled.
   return `${base}/storage/v1/object/public/portfolio-images/${encoded}`;
 }
