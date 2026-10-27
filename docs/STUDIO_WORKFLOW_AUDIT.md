@@ -4,7 +4,11 @@ Reviewed: 26 October 2026. Scope: `studio.faden.in`, the linked Admin verificati
 
 ## Verification boundary
 
-The live browser was signed out. Studio correctly redirected to sign-in. No real boutique application was submitted or approved, no real customer order was changed, and no email delivery was exercised. Findings below distinguish implementation/source checks from a signed-in end-to-end test.
+Initial review was signed out. Follow-up on 27 October verified Studio account/settings and registration-form access as `raghava4272@gmail.com`, and Admin dashboard/directory/verification/order/delivery pages as `fadenthreads@gmail.com` with MFA AAL2. No real boutique application was submitted or approved, no real customer order was changed, and no email delivery was exercised. Findings below distinguish observed live behavior from a complete mutation round-trip.
+
+Admin Google login was blocked by a missing allowed redirect. With explicit owner confirmation, `https://admin.faden.in/**` was added to Supabase's redirect list, preserving the other eight entries and the `https://faden.in` site URL. The existing account already had role `admin`; no role grants, passwords or MFA settings were changed. Google login subsequently reached MFA, and after the owner's verification the Admin dashboard loaded.
+
+The pending `dcedf` boutique appears in Admin with current storefront data but no verification submission, so approval actions are not available yet. Its public URL returns 404 and it is absent from discovery. Approved `studio-vanya` returns 200 and appears in discovery. The tested Studio account has no boutique application. These observations do not prove document-upload, submission, approval, or storefront-save mutations end to end.
 
 ## Registration and approval
 
@@ -51,7 +55,7 @@ The Account page includes these rules. Storefront editing provides a local previ
 
 ## Still missing or intentionally limited
 
-- A complete signed-in test with a fresh owner, Admin decision, customer discovery, profile edit and design publication must still be performed. The public browser session cannot establish that proof.
+- A complete test with an owner application, genuine verification documents, Admin decision, profile edit and design publication must still be performed. Signed-in read checks and visibility checks passed; the tested Studio owner has not created an application.
 - Dedicated logo upload, custom page layouts/themes and a separate story-image editor are not present. Cover selection uses published portfolio images; publishing an image as a design is not a dedicated brand-asset library.
 - Staff invitation/permission management is not a complete self-service workflow. Assigned staff can use their portfolio memberships; order operations and storefront/business management remain owner-only.
 - Approved legal/bank/ownership changes, account deletion and sign-in email changes require support; no automated re-verification/change-request workflow was introduced.
@@ -64,3 +68,5 @@ The Account page includes these rules. Storefront editing provides a local previ
 Run `npm run test:studio-storefront` for visibility/approval-rule tests and the existing upload reference checks. Run `node scripts/test-studio-storefront.mjs --database` for isolated native-PostgreSQL checks (no Docker or hosted writes): profile initialization/backfill, pending/private state, atomic save/rollback, stale-write rejection, foreign-owner/cover rejection and customer visibility after the verification gate.
 
 Hosted database confirmation (27 October 2026): the Dashboard verification result supplied by the owner shows migration `202610260042` recorded, `save_boutique_storefront` present, and zero boutiques missing profile rows. Do not rerun the migration manually. This database confirmation does not establish that a real signed-in submission/approval flow has been tested.
+
+Code commits `6a87e7a` and `a1a94ed` deployed successfully to all three Vercel apps. Callback failure handling was tested live across all three domains: provider errors redirect to the same app's sign-in with a safe error code and local return path. Local lint/typecheck/build and focused tests passed. GitHub run `40450907666` passed database and all three container jobs; quality reached the final `npm audit --omit=dev` step and failed there. Dependency audit remediation remains outstanding; do not describe CI as fully green.
