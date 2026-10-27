@@ -55,10 +55,10 @@ export default async function BoutiqueProfilePage({
             backgroundImage: `url(${stitchImage(profile.hero_image_url)})`,
           }}
         >
-          {boutique.slug === "studio-vanya" && (
+          {profile.hero_image_url && (
             <Image
               className="boutique-mobile-cover"
-              src="/stitch-assets/asset-072.jpg"
+              src={stitchImage(profile.hero_image_url)}
               alt={`${boutique.name} bespoke couture`}
               fill
               sizes="100vw"

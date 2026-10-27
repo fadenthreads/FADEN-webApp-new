@@ -36,7 +36,7 @@ export function OnboardingForm() {
     setBusy(false);
     if (error) setMessage(error.message);
     else {
-      router.push("/");
+      router.push("/verification");
       router.refresh();
     }
   }
@@ -70,7 +70,7 @@ export function OnboardingForm() {
         <label>
           Public handle
           <div className="input-prefix">
-            <span>faden.in/</span>
+            <span>faden.in/boutiques/</span>
             <input
               maxLength={60}
               minLength={3}
@@ -102,12 +102,15 @@ export function OnboardingForm() {
       <div className="notice-box">
         <strong>What happens next?</strong>
         <p>
-          Your workspace opens immediately in review mode. Publishing and
-          payments unlock after business verification.
+          Step 1: create your boutique. Step 2: add legal details and upload
+          verification documents. Step 3: submit for Admin review. Your boutique
+          is not visible to customers before approval.
         </p>
       </div>
       <button className="button button--primary" disabled={busy}>
-        {busy ? "Creating your studio…" : "Submit and open Studio"}
+        {busy
+          ? "Creating your studio…"
+          : "Save boutique & continue to verification"}
       </button>
       {message && (
         <p className="form-message" role="status">

@@ -27,6 +27,8 @@ export function AtelierShell({
             ["appointments", "/appointments", "Measurement sessions"],
             ["storefront", "/storefront", "Public storefront"],
             ["portfolio", "/portfolio", "Portfolio"],
+            ["verification", "/verification", "Business verification"],
+            ["account", "/account", "Account & settings"],
           ].map(([key, href, label]) => (
             <Link
               key={key}

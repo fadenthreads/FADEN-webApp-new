@@ -20,6 +20,8 @@ export async function POST(request: NextRequest) {
   const body = await readJsonBody(request, 20_000);
   if (isNextResponse(body)) return body;
   const value = body as Record<string, unknown>;
+  if (!value || typeof value !== "object" || Array.isArray(value))
+    return jsonError("Check the storefront details.", 400);
   const text = (key: string) =>
     typeof value[key] === "string" ? value[key].trim() : "";
   const list = (key: string) =>
@@ -72,45 +74,45 @@ export async function POST(request: NextRequest) {
       (typeof nextDate !== "string" || !date.test(nextDate)))
   )
     return jsonError("Check the storefront details and try again.", 400);
-  const owner = await db
-    .from("boutiques")
-    .select("id")
-    .eq("id", boutiqueId)
-    .eq("owner_id", user.id)
-    .eq("status", "verified")
-    .eq("is_published", true)
-    .maybeSingle();
-  if (owner.error || !owner.data)
-    return jsonError("This storefront is not available.", 403, "forbidden");
-  const profile = await db
-    .from("boutique_profiles")
-    .update({
-      story: text("story"),
-      specialties,
-      services,
-      years_experience: years,
-      response_time_hours: responseHours,
-      next_available_date: nextDate as string | null,
-      minimum_price_paise: price,
-      lead_time_min_weeks: minWeeks,
-      lead_time_max_weeks: maxWeeks,
-    })
-    .eq("boutique_id", boutiqueId)
-    .eq("updated_at", text("version"))
-    .select("boutique_id")
-    .maybeSingle();
-  if (profile.error || !profile.data)
-    return jsonError("This storefront changed. Reload and try again.", 409);
-  const boutique = await db
-    .from("boutiques")
-    .update({
+  const { data, error } = await db.rpc("save_boutique_storefront", {
+    p_boutique_id: boutiqueId,
+    p_version: text("version"),
+    p_details: {
       name: text("name"),
       city: text("city"),
       description: text("description"),
-    })
-    .eq("id", boutiqueId)
-    .eq("owner_id", user.id);
-  if (boutique.error)
-    return jsonError("The profile details could not be saved.", 409);
-  return NextResponse.json({ ok: true });
+      story: text("story"),
+      specialties,
+      services,
+      yearsExperience: years,
+      responseHours,
+      minimumPricePaise: price,
+      leadTimeMinWeeks: minWeeks,
+      leadTimeMaxWeeks: maxWeeks,
+      nextAvailableDate: nextDate as string | null,
+      ...(typeof value.heroImage === "string"
+        ? { heroImage: value.heroImage }
+        : {}),
+    },
+  });
+  if (error) {
+    if (error.message.includes("not editable"))
+      return jsonError(
+        "This storefront cannot currently be edited. Check verification or contact FADEN.",
+        403,
+      );
+    if (error.message.includes("changed"))
+      return jsonError(
+        "Another storefront update was saved. Refresh this page before making more changes.",
+        409,
+      );
+    return jsonError(
+      "Could not save the storefront. Check the selected cover and required details.",
+      400,
+    );
+  }
+  return NextResponse.json({
+    ok: true,
+    ...(data as { version: string; live: boolean }),
+  });
 }

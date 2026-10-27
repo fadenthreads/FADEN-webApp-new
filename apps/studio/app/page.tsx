@@ -3,8 +3,100 @@ import { briefText } from "@faden/ui";
 import { atelierContext } from "../lib/atelier";
 import { StudioFrame, marketplaceUrl } from "../components/studio-frame";
 import { StudioOverview } from "../components/studio-overview";
+import { studioVisibility } from "../lib/studio-capabilities.mjs";
 export default async function StudioHome() {
-  const { supabase: db, user, boutiques } = await atelierContext();
+  const {
+    supabase: db,
+    user,
+    boutiques,
+    ownedBoutiques,
+  } = await atelierContext();
+  if (!boutiques.length) {
+    const owned = ownedBoutiques[0];
+    if (!owned) {
+      const { data: profile } = await db
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .maybeSingle();
+      if (profile?.role === "boutique_staff")
+        return (
+          <StudioFrame active="overview" name="Your assigned portfolio">
+            <section className="studio-empty">
+              <h1>Your portfolio workspace</h1>
+              <p>
+                Manage the designs assigned to you. Business verification and
+                order operations are managed by the boutique owner.
+              </p>
+              <Link className="studio-button" href="/portfolio">
+                Open portfolio
+              </Link>
+            </section>
+          </StudioFrame>
+        );
+    }
+    return (
+      <StudioFrame active="overview" name={owned?.name ?? "Your Studio"}>
+        <section className="studio-empty studio-setup-checklist">
+          <p className="eyebrow">Boutique setup</p>
+          <h1>
+            {owned
+              ? "Let’s get your boutique ready."
+              : "Bring your boutique to FADEN."}
+          </h1>
+          <p>
+            {owned
+              ? studioVisibility(owned.status, owned.is_published).label
+              : "Create an account, tell us about your boutique, and submit your business details for Admin review."}
+          </p>
+          <ol>
+            <li>
+              <strong>Create your boutique</strong>
+              <p>
+                {owned
+                  ? "Your boutique workspace has been created."
+                  : "Add your boutique name, city, public handle and introduction."}
+              </p>
+            </li>
+            <li>
+              <strong>Submit verification</strong>
+              <p>
+                Save legal/contact details, upload the required documents, and
+                click Submit for review. Read Admin feedback here if changes are
+                requested.
+              </p>
+            </li>
+            <li>
+              <strong>Prepare your storefront & portfolio</strong>
+              <p>
+                Prepare your public story and services. Upload designs as
+                drafts. Customers can discover your boutique only after Admin
+                approval.
+              </p>
+            </li>
+          </ol>
+          <div className="studio-actions">
+            <Link
+              className="studio-button"
+              href={owned ? "/verification" : "/onboarding"}
+            >
+              {owned
+                ? "Continue verification / view feedback"
+                : "Register your boutique"}
+            </Link>
+            {owned && (
+              <Link className="studio-button ghost" href="/storefront">
+                Prepare storefront
+              </Link>
+            )}
+            <Link className="studio-button ghost" href="/account">
+              Account & approval guide
+            </Link>
+          </div>
+        </section>
+      </StudioFrame>
+    );
+  }
   const ids = boutiques.map((b) => b.id),
     now = new Date().toISOString();
   const day = new Date(Date.now() + 19800000).toISOString().slice(0, 10);

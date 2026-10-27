@@ -8,6 +8,54 @@ type PageProps = {
   params: Promise<{ id: string }>;
 };
 
+async function CurrentStorefront({ boutiqueId }: { boutiqueId: string }) {
+  const { supabase } = await requireAdminSession();
+  const { data: boutique, error } = await supabase
+    .from("boutiques")
+    .select(
+      "name,slug,city,description,status,is_published,boutique_profiles(story,services,specialties)",
+    )
+    .eq("id", boutiqueId)
+    .maybeSingle();
+  if (error || !boutique)
+    return <p role="status">Current storefront details could not be loaded.</p>;
+  const base = process.env.NEXT_PUBLIC_MARKETPLACE_URL || "https://faden.in";
+  return (
+    <section
+      className="admin-overview-empty"
+      aria-label="Current customer-facing storefront"
+    >
+      <h2>Current storefront: {boutique.name}</h2>
+      <p>
+        {boutique.city} · {boutique.status} ·{" "}
+        {boutique.is_published ? "Published" : "Private"}
+      </p>
+      <p>{boutique.description}</p>
+      <p>{boutique.boutique_profiles?.story}</p>
+      <p>
+        Services: {boutique.boutique_profiles?.services.join(", ") || "Not set"}
+      </p>
+      <p>
+        Specialties:{" "}
+        {boutique.boutique_profiles?.specialties.join(", ") || "Not set"}
+      </p>
+      {boutique.status === "verified" && boutique.is_published && (
+        <a
+          href={`${base}/boutiques/${boutique.slug}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          View live customer page ↗
+        </a>
+      )}
+      <p>
+        These are current editable storefront details. The verification section
+        below contains the submitted legal/business information.
+      </p>
+    </section>
+  );
+}
+
 async function VerificationLoader({ boutiqueId }: { boutiqueId: string }) {
   const { supabase } = await requireAdminSession();
 
@@ -168,6 +216,7 @@ export default async function VerificationPage({ params }: PageProps) {
       </div>
 
       <Suspense fallback={<VerificationLoading />}>
+        <CurrentStorefront boutiqueId={id} />
         <VerificationLoader boutiqueId={id} />
       </Suspense>
     </div>

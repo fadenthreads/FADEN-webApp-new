@@ -3,10 +3,13 @@ import { AuthPanel } from "@faden/auth";
 export default async function StudioSignIn({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string }>;
+  searchParams: Promise<{ next?: string; action?: string }>;
 }) {
   const parameters = await searchParams;
-  const nextPath = parameters.next?.startsWith("/") ? parameters.next : "/";
+  const nextPath =
+    parameters.next?.startsWith("/") && !parameters.next.startsWith("//")
+      ? parameters.next
+      : "/";
 
   return (
     <main className="auth-page auth-page--studio">
@@ -15,6 +18,7 @@ export default async function StudioSignIn({
       </a>
       <AuthPanel
         appName="Boutique Studio"
+        initialAction={parameters.action === "sign-up" ? "sign-up" : "sign-in"}
         googleEnabled={process.env.NEXT_PUBLIC_GOOGLE_AUTH_ENABLED === "true"}
         localDemo={process.env.NODE_ENV !== "production"}
         nextPath={nextPath}
@@ -24,6 +28,13 @@ export default async function StudioSignIn({
           process.env.NODE_ENV !== "production"
         }
       />
+      <p className="studio-register-hint">
+        New boutique owner?{" "}
+        <a href="/auth/sign-in?action=sign-up&next=/onboarding">
+          Register your boutique
+        </a>
+        . Already registered? Sign in to continue your application.
+      </p>
       {process.env.NODE_ENV !== "production" && (
         <div className="credential-note">
           <strong>Demo owner</strong>

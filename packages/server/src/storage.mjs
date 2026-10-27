@@ -561,7 +561,16 @@ async function removeObject(supabase, audience, userId, payload) {
       .from("designs")
       .select("id", { count: "exact", head: true })
       .eq("primary_image_url", path);
-    if ((referenced.count ?? 0) > 0) {
+    const cover = await supabase
+      .from("boutique_profiles")
+      .select("boutique_id", { count: "exact", head: true })
+      .eq("hero_image_url", path);
+    if (referenced.error || cover.error)
+      throw new StorageGrantError(
+        "Could not check whether this image is in use. Please retry.",
+        409,
+      );
+    if ((referenced.count ?? 0) > 0 || (cover.count ?? 0) > 0) {
       throw new StorageGrantError(
         "This image is still in use.",
         409,

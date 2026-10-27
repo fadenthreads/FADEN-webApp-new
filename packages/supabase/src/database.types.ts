@@ -3022,6 +3022,10 @@ export type Database = {
         Args: { command_id: string; message_body: string; target_order: string }
         Returns: string
       }
+      save_boutique_storefront: {
+        Args: { p_boutique_id: string; p_version: string; p_details: Json };
+        Returns: Json;
+      };
       share_outfit_request: {
         Args: {
           confirmed: boolean

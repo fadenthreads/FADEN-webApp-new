@@ -25,6 +25,7 @@ export function StudioFrame({
     ["storefront", "/storefront", "Public storefront"],
     ["portfolio", demo ? "/preview/portfolio" : "/portfolio", "Portfolio"],
     ["verification", "/verification", "Verification"],
+    ["account", "/account", "Account & settings"],
   ];
   const navigation = (
     <nav aria-label="Studio navigation">
@@ -71,7 +72,7 @@ export function StudioFrame({
         ) : (
           <span className="studio-boutique-select">Boutique Select</span>
         )}
-        <a href={marketplaceUrl() + "/account"}>Account ↗</a>
+        <Link href="/account">Account & settings</Link>
         <details className="studio-mobile-menu">
           <summary>Menu</summary>
           <div className="studio-mobile-menu-panel">

@@ -367,7 +367,12 @@ export function VerificationForm({
       {submission?.status === "approved" && (
         <section className="verification-notice verification-notice--success">
           <strong>Your boutique is verified.</strong>
-          <p>Verification does not publish your boutique automatically.</p>
+          <p>
+            Admin approval makes a verified boutique public. Manage your
+            customer-facing details in Public storefront and choose visible
+            designs in Portfolio. If Admin has subsequently hidden or suspended
+            your boutique, contact FADEN.
+          </p>
         </section>
       )}
       {submission?.status === "rejected" && (

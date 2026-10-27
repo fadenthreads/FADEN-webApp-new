@@ -264,6 +264,26 @@ test("authorization denies removing another user's object", async () => {
 });
 
 test("referenced objects stay until detached; unreferenced objects are removed", async () => {
+  const cover = await handleStorageRequest(
+    jsonRequest({
+      body: {
+        action: "remove",
+        bucket: STORAGE_BUCKETS.portfolioImages,
+        path: portfolioPath,
+      },
+    }),
+    userClient({
+      id: userId,
+      tables: {
+        boutique_members: { boutique_id: boutiqueId },
+        boutiques: { status: "verified" },
+        boutique_profiles: { count: 1 },
+      },
+    }),
+    "studio",
+  );
+  assert.equal(cover.status, 409);
+  assert.equal((await cover.json()).code, "still_referenced");
   const referenced = await handleStorageRequest(
     jsonRequest({
       body: {
