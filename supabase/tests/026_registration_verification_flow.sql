@@ -28,7 +28,7 @@ select throws_ok($$select public.owner_create_verification_draft(
 select is((select is_published from public.boutiques where id=(select id from journey_registration)),
  false, 'starting verification does not publish boutique');
 reset role;
-update public.boutique_verification_submissions set status='submitted'
+update public.boutique_verification_submissions set status='submitted', submitted_at=now()
  where boutique_id=(select id from journey_registration);
 set local role authenticated;
 select throws_ok($$select public.owner_create_verification_draft(

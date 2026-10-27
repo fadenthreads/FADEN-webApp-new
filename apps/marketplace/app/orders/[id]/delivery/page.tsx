@@ -4,6 +4,7 @@ import { MarketplaceHeader } from "../../../../components/marketplace-header";
 import { customerOrder } from "../../../../lib/orders";
 import { deliveryStatusLabel, fadenContact } from "@faden/ui";
 import { OrderUpdateRefresh } from "../../../../components/order-update-refresh";
+import { OrderDeliveryAddress } from "../../../../components/order-delivery-address";
 export default async function Delivery({
   params,
 }: {
@@ -18,6 +19,12 @@ export default async function Delivery({
     p_order_id: id,
   });
   if (error) throw new Error("Could not load delivery tracking.");
+  const { data: details, error: addressError } = await db
+    .from("order_delivery_details")
+    .select("revision,address")
+    .eq("order_id", id)
+    .maybeSingle();
+  if (addressError) throw new Error("Could not load your delivery address.");
   const tracking = data as {
     shipment: {
       carrier_name: string;
@@ -40,6 +47,18 @@ export default async function Delivery({
           updated here.
         </p>
         <OrderUpdateRefresh />
+        <OrderDeliveryAddress
+          key={details?.revision ?? 0}
+          orderId={id}
+          revision={details?.revision ?? 0}
+          address={(details?.address ?? {}) as Record<string, string>}
+          locked={
+            order.status === "cancelled" ||
+            Boolean(
+              tracking.shipment && tracking.shipment.status !== "cancelled",
+            )
+          }
+        />
         {!tracking.shipment ? (
           <div className="offer-panel">
             <h2>

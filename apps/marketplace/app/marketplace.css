@@ -207,6 +207,43 @@
     padding: 24px;
   }
 }
+.order-address-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  border: 0;
+  padding: 0;
+  min-width: 0;
+}
+.order-address-fields > label {
+  display: grid;
+  gap: 0.4rem;
+}
+.order-address-fields input:not([type="checkbox"]) {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 0.8rem;
+  border: 1px solid #d9bdb1;
+  background: #fff;
+  color: #292421;
+  font: inherit;
+}
+.order-address-fields .order-address-consent {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+}
+.order-address-consent input {
+  flex-shrink: 0;
+  margin-top: 0.3rem;
+}
+@media (max-width: 600px) {
+  .order-address-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .showcase-card__image img {
     transition: none;

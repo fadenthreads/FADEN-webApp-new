@@ -13,16 +13,18 @@ import { getSupabaseServerClient } from "../../../lib/supabase/server";
 export async function POST(request: NextRequest) {
   const originFailure = requireSameOrigin(request);
   if (originFailure) return originFailure;
-  if (!isPreviewMutationAllowed())
-    return jsonError("Fulfilment rehearsal is disabled in production.", 503);
   const supabase = await getSupabaseServerClient();
   const user = await requireUser(supabase);
   if (isNextResponse(user)) return user;
   const body = await readJsonBody(request, 8000);
   if (isNextResponse(body)) return body;
   const b = body as Record<string, unknown>;
+  // Customer delivery addresses are live account data. Only the old synthetic
+  // shipment/confirmation commands remain behind the rehearsal gate.
+  if (b?.action !== "address" && !isPreviewMutationAllowed())
+    return jsonError("Fulfilment rehearsal is disabled in production.", 503);
   if (!b || typeof b.orderId !== "string" || b.confirmed !== true)
-    return jsonError("Complete and confirm the rehearsal details.", 400);
+    return jsonError("Complete and confirm the delivery details.", 400);
   let result;
   if (
     b.action === "address" &&

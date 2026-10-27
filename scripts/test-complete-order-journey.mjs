@@ -486,7 +486,13 @@ for (let stage = 1; stage <= 5; stage++)
   await post(3001, "/api/production", owner, progress(stage - 1, stage));
 check(true, "Boutique sends all five production updates on the same order");
 await page(3000, `/journey/${orderId}`, customer);
-await post(3000, "/api/fulfilment", customer, {
+check(
+  (await page(3000, `/orders/${orderId}/delivery`, customer)).includes(
+    "Save delivery address",
+  ),
+  "Customer delivery page exposes an address form",
+);
+const addressCommand = {
   action: "address",
   orderId,
   revision: 0,
@@ -502,7 +508,17 @@ await post(3000, "/api/fulfilment", customer, {
     postal_code: "500001",
     country: "IN",
   },
+};
+await post(3000, "/api/fulfilment", customer, addressCommand);
+const revealed = await post(3002, "/api/orders", admin, {
+  action: "reveal_address",
+  order_id: orderId,
+  reason: "ISOLATED test dispatch arrangement",
 });
+check(
+  revealed.data.line1 === addressCommand.details.line1,
+  "Admin can reveal the customer's saved address for manual dispatch",
+);
 let version = 0;
 const shipment = (status) => ({
   action: "shipment",
@@ -526,6 +542,22 @@ for (const status of [
 ]) {
   const response = await post(3002, "/api/orders", admin, shipment(status));
   version = response.data.version;
+  if (status === "booked") {
+    await post(
+      3000,
+      "/api/fulfilment",
+      customer,
+      { ...addressCommand, revision: 1, commandId: randomUUID() },
+      "POST",
+      409,
+    );
+    check(
+      !(await page(3000, `/orders/${orderId}/delivery`, customer)).includes(
+        "Save delivery address",
+      ),
+      "Address is locked in UI and API once Admin arranges shipping",
+    );
+  }
   for (const who of [owner, customer]) {
     const visible = await result(
       who.client.rpc("read_order_manual_shipment", { p_order_id: orderId }),

@@ -80,6 +80,7 @@ jobs:
             sleep 1
           done
           curl --fail --silent http://localhost:3002/api/health > /dev/null
+          npm run test:complete-order
           npm run test:marketplace
           npm run test:requests
           npm run test:offers
@@ -87,7 +88,6 @@ jobs:
           # Includes design, production, appointments, fulfilment, aftercare and private messaging checks.
           npm run test:designs
           npm run test:studio
-          npm run test:complete-order
 
   container:
     runs-on: ubuntu-latest
