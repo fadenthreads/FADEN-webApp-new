@@ -1,8 +1,12 @@
 export const fadenContact = {
+  email: "fadenthreads@gmail.com",
+};
+
+export const fadenFounder = {
   name: "Meghana Jhadi",
+  role: "Founder",
   phone: "+91 80744 62952",
   phoneHref: "tel:+918074462952",
-  email: "fadenthreads@gmail.com",
 };
 
 export const deliveryLabels: Record<string, string> = {

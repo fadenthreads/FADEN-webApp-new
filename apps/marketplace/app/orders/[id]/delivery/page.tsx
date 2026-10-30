@@ -111,9 +111,8 @@ export default async function Delivery({
         )}
         <section className="offer-panel">
           <h2>Need help with delivery?</h2>
-          <p>{fadenContact.name} · FADEN customer care</p>
+          <p>FADEN customer care</p>
           <p>
-            <a href={fadenContact.phoneHref}>{fadenContact.phone}</a> ·{" "}
             <a
               href={`mailto:${fadenContact.email}?subject=${encodeURIComponent(`Delivery enquiry: ${id}`)}`}
             >

@@ -47,8 +47,8 @@ export default function StyleAssistancePage() {
           collected here.
         </p>
         <p>
-          Prefer to talk? Call{" "}
-          <a href={fadenContact.phoneHref}>{fadenContact.phone}</a>, or{" "}
+          Need help? Email{" "}
+          <a href={`mailto:${fadenContact.email}`}>{fadenContact.email}</a>, or{" "}
           <Link href="/contact">send an enquiry through our contact form</Link>.
         </p>
         <Link className="button button--ghost" href="/discover?type=boutiques">
