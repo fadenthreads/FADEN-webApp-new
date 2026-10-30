@@ -73,7 +73,7 @@ export function OrderMessages({
       <p className="chat-notice">
         {demo
           ? "Fictional design preview — sending is disabled."
-          : "Staging conversation — messages are saved and visible to the other order participant."}{" "}
+          : "Private order conversation — messages are saved and visible to the other order participant."}{" "}
         Text only. No email or SMS is sent. Never share passwords, payment
         details or identity documents.
       </p>
